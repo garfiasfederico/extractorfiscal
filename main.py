@@ -1,13 +1,94 @@
-import init
-from tkinter import *
-from tkinter import ttk
+from customtkinter import CTk, CTkFrame, CTkEntry, CTkLabel, CTkButton, CTkRadioButton
+from tkinter import PhotoImage,messagebox
+import time
+from zeep import Client
 
-root = Tk()
-root.title("Extractor Fiscal V.1");
-frm = ttk.Frame(root, padding=10)
-frm.grid()
-ttk.Label(frm, text="RFC del contribuyente:",font=('Arial',12)).grid(column=0, row=0)
-ttk.Label(frm, text=init.rfc,font=('Arial',16),anchor="w").grid(column=1, row=0)
-ttk.Label(frm, text="Nombre o razón social:",font=('Arial',12)).grid(column=0, row=1)
-ttk.Label(frm, text=init.razon_social,font=('Arial',16),anchor="w").grid(column=1, row=1)
-root.mainloop()
+usuario_ = ""
+password_ = ""
+valido = True
+usuario = ""
+password = ""
+errorl = ""
+root = ""
+
+def autenticarse():    
+    global usuario_,password_,usuario,password,errorl,root
+    usuario_ = usuario.get()
+    password_ = password.get()    
+    if(valida()==True):        
+        errorl.configure(text="Accediendo...",text_color="white")                    
+        if(consumeautenticarse(usuario_,password_)):
+            root.destroy()          
+        else:
+            messagebox.showerror("Autenticación","Credenciales Incorrectas")
+        #import main_old
+    else:
+        errorl.configure(text="Datos incompletos!",text_color="orange")
+
+def valida():    
+    valido = True    
+    if(usuario_==""):        
+        valido=False
+        usuario.configure(border_color="red")
+    else:
+        usuario.configure(border_color=color_principal)
+
+    if(password_==""):        
+        valido=False
+        password.configure(border_color="red")
+    else:
+        password.configure(border_color=color_principal)
+
+    return valido
+
+def main():
+    global usuario,password,color_principal,errorl,root
+    color_principal = "#648BC6"
+
+    root = CTk();
+    root.title("Extractor Fiscal V.1.0")
+    root.geometry("500x600+800+150")
+    root.minsize(480,500)
+    root.config(bg=color_principal)
+
+    principal = PhotoImage(file="public/images/main.png")
+
+    frame = CTkFrame(root,fg_color=color_principal)
+    frame.grid(column=0,row=0,sticky="nsew", padx=50,pady=50)
+
+    frame.columnconfigure([0,1],weight=1)
+    frame.rowconfigure([0,1,2,3,4,5],weight=1)
+
+    root.columnconfigure(0,weight=1)
+    root.rowconfigure(0,weight=1)
+
+    CTkLabel(frame, text="",image=principal).grid(columnspan=2, row=0)
+    usuario = CTkEntry(frame,font=("Arial",12),placeholder_text="Usuario",border_color=color_principal,fg_color="white",width=220,height=40,text_color="black")
+    usuario.grid(columnspan=2,row=1,padx=4,pady=4)
+
+    password = CTkEntry(frame,font=("Arial",12),placeholder_text="Password",border_color=color_principal,fg_color="white",width=220,height=40,show="*",text_color="black")
+    password.grid(columnspan=2,row=2,padx=4,pady=4)
+
+    acceder = CTkButton(frame,text="Acceder", hover_color="gray", corner_radius=12, border_width=2,height=40,fg_color="green",cursor="arrow",command=autenticarse)
+    acceder.grid(columnspan=2,row=3, padx=8,pady=8)
+
+    errorl = CTkLabel(frame, text="",text_color="orange",font=("Arial",14))
+    errorl.grid(columnspan=2, row=4)
+
+    #Colocamos el icono a la aplicación
+    root.call("wm",'iconphoto',root._w,principal)
+    root.mainloop();
+
+def consumeautenticarse(usuario,password):    
+    #wsdl = 'http://127.0.0.1:8000/ws/autenticarse?wsdl'
+    #client = zeep.Client(wsdl=wsdl)
+    #plan_client = client.bind('RoutingService', 'BasicHttpBinding_LFCPaymentPlanDetailsServices')
+    #plan_client.service.Autenticarse(usuario, password)
+    #print(plan_client.service.Autenticarse(usuario, password))
+    client = Client('http://127.0.0.1:8000/soap/wsdl')
+    result = client.service.autenticarse('kilometersPerhour', 'milesPerhour')
+    return result
+    
+
+
+main()
