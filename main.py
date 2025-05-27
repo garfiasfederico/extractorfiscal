@@ -2,6 +2,7 @@ from customtkinter import CTk, CTkFrame, CTkEntry, CTkLabel, CTkButton, CTkRadio
 from tkinter import PhotoImage,messagebox
 import time
 from zeep import Client
+from requests.exceptions import HTTPError,ConnectionError
 
 usuario_ = ""
 password_ = ""
@@ -13,17 +14,21 @@ root = ""
 
 def autenticarse():    
     global usuario_,password_,usuario,password,errorl,root
-    usuario_ = usuario.get()
+    usuario_ = usuario.get()    
     password_ = password.get()    
+    print(f"Usuario: {usuario_} password: {password_}")
     if(valida()==True):        
         errorl.configure(text="Accediendo...",text_color="white")                    
-        if(consumeautenticarse(usuario_,password_)):
-            root.destroy()          
+        autentica = consumeautenticarse(usuario_,password_)
+        if(autentica==True):
+            errorl.configure(text="Cedenciales correctas!",text_color="green")
+            #root.destroy()          
         else:
-            messagebox.showerror("Autenticación","Credenciales Incorrectas")
+            if(autentica!=404):
+                errorl.configure(text="Cedenciales incorrectas!",text_color="red")
         #import main_old
     else:
-        errorl.configure(text="Datos incompletos!",text_color="orange")
+        errorl.configure(text="Datos incompletos!",text_color="red")
 
 def valida():    
     valido = True    
@@ -72,7 +77,7 @@ def main():
     acceder = CTkButton(frame,text="Acceder", hover_color="gray", corner_radius=12, border_width=2,height=40,fg_color="green",cursor="arrow",command=autenticarse)
     acceder.grid(columnspan=2,row=3, padx=8,pady=8)
 
-    errorl = CTkLabel(frame, text="",text_color="orange",font=("Arial",14))
+    errorl = CTkLabel(frame, text="",text_color="orange",font=("Arial",18))
     errorl.grid(columnspan=2, row=4)
 
     #Colocamos el icono a la aplicación
@@ -85,10 +90,14 @@ def consumeautenticarse(usuario,password):
     #plan_client = client.bind('RoutingService', 'BasicHttpBinding_LFCPaymentPlanDetailsServices')
     #plan_client.service.Autenticarse(usuario, password)
     #print(plan_client.service.Autenticarse(usuario, password))
-    client = Client('http://127.0.0.1:8000/soap/wsdl')
-    result = client.service.autenticarse('kilometersPerhour', 'milesPerhour')
-    return result
-    
-
-
+    try:
+        client = Client('http://127.0.0.1:8000/soap/wsdl')
+        result = client.service.autenticarse(usuario, password)
+        return result
+    except HTTPError as err:
+        messagebox.showerror("Autenticación de Usuario",f"Error en el servicio {err.args[0]}")
+        return 404
+    except ConnectionError :
+        messagebox.showerror("Autenticación de Usuario",f"No es posible conectarse al servicio")
+        return 404
 main()
