@@ -48,15 +48,17 @@ def valida():
 
 def main():
     global usuario,password,color_principal,errorl,root
-    color_principal = "#648BC6"
+    color_principal = "white"
 
     root = CTk();
     root.title("Extractor Fiscal V.1.0")
-    root.geometry("500x600+800+150")
-    root.minsize(480,500)
+    root.geometry("400x500+800+150")
+    root.minsize(400,500)
     root.config(bg=color_principal)
 
     principal = PhotoImage(file="public/images/main.png")
+
+    #principal.config(width=150,height=150)
 
     frame = CTkFrame(root,fg_color=color_principal)
     frame.grid(column=0,row=0,sticky="nsew", padx=50,pady=50)
@@ -68,13 +70,13 @@ def main():
     root.rowconfigure(0,weight=1)
 
     CTkLabel(frame, text="",image=principal).grid(columnspan=2, row=0)
-    usuario = CTkEntry(frame,font=("Arial",12),placeholder_text="Usuario",border_color=color_principal,fg_color="white",width=220,height=40,text_color="black")
+    usuario = CTkEntry(frame,font=("Arial",12),placeholder_text="Usuario",border_color="gray",fg_color="white",width=220,height=40,text_color="black")
     usuario.grid(columnspan=2,row=1,padx=4,pady=4)
 
-    password = CTkEntry(frame,font=("Arial",12),placeholder_text="Password",border_color=color_principal,fg_color="white",width=220,height=40,show="*",text_color="black")
+    password = CTkEntry(frame,font=("Arial",12),placeholder_text="Password",border_color="gray",fg_color="white",width=220,height=40,show="*",text_color="black")
     password.grid(columnspan=2,row=2,padx=4,pady=4)
 
-    acceder = CTkButton(frame,text="Acceder", hover_color="gray", corner_radius=12, border_width=2,height=40,fg_color="green",cursor="arrow",command=autenticarse)
+    acceder = CTkButton(frame,text="Acceder", hover_color="gray", corner_radius=12, border_width=2,height=40,fg_color="#F7941D",cursor="arrow",command=autenticarse,border_color="orange")
     acceder.grid(columnspan=2,row=3, padx=8,pady=8)
 
     errorl = CTkLabel(frame, text="",text_color="orange",font=("Arial",18))
