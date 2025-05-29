@@ -48,7 +48,7 @@ def valida():
 
 def main():
     global usuario,password,color_principal,errorl,root
-    color_principal = "white"
+    color_principal = "black"
 
     root = CTk();
     root.title("Extractor Fiscal V.1.0")
