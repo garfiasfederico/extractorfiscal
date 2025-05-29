@@ -48,12 +48,13 @@ def valida():
 
 def main():
     global usuario,password,color_principal,errorl,root
-    color_principal = "black"
+    color_principal = "#e3e3e3"
 
     root = CTk();
     root.title("Extractor Fiscal V.1.0")
     root.geometry("400x500+800+150")
     root.minsize(400,500)
+    root.resizable(False,False)
     root.config(bg=color_principal)
 
     principal = PhotoImage(file="public/images/main.png")
@@ -79,7 +80,7 @@ def main():
     acceder = CTkButton(frame,text="Acceder", hover_color="gray", corner_radius=12, border_width=2,height=40,fg_color="#F7941D",cursor="arrow",command=autenticarse,border_color="orange")
     acceder.grid(columnspan=2,row=3, padx=8,pady=8)
 
-    errorl = CTkLabel(frame, text="",text_color="orange",font=("Arial",18))
+    errorl = CTkLabel(frame, text="",text_color="orange",font=("Arial",12))
     errorl.grid(columnspan=2, row=4)
 
     #Colocamos el icono a la aplicación
@@ -87,6 +88,7 @@ def main():
     root.mainloop();
 
 def consumeautenticarse(usuario,password):    
+    global errorl
     #wsdl = 'http://127.0.0.1:8000/ws/autenticarse?wsdl'
     #client = zeep.Client(wsdl=wsdl)
     #plan_client = client.bind('RoutingService', 'BasicHttpBinding_LFCPaymentPlanDetailsServices')
@@ -98,8 +100,10 @@ def consumeautenticarse(usuario,password):
         return result
     except HTTPError as err:
         messagebox.showerror("Autenticación de Usuario",f"Error en el servicio {err.args[0]}")
+        errorl.configure(text="",text_color="white") 
         return 404
     except ConnectionError :
         messagebox.showerror("Autenticación de Usuario",f"No es posible conectarse al servicio")
+        errorl.configure(text="",text_color="white") 
         return 404
 main()

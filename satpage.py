@@ -61,8 +61,10 @@ WebDriverWait(driver,10)\
 time.sleep(1);
 #pyautogui.write(u"E:\\Dropbox\\FIEL_SAGF8705279C8_20190131113307\\NUEVA_FIEL_SAGF870527\\C00001000000517898266.cer",interval=.08)
 pyautogui.write(init.path_cert,interval=.08)
+time.sleep(1);
 pyautogui.press('enter')
 time.sleep(4);
+pyautogui.press('enter')
 #pyautogui.press('enter')
 
 WebDriverWait(driver,10)\
@@ -74,8 +76,10 @@ WebDriverWait(driver,10)\
 time.sleep(2);
 #pyautogui.typewrite(u'E:\\Dropbox\\FIEL_SAGF8705279C8_20190131113307\\NUEVA_FIEL_SAGF870527\\Claveprivada_FIEL_SAGF8705279C8_20230215_204341.key',interval=.08)
 pyautogui.typewrite(init.path_key,interval=.08)
+time.sleep(1);
 pyautogui.press('enter')
 time.sleep(1);
+pyautogui.press('enter')
 #pyautogui.press('enter')
 
 time.sleep(1);
