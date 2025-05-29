@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<!--<configuracion>
+<configuracion>
     <contribuyente rfc="SAGF8705279C8" nombre="JOSE FEDERICO SANCHEZ GARFIAS" >
         <firma cert="E:\Dropbox\FIEL_SAGF8705279C8_20190131113307\NUEVA_FIEL_SAGF870527\C00001000000517898266.cer" key="E:\Dropbox\FIEL_SAGF8705279C8_20190131113307\NUEVA_FIEL_SAGF870527\Claveprivada_FIEL_SAGF8705279C8_20230215_204341.key" password="federico87"/>        
     </contribuyente>  
     <descarga url="E:\Dropbox\PROYECTO BURO FISCAL\extractor_fiscal\declaraciones\SAGF8705279C8"/>    
-</configuracion>-->
-<configuracion>
+</configuracion>
+<!--<configuracion>
     <contribuyente rfc="SAGF8705279C8" nombre="JOSE FEDERICO SANCHEZ GARFIAS" >
         <firma cert="/Users/garfiaspro/Dropbox/FIEL_SAGF8705279C8_20190131113307/NUEVA_FIEL_SAGF870527/C00001000000517898266.cer" key="/Users/garfiaspro/Dropbox/FIEL_SAGF8705279C8_20190131113307/NUEVA_FIEL_SAGF870527/Claveprivada_FIEL_SAGF8705279C8_20230215_204341.key" password="federico87"/>        
     </contribuyente>  
     <descarga url="/Library/WebServer/Documents/extractorfiscal/SAGF8705279C8"/>    
-</configuracion>
+</configuracion>-->

@@ -12,27 +12,18 @@ import init
 
 #Opciones de navegacion
 
-#options = webdriver.ChromeOptions();
-#options.add_argument('--start-maximized');
-#options.add_argument('--disable-extensions');\
-#import selenium;
-#print(selenium.__version__);
 options = webdriver.ChromeOptions() #Options()
-#options.add_argument("--window-size=1920x1080")
-#options.add_argument("--verbose")
-#prefs = {'download.default_directory' : 'E:\\Dropbox\\PROYECTO BURO FISCAL\\extractor_fiscal\\declaraciones'}
 prefs = {'download.default_directory' : init.path_descarga}
 options.add_experimental_option('prefs', prefs)
-#options.add_argument("download.default_directory=E:\Dropbox\PROYECTO BURO FISCAL\extractor_fiscal\declaraciones\\")
-
-#chromedriver_path = '/Library/WebServer/Documents/declaraciones/chromedriver';
+options.add_argument('headless')
 driver = webdriver.Chrome(options=options);
 
 
 #Inicializar en la pantalla 2 
 
-driver.set_window_position(2000,0);
-driver.maximize_window();
+#driver.set_window_position(2000,0)
+#driver.maximize_window();
+#driver.minimize_window()
 time.sleep(1);
 
 
@@ -41,11 +32,6 @@ time.sleep(1);
 #driver.get('https://www.sat.gob.mx/personas/declaraciones')
 driver.get('https://anualpf.clouda.sat.gob.mx/')
 
-
-#WebDriverWait(driver,10)\
-#.until(EC.element_to_be_clickable((By.XPATH,
- #                                 '/html/body/div[4]/div[6]/div[1]/div[2]/div[1]/div[1]/div/span[1]/a')))\
-  #                                .click()
 time.sleep(1);
 
 WebDriverWait(driver, 10)\
@@ -54,33 +40,26 @@ WebDriverWait(driver, 10)\
     .click()
 
 time.sleep(2);
-WebDriverWait(driver,10)\
-.until(EC.element_to_be_clickable((By.XPATH,
-                                  '/html/body/main/div/div/div[1]/form/div[1]/div/span/button')))\
-.click()
 time.sleep(1);
 #pyautogui.write(u"E:\\Dropbox\\FIEL_SAGF8705279C8_20190131113307\\NUEVA_FIEL_SAGF870527\\C00001000000517898266.cer",interval=.08)
-pyautogui.write(init.path_cert,interval=.08)
-time.sleep(1);
-pyautogui.press('enter')
-time.sleep(4);
-pyautogui.press('enter')
+#pyautogui.write(init.path_cert,interval=.08)
+#time.sleep(1);
 #pyautogui.press('enter')
+#time.sleep(4);
+js = "document.getElementById('fileCertificate').style.display = 'block';"
+driver.execute_script(js)
+WebDriverWait(driver, 15)\
+    .until(EC.element_to_be_clickable((By.XPATH,
+                                      '/html/body/main/div/div/div[1]/form/div[1]/div/input[2]')))\
+    .send_keys(init.path_cert)
 
-WebDriverWait(driver,10)\
-.until(EC.element_to_be_clickable((By.XPATH,
-                                  '/html/body/main/div/div/div[1]/form/div[2]/div/span/button')))\
-                                  .click()
-
-
-time.sleep(2);
-#pyautogui.typewrite(u'E:\\Dropbox\\FIEL_SAGF8705279C8_20190131113307\\NUEVA_FIEL_SAGF870527\\Claveprivada_FIEL_SAGF8705279C8_20230215_204341.key',interval=.08)
-pyautogui.typewrite(init.path_key,interval=.08)
-time.sleep(1);
-pyautogui.press('enter')
-time.sleep(1);
-pyautogui.press('enter')
-#pyautogui.press('enter')
+time.sleep(3);
+js = "document.getElementById('filePrivateKey').style.display = 'block';"
+driver.execute_script(js)
+WebDriverWait(driver, 15)\
+    .until(EC.element_to_be_clickable((By.XPATH,
+                                      '/html/body/main/div/div/div[1]/form/div[2]/div/input[2]')))\
+    .send_keys(init.path_key)
 
 time.sleep(1);
 WebDriverWait(driver, 5)\
@@ -105,13 +84,16 @@ WebDriverWait(driver,10)\
 
 time.sleep(1);
 
-anios = ['2020','2021','2022','2023','2024','2025']
+anios = []
+for x in range(2002,2025):
+    anios.append(x)
+
 
 for i in anios:
     select_ = Select(WebDriverWait(driver,10)\
     .until(EC.element_to_be_clickable((By.ID,'IdEjercicio'))))
 
-    select_.select_by_value(i)
+    select_.select_by_value(str(i))
     time.sleep(1)
 
     WebDriverWait(driver,10)\
@@ -140,14 +122,14 @@ for i in anios:
                                     '/html/body/div[6]/div/div/div[2]/button[1]')))\
                                     .click()
         
-        print("Existen Declaraciones que descargar")
+        print(f"Existen Declaraciones que descargar para: {i}")
     except TimeoutException:
         WebDriverWait(driver,10)\
         .until(EC.element_to_be_clickable((By.XPATH,
                                     '/html/body/div[3]/div/div/div[2]/button')))\
                                     .click()
         
-        print("No Existen Declaraciones que Descargar")
+        print(f"No Existen Declaraciones que Descargar para: {i}")
                                   
 time.sleep(2);                                  
 

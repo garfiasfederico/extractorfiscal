@@ -77,7 +77,7 @@ def main():
     password = CTkEntry(frame,font=("Arial",12),placeholder_text="Password",border_color="gray",fg_color="white",width=220,height=40,show="*",text_color="black")
     password.grid(columnspan=2,row=2,padx=4,pady=4)
 
-    acceder = CTkButton(frame,text="Acceder", hover_color="gray", corner_radius=12, border_width=2,height=40,fg_color="#F7941D",cursor="arrow",command=autenticarse,border_color="orange")
+    acceder = CTkButton(frame,text="Acceder", hover_color="gray", corner_radius=12, border_width=2,height=40,fg_color="#24B1E0",cursor="arrow",command=autenticarse,border_color="#24B1E0")
     acceder.grid(columnspan=2,row=3, padx=8,pady=8)
 
     errorl = CTkLabel(frame, text="",text_color="orange",font=("Arial",12))
