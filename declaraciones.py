@@ -85,7 +85,7 @@ WebDriverWait(driver,10)\
 time.sleep(1);
 
 anios = []
-for x in range(2002,2025):
+for x in range(2018,2020):
     anios.append(x)
 
 
@@ -105,30 +105,34 @@ for i in anios:
 
     try:
         tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/form/div/div[3]/div[2]')))
+        declaraciones_ = driver.find_elements(By.XPATH,"//*[@id='accordion']/div")
+        print("declaraciones: "+ str(len(declaraciones_)))
         time.sleep(2)
-        WebDriverWait(driver,10)\
-        .until(EC.element_to_be_clickable((By.XPATH,
-                                    '/html/body/div[1]/div/form/div/div[3]/div[2]/div/div/div/div[2]/div/div[3]/div/div/img')))\
-                                    .click()
-        time.sleep(2)
-        WebDriverWait(driver,10)\
-        .until(EC.element_to_be_clickable((By.XPATH,
-                                    '/html/body/div[6]/div/div/div[2]/button[2]')))\
-                                    .click()
-        
-        time.sleep(2)
-        WebDriverWait(driver,10)\
-        .until(EC.element_to_be_clickable((By.XPATH,
-                                    '/html/body/div[6]/div/div/div[2]/button[1]')))\
-                                    .click()
+
+        for declara in declaraciones_:
+
+            WebDriverWait(declara,5)\
+            .until(EC.element_to_be_clickable((By.CSS_SELECTOR,"img[alt='Generar pdf']")))\
+                                        .click()
+
+            time.sleep(2)
+            WebDriverWait(driver,10)\
+            .until(EC.element_to_be_clickable((By.XPATH,
+                                        '/html/body/div[6]/div/div/div[2]/button[2]')))\
+                                        .click()
+            
+            time.sleep(2)
+            WebDriverWait(driver,10)\
+            .until(EC.element_to_be_clickable((By.XPATH,
+                                        '/html/body/div[6]/div/div/div[2]/button[1]')))\
+                                        .click()
         
         print(f"Existen Declaraciones que descargar para: {i}")
     except TimeoutException:
         WebDriverWait(driver,10)\
         .until(EC.element_to_be_clickable((By.XPATH,
                                     '/html/body/div[3]/div/div/div[2]/button')))\
-                                    .click()
-        
+                                    .click()        
         print(f"No Existen Declaraciones que Descargar para: {i}")
                                   
 time.sleep(2);                                  
