@@ -9,6 +9,7 @@ import pyautogui
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import TimeoutException
 import init
+import requests
 
 options = webdriver.ChromeOptions() #Options()
 prefs = {'download.default_directory' : init.path_descarga}
@@ -56,10 +57,12 @@ WebDriverWait(driver,15)\
                                   .click()
 time.sleep(5);
 
-WebDriverWait(driver,30)\
-.until(EC.element_to_be_clickable((By.XPATH,
-                                  '/html/body/div[1]/div[2]/form/table/tbody/tr[6]/td[5]/button[3]')))\
-                                  .click()
+WebDriverWait(driver,15)\
+.until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div[2]/form/table/tbody/tr[6]/td[5]/button[3]')))\
+    .click()
 
+pdf_resp = requests.get("https://rfcampc.siat.sat.gob.mx/PTSC/IdcSiat/IdcGeneraConstancia.jsf")
+with open("Constancia.pdf", "wb") as f:
+    f.write(pdf_resp.content)
 
-time.sleep(20);
+time.sleep(10);
