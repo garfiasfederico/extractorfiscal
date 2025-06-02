@@ -12,9 +12,14 @@ import init
 import requests
 
 options = webdriver.ChromeOptions() #Options()
-prefs = {'download.default_directory' : init.path_descarga}
+prefs = {
+        'download.default_directory' : init.path_descarga,
+        'download.prompt_for_download': False,
+        "download.directory_upgrade": True,
+        "plugins.always_open_pdf_externally": True
+         }
 options.add_experimental_option('prefs', prefs)
-#options.add_argument('headless')
+options.add_argument('headless')
 driver = webdriver.Chrome(options=options);
 
 driver.get('https://wwwmat.sat.gob.mx/app/seg/faces/pages/lanzador.jsf?url=/operacion/43824/reimprime-tus-acuses-del-rfc&tipoLogeo=c&target=principal&hostServer=https://wwwmat.sat.gob.mx')
@@ -57,12 +62,15 @@ WebDriverWait(driver,15)\
                                   .click()
 time.sleep(5);
 
-WebDriverWait(driver,15)\
+
+#Procedemos a cambiar el foco del driver hacia el Iframe
+iframe = driver.find_element(By.TAG_NAME, "iframe")
+driver.switch_to.frame(iframe)
+
+WebDriverWait(driver,50)\
 .until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div[2]/form/table/tbody/tr[6]/td[5]/button[3]')))\
     .click()
 
-pdf_resp = requests.get("https://rfcampc.siat.sat.gob.mx/PTSC/IdcSiat/IdcGeneraConstancia.jsf")
-with open("Constancia.pdf", "wb") as f:
-    f.write(pdf_resp.content)
+driver.switch_to.default_content()
 
-time.sleep(10);
+time.sleep(5);

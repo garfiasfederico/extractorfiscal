@@ -10,12 +10,14 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import TimeoutException
 import init
 
+
+persona = "moral" if len(init.rfc)==12 else "fisica"
 #Opciones de navegacion
 
 options = webdriver.ChromeOptions() #Options()
 prefs = {'download.default_directory' : init.path_descarga}
 options.add_experimental_option('prefs', prefs)
-options.add_argument('headless')
+#options.add_argument('headless')
 driver = webdriver.Chrome(options=options);
 
 
@@ -85,7 +87,7 @@ WebDriverWait(driver,10)\
 time.sleep(1);
 
 anios = []
-for x in range(2018,2020):
+for x in range(2015,2025):
     anios.append(x)
 
 
@@ -96,15 +98,27 @@ for i in anios:
     select_.select_by_value(str(i))
     time.sleep(1)
 
-    WebDriverWait(driver,10)\
-    .until(EC.element_to_be_clickable((By.XPATH,
-                                    '/html/body/div[1]/div/form/div/div[2]/div/div[6]/div[2]/button[1]')))\
-                                    .click()
+    if persona == "fisica":
+        WebDriverWait(driver,10)\
+        .until(EC.element_to_be_clickable((By.XPATH,
+                                        '/html/body/div[1]/div/form/div/div[2]/div/div[6]/div[2]/button[1]')))\
+                                        .click()
+        
+    else:
+        WebDriverWait(driver,10)\
+        .until(EC.element_to_be_clickable((By.XPATH,
+                                        '/html/body/div[2]/div/form/div/div[2]/div/div[6]/div[2]/button[1]')))\
+                                        .click()
 
-    time.sleep(3);
+    
+    time.sleep(3)
 
     try:
-        tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/form/div/div[3]/div[2]')))
+        if persona=="fisica":
+            tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/form/div/div[3]/div[2]')))
+        else:
+            tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[2]/div/form/div/div[3]/div[2]')))
+        
         declaraciones_ = driver.find_elements(By.XPATH,"//*[@id='accordion']/div")
         print("declaraciones: "+ str(len(declaraciones_)))
         time.sleep(2)
@@ -116,23 +130,44 @@ for i in anios:
                                         .click()
 
             time.sleep(2)
-            WebDriverWait(driver,10)\
-            .until(EC.element_to_be_clickable((By.XPATH,
-                                        '/html/body/div[6]/div/div/div[2]/button[2]')))\
-                                        .click()
+            if(persona=="fisica"):
+                WebDriverWait(driver,10)\
+                .until(EC.element_to_be_clickable((By.XPATH,
+                                            '/html/body/div[6]/div/div/div[2]/button[2]')))\
+                                            .click()
+            else:
+                WebDriverWait(driver,10)\
+                .until(EC.element_to_be_clickable((By.XPATH,
+                                            '/html/body/div[7]/div/div/div[2]/button[2]')))\
+                                            .click()
+                
+            
             
             time.sleep(2)
-            WebDriverWait(driver,10)\
-            .until(EC.element_to_be_clickable((By.XPATH,
-                                        '/html/body/div[6]/div/div/div[2]/button[1]')))\
-                                        .click()
+
+            if(persona=="fisica"):
+                WebDriverWait(driver,10)\
+                .until(EC.element_to_be_clickable((By.XPATH,
+                                            '/html/body/div[6]/div/div/div[2]/button[1]')))\
+                                            .click()
+            else:
+                WebDriverWait(driver,10)\
+                .until(EC.element_to_be_clickable((By.XPATH,
+                                            '/html/body/div[7]/div/div/div[2]/button[1]')))\
+                                            .click()
         
         print(f"Existen Declaraciones que descargar para: {i}")
     except TimeoutException:
-        WebDriverWait(driver,10)\
-        .until(EC.element_to_be_clickable((By.XPATH,
-                                    '/html/body/div[3]/div/div/div[2]/button')))\
-                                    .click()        
+        if(persona=="fisica"):
+            WebDriverWait(driver,10)\
+            .until(EC.element_to_be_clickable((By.XPATH,
+                                        '/html/body/div[3]/div/div/div[2]/button')))\
+                                        .click()        
+        else:
+            WebDriverWait(driver,10)\
+            .until(EC.element_to_be_clickable((By.XPATH,
+                                        '/html/body/div[4]/div/div/div[2]/button')))\
+                                        .click()                    
         print(f"No Existen Declaraciones que Descargar para: {i}")
                                   
 time.sleep(2);                                  
