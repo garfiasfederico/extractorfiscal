@@ -1,10 +1,22 @@
 <?xml version="1.0"?>
-<configuracion>
+<!--<configuracion>
     <contribuyente rfc="LTG161017MY7" nombre="LOGISTICA 3 GUERRAS" >
         <firma cert="\\Mac\Dropbox\FIEL_SAGF8705279C8_20190131113307\FIEL_2021\ltg161017my7.cer" key="\\Mac\Dropbox\FIEL_SAGF8705279C8_20190131113307\FIEL_2021\Claveprivada_FIEL_LTG161017MY7_20210913_120314.key" password="L3GWALMART1"/>        
     </contribuyente>  
     <descarga url="C:\SAT\LTG161017MY7"/>    
+</configuracion>-->
+<configuracion>
+    <contribuyente rfc="SAGF8705279C8" nombre="JOSE FEDERICO SANCHEZ GARFIAS" >
+        <firma cert="C:\fiels\SAGF8705279C8\certificado.cer" key="C:\fiels\SAGF8705279C8\clave.key" password="federico87"/>        
+    </contribuyente>  
+    <descarga url="C:\SAT\SAGF8705279C8"/>    
 </configuracion>
+<!--<configuracion>
+    <contribuyente rfc="LTG161017MY7" nombre="LOGISTICA 3 GUERRAS" >
+        <firma cert="C:\fiels\LTG161017MY7\certificado.cer" key="C:\fiels\LTG161017MY7\clave.key" password="L3GWALMART1"/>        
+    </contribuyente>  
+    <descarga url="C:\SAT\LTG161017MY7"/>    
+</configuracion>-->
 
 <!--<configuracion>
     <contribuyente rfc="SAGF8705279C8" nombre="JOSE FEDERICO SANCHEZ GARFIAS" >

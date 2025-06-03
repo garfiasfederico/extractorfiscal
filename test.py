@@ -1,3 +1,4 @@
-import init
+from clases.logs import Log
 
-print(len(init.rfc))
+log = Log("logs/log_declaraciones.log")
+log.write("info","Hola que tal")

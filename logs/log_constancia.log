@@ -1,0 +1,8 @@
+2025-06-03 13:45:39,200 - INFO:Acceso al sitio del SAT
+2025-06-03 13:45:48,474 - INFO:Click en acceso por fiel
+2025-06-03 13:45:50,605 - INFO:Seteo path del cert
+2025-06-03 13:45:53,675 - INFO:Seteo path del key
+2025-06-03 13:45:54,801 - INFO:Seteo password
+2025-06-03 13:45:56,615 - INFO:Click Acceso
+2025-06-03 13:46:09,296 - INFO:Click descarga de Constancia
+2025-06-03 13:47:48,638 - ERROR:Se excedió el tiempo de espera del sitio
