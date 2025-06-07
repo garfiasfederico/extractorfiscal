@@ -22,13 +22,13 @@ prefs = {
         "plugins.always_open_pdf_externally": True
          }
 options.add_experimental_option('prefs', prefs)
-#options.add_argument('headless')
+options.add_argument('headless')
 driver = webdriver.Chrome(options=options);
 
 try:
 
     driver.get('https://wwwmat.sat.gob.mx/app/seg/faces/pages/lanzador.jsf?url=/operacion/43824/reimprime-tus-acuses-del-rfc&tipoLogeo=c&target=principal&hostServer=https://wwwmat.sat.gob.mx')
-    log.write("info","Acceso al sitio del SAT")
+    log.write("info",f"Acceso al sitio del SAT, intento: {init.rfc}")
     time.sleep(1);
 
     WebDriverWait(driver, 10)\
@@ -36,7 +36,6 @@ try:
                                         'button#buttonFiel')))\
         .click()
     log.write("info","Click en acceso por fiel")
-
     time.sleep(2);
     js = "document.getElementById('fileCertificate').style.display = 'block';"
     driver.execute_script(js)
@@ -84,3 +83,4 @@ try:
     time.sleep(5);
 except:
     log.write(f"error","Se excedió el tiempo de espera del sitio")
+    pass
