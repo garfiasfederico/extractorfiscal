@@ -1,7 +1,7 @@
 
 from typing import Union
-
 from fastapi import FastAPI
+import declaraciones
 
 app = FastAPI()
 
@@ -13,10 +13,11 @@ def read_root():
 
 @app.get("/extract/{rfc}/{req}/{anio}")
 def get_results(rfc: str, req: str, anio: int = None):
+    resultado = declaraciones.getdeclaraanuales(rfc,anio,anio)
     return {
             "rfc": rfc, 
             "req": req, 
             "anio":anio,
-            "result":"200",
-            "message":"archivo generado satisfactoriamente",
-            "pdf":""}
+            "result":resultado["result"],
+            "message":resultado["message"],
+            }

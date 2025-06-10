@@ -1,14 +1,18 @@
 from clases.logs import Log
-import pymssql 
+import getdatacompany
 
-conn = pymssql.connect(server="198.71.50.76", user="develop", password="Contasix2021De5", database="contabilidad") or ("No fue posible la conexion")
-cursor = conn.cursor(as_dict=True)
+#getdatacompany.getDataCompany("TRA1001211I3")
+#if(getdatacompany.contribuyente==""):
+#    print("Contribuyente no localizado")
+#else:
+#    print(f"Contribuyente localizado: {getdatacompany.contribuyente}")
 
-cursor.execute('SELECT * FROM sat.tax_complax WITH (SNAPSHOT)')
-for row in cursor:
-    print("ID=%d, Compania=%s" % (row['_id'], row['company_id']))
+def pruebaFuncion():
+    return {
+        "result":"ok",
+        "message":"Proceso concluido"
+    }
 
-conn.close()
-
+prueba = pruebaFuncion()
 #log = Log("logs/log_declaraciones.log")
 #log.write("info","Hola que tal")
