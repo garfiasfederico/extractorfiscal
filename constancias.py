@@ -22,7 +22,20 @@ prefs = {
         "plugins.always_open_pdf_externally": True
          }
 options.add_experimental_option('prefs', prefs)
-options.add_argument('headless')
+options.add_argument("--user-data-dir=/tmp/selenium-user-data/")
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+#options.add_argument('--headless=new')
+#options.add_argument('--disable-gpu')
+#options.add_argument('--disable-extensions')
+#options.add_argument('--remote-debugging-port=9222')  # Specify a port
+#options.add_argument('--disable-setuid-sandbox')
+#options.add_argument("--incognito")
+#options.add_argument("--disable-application-cache")
+#options.add_argument("--enable-do-not-track")
+#options.add_argument("--disable-popup-blocking")
+#service = Service('/usr/bin/chromedriver')
+options.add_argument('--headless')
 driver = webdriver.Chrome(options=options);
 
 try:
