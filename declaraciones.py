@@ -175,7 +175,7 @@ for i in anios:
                                         '/html/body/div[4]/div/div/div[2]/button')))\
                                         .click()                    
         print(f"No Existen Declaraciones que Descargar para: {i}")
-        log.write("info","declaraciones localizadas: "+ str(len(f"No Existen Declaraciones que Descargar para: {i}")))
+        log.write("info",f"No Existen Declaraciones que Descargar para: {i}")
         
                                   
 time.sleep(2);                                  
