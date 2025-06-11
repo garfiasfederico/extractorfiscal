@@ -117,7 +117,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
 
 
         anios = []
-        for x in range(inicial,final):
+        for x in range(inicial,final+1):
             anios.append(x)
 
 
