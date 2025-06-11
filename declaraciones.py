@@ -10,6 +10,7 @@ from selenium.common.exceptions import TimeoutException
 import getdatacompany
 from clases.logs import Log
 from pathlib import Path
+from selenium.common.exceptions import InvalidArgumentException
 
 
 log = Log("logs/log_declaraciones.log")
@@ -100,11 +101,17 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                                             .click()
             log.write("info","Click en Declaraciones Anuales")
             time.sleep(1);
-        except Exception as ex:
+        except InvalidArgumentException as ex:
             return {
                 "result" : "error",
-                "message" : f"Ocurriò un error al tratar de acceder al sitio SAT {str(ex)}",
+                "message" : "La ruta de la fiel es incorrecta",
             }
+        except TimeoutException as ext
+            return {
+                    "result" : "error",
+                    "message" : "No fue posible logearse correctamente",
+                }
+
 
 
         anios = []
