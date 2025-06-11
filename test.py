@@ -42,5 +42,5 @@ archivos = []
 
 #print(archivos)
 
-getdatacompany.getDataCompany("RIN0502285BA")
+getdatacompany.getDataCompany("SPG1010058K0")
 print(getdatacompany.password_fiel)

@@ -76,7 +76,7 @@ WebDriverWait(driver,10)\
 time.sleep(1);
 
 anios = []
-for x in range(2020,2020+1):
+for x in range(2018,2018+1):
     anios.append(x)
 print(anios)
 
@@ -117,21 +117,31 @@ for i in anios:
             WebDriverWait(declara,5)\
             .until(EC.element_to_be_clickable((By.CSS_SELECTOR,"img[alt='Generar pdf']")))\
                                         .click()
+            
+            iframe = driver.find_element(By.ID, "iframePdf")
+            driver.switch_to.frame(iframe)
+
+            body = WebDriverWait(driver,5)\
+            .until(EC.element_to_be_clickable((By.XPATH,"/html/body")))\
+                                        .text                    
+            
+            driver.switch_to.default_content()
+
 
             time.sleep(2)
-            if(persona=="fisica"):
-                WebDriverWait(driver,10)\
-                .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/div[6]/div/div/div[2]/button[2]')))\
-                                            .click()
-            else:
-                WebDriverWait(driver,10)\
-                .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/div[7]/div/div/div[2]/button[2]')))\
-                                            .click()
-                
-            
-            
+
+            if(body!="No se puede generar el archivo de la declaración. Inténtelo nuevamente"):
+                if(persona=="fisica"):
+                    WebDriverWait(driver,10)\
+                    .until(EC.element_to_be_clickable((By.XPATH,
+                                                '/html/body/div[6]/div/div/div[2]/button[2]')))\
+                                                .click()
+                else:
+                    WebDriverWait(driver,10)\
+                    .until(EC.element_to_be_clickable((By.XPATH,
+                                                '/html/body/div[7]/div/div/div[2]/button[2]')))\
+                                                .click()
+                                        
             time.sleep(2)
 
             if(persona=="fisica"):
