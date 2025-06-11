@@ -30,7 +30,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
         options = webdriver.ChromeOptions() #Options()
         prefs = {'download.default_directory' : descarga}
         options.add_experimental_option('prefs', prefs)
-        options.add_argument("--user-data-dir=/tmp/selenium-user-data/")
+        #options.add_argument("--user-data-dir=/tmp/selenium-user-data/")
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--headless')
@@ -95,7 +95,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
         log.write("info","Click Acceso")
         time.sleep(1);
 
-        WebDriverWait(driver,10)\
+        WebDriverWait(driver,30)\
         .until(EC.element_to_be_clickable((By.XPATH,
                                         '/html/body/div[1]/div/ul/li[2]/a/span')))\
                                         .click()
@@ -187,7 +187,8 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                                                 .click()                    
                 print(f"No Existen Declaraciones que Descargar para: {i}")
                 log.write("info",f"No Existen Declaraciones que Descargar para: {i}")                                                                                        
-        time.sleep(2);           
+        time.sleep(2); 
+        driver.quit()          
         return {
             "result" : "success",
             "message" : "Proceso concluido satisfactoriamente",
