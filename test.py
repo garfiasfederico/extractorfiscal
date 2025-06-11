@@ -21,6 +21,7 @@
 import pathlib
 import base64
 from base64 import b64decode, b64encode
+import getdatacompany
 
 def pdf_to_base64(file):
     try:
@@ -36,7 +37,10 @@ def pdf_to_base64(file):
 
 archivos = []
 
-for pdf_file in pathlib.Path('E:\\SAT\\SAGF8705279C8').glob('*2019*.pdf'):    
-    archivos.append(pdf_to_base64(pdf_file))
+#for pdf_file in pathlib.Path('E:\\SAT\\SAGF8705279C8').glob('*2019*.pdf'):    
+#    archivos.append(pdf_to_base64(pdf_file))
 
-print(archivos)
+#print(archivos)
+
+getdatacompany.getDataCompany("RIN0502285BA")
+print(getdatacompany.password_fiel)
