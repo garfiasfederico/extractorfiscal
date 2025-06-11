@@ -5,10 +5,8 @@ from selenium.webdriver.common.by import By;
 import time;
 import pandas as pd;
 from selenium.webdriver.chrome.options import Options
-import pyautogui
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import TimeoutException
-#import init
 import getdatacompany
 from clases.logs import Log
 from pathlib import Path
@@ -48,59 +46,66 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
         #inicializamos el navegador
 
         #driver.get('https://www.sat.gob.mx/personas/declaraciones')
-        driver.get('https://anualpf.clouda.sat.gob.mx/')
-        log.write("info",f"Acceso al sitio del SAT, intento: {getdatacompany.contribuyente}")
-        time.sleep(1);
+        try:
+            driver.get('https://anualpf.clouda.sat.gob.mx/')
+            log.write("info",f"Acceso al sitio del SAT, intento: {getdatacompany.contribuyente}")
+            time.sleep(1);
 
-        WebDriverWait(driver, 10)\
-            .until(EC.element_to_be_clickable((By.CSS_SELECTOR,
-                                            'button#buttonFiel')))\
-            .click()
-        log.write("info","Click en acceso por fiel")
-        time.sleep(2);
-        time.sleep(1);
-        #pyautogui.write(u"E:\\Dropbox\\FIEL_SAGF8705279C8_20190131113307\\NUEVA_FIEL_SAGF870527\\C00001000000517898266.cer",interval=.08)
-        #pyautogui.write(init.path_cert,interval=.08)
-        #time.sleep(1);
-        #pyautogui.press('enter')
-        #time.sleep(4);
-        js = "document.getElementById('fileCertificate').style.display = 'block';"
-        driver.execute_script(js)
-        WebDriverWait(driver, 15)\
+            WebDriverWait(driver, 10)\
+                .until(EC.element_to_be_clickable((By.CSS_SELECTOR,
+                                                'button#buttonFiel')))\
+                .click()
+            log.write("info","Click en acceso por fiel")
+            time.sleep(2);
+            time.sleep(1);
+            #pyautogui.write(u"E:\\Dropbox\\FIEL_SAGF8705279C8_20190131113307\\NUEVA_FIEL_SAGF870527\\C00001000000517898266.cer",interval=.08)
+            #pyautogui.write(init.path_cert,interval=.08)
+            #time.sleep(1);
+            #pyautogui.press('enter')
+            #time.sleep(4);
+            js = "document.getElementById('fileCertificate').style.display = 'block';"
+            driver.execute_script(js)
+            WebDriverWait(driver, 15)\
+                .until(EC.element_to_be_clickable((By.XPATH,
+                                                '/html/body/main/div/div/div[1]/form/div[1]/div/input[2]')))\
+                .send_keys(getdatacompany.path_cert)
+            log.write("info","Seteo path del cert")
+            time.sleep(3);
+            js = "document.getElementById('filePrivateKey').style.display = 'block';"
+            driver.execute_script(js)
+            WebDriverWait(driver, 15)\
+                .until(EC.element_to_be_clickable((By.XPATH,
+                                                '/html/body/main/div/div/div[1]/form/div[2]/div/input[2]')))\
+                .send_keys(getdatacompany.path_key)
+            log.write("info","Seteo path del key")
+            time.sleep(1);
+            WebDriverWait(driver, 5)\
+                .until(EC.element_to_be_clickable((By.XPATH,
+                                                '/html/body/main/div/div/div[1]/form/div[3]/input')))\
+                .send_keys(getdatacompany.password_fiel)
+            log.write("info","Seteo password")
+
+            time.sleep(1);
+
+            WebDriverWait(driver,10)\
             .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/main/div/div/div[1]/form/div[1]/div/input[2]')))\
-            .send_keys(getdatacompany.path_cert)
-        log.write("info","Seteo path del cert")
-        time.sleep(3);
-        js = "document.getElementById('filePrivateKey').style.display = 'block';"
-        driver.execute_script(js)
-        WebDriverWait(driver, 15)\
+                                            '/html/body/main/div/div/div[1]/form/div[5]/div/input[2]')))\
+                                            .click()
+            log.write("info","Click Acceso")
+            time.sleep(1);
+
+            WebDriverWait(driver,30)\
             .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/main/div/div/div[1]/form/div[2]/div/input[2]')))\
-            .send_keys(getdatacompany.path_key)
-        log.write("info","Seteo path del key")
-        time.sleep(1);
-        WebDriverWait(driver, 5)\
-            .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/main/div/div/div[1]/form/div[3]/input')))\
-            .send_keys(getdatacompany.password_fiel)
-        log.write("info","Seteo password")
+                                            '/html/body/div[1]/div/ul/li[2]/a/span')))\
+                                            .click()
+            log.write("info","Click en Declaraciones Anuales")
+            time.sleep(1);
+        except Exception as ex:
+            return {
+                "result" : "error",
+                "message" : f"Ocurriò un error al tratar de acceder al sitio SAT {str(ex)}",
+            }
 
-        time.sleep(1);
-
-        WebDriverWait(driver,10)\
-        .until(EC.element_to_be_clickable((By.XPATH,
-                                        '/html/body/main/div/div/div[1]/form/div[5]/div/input[2]')))\
-                                        .click()
-        log.write("info","Click Acceso")
-        time.sleep(1);
-
-        WebDriverWait(driver,30)\
-        .until(EC.element_to_be_clickable((By.XPATH,
-                                        '/html/body/div[1]/div/ul/li[2]/a/span')))\
-                                        .click()
-        log.write("info","Click en Declaraciones Anuales")
-        time.sleep(1);
 
         anios = []
         for x in range(2002,2025):
