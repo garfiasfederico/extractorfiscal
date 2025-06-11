@@ -14,10 +14,11 @@ from selenium.common.exceptions import InvalidArgumentException
 import parsepdf
 import pathlib
 
-archivos = []
+
 log = Log("logs/log_declaraciones.log")
 
 def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
+    archivos = []
     rfc = rfc_c
     descarga = "/root/"+rfc
     folder_path = Path(descarga)
