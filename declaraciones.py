@@ -108,6 +108,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
             return {
                 "result" : "error",
                 "message" : "La ruta de la fiel es incorrecta",
+                "files" : None
             }
         except TimeoutException as ext:
             return {
