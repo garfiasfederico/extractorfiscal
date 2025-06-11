@@ -11,8 +11,10 @@ import getdatacompany
 from clases.logs import Log
 from pathlib import Path
 from selenium.common.exceptions import InvalidArgumentException
+import parsepdf
+import pathlib
 
-
+archivos = []
 log = Log("logs/log_declaraciones.log")
 
 def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
@@ -186,6 +188,8 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                                                     .click()
                 
                 print(f"Existen Declaraciones que descargar para: {i}")
+                for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
+                    archivos.append(parsepdf.pdf_to_base64(pdf_file))
             except TimeoutException:
                 if(persona=="fisica"):
                     WebDriverWait(driver,10)\
@@ -200,14 +204,16 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                 print(f"No Existen Declaraciones que Descargar para: {i}")
                 log.write("info",f"No Existen Declaraciones que Descargar para: {i}")                                                                                        
         time.sleep(2); 
-        driver.quit()          
+        driver.close()          
         return {
             "result" : "success",
             "message" : "Proceso concluido satisfactoriamente",
+            "files": archivos
         }
     else:
         log.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")                               
         return {
             "result" : "not_found",
             "message" : f"Contribuyente: {rfc} no localizado en la base",
+            "files" : None
         }

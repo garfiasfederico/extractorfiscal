@@ -1,5 +1,5 @@
-from clases.logs import Log
-import getdatacompany
+#from clases.logs import Log
+#import getdatacompany
 
 #getdatacompany.getDataCompany("TRA1001211I3")
 #if(getdatacompany.contribuyente==""):
@@ -7,20 +7,19 @@ import getdatacompany
 #else:
 #    print(f"Contribuyente localizado: {getdatacompany.contribuyente}")
 
-def pruebaFuncion():
-    return {
-        "result":"ok",
-        "message":"Proceso concluido"
-    }
+#def pruebaFuncion():
+#    return {
+#        "result":"ok",
+#        "message":"Proceso concluido"
+#    }
 
-prueba = pruebaFuncion()
+#prueba = pruebaFuncion()
 #log = Log("logs/log_declaraciones.log")
 #log.write("info","Hola que tal")
 
 
 import pathlib
 import base64
-import os
 from base64 import b64decode, b64encode
 
 def pdf_to_base64(file):
@@ -37,7 +36,7 @@ def pdf_to_base64(file):
 
 archivos = []
 
-for pdf_file in pathlib.Path('C:\\SAT\\SAGF8705279C8').glob('*2019*.pdf'):    
+for pdf_file in pathlib.Path('E:\\SAT\\SAGF8705279C8').glob('*2019*.pdf'):    
     archivos.append(pdf_to_base64(pdf_file))
 
 print(archivos)

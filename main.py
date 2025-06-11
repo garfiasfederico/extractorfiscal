@@ -21,4 +21,5 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
             "anio_final":anio_fin,
             "result":resultado["result"],
             "message":resultado["message"],
+            "files":resultado["files"]
             }

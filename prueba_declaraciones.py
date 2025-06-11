@@ -8,8 +8,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import TimeoutException
 import init
+import pathlib
+import parsepdf
 
-
+archivos = []
 persona = "moral" if len(init.rfc)==12 else "fisica"
 #Opciones de navegacion
 
@@ -74,9 +76,9 @@ WebDriverWait(driver,10)\
 time.sleep(1);
 
 anios = []
-for x in range(2015,2025):
+for x in range(2016,2016+1):
     anios.append(x)
-
+print(anios)
 
 for i in anios:
     select_ = Select(WebDriverWait(driver,10)\
@@ -141,9 +143,10 @@ for i in anios:
                 WebDriverWait(driver,10)\
                 .until(EC.element_to_be_clickable((By.XPATH,
                                             '/html/body/div[7]/div/div/div[2]/button[1]')))\
-                                            .click()
-        
-        print(f"Existen Declaraciones que descargar para: {i}")
+                                            .click()        
+        print(f"Existen Declaraciones que descargar para: {i}")        
+        for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
+            archivos.append(parsepdf.pdf_to_base64(pdf_file))
     except TimeoutException:
         if(persona=="fisica"):
             WebDriverWait(driver,10)\
@@ -156,6 +159,6 @@ for i in anios:
                                         '/html/body/div[4]/div/div/div[2]/button')))\
                                         .click()                    
         print(f"No Existen Declaraciones que Descargar para: {i}")
-                                  
+print(archivos)                                  
 time.sleep(2);                                  
 
