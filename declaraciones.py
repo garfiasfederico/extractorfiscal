@@ -188,7 +188,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                                                     .click()
                 
                 print(f"Existen Declaraciones que descargar para: {i}")
-                for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
+                for pdf_file in pathlib.Path(descarga).glob(f'*{str(i)}*.pdf'):    
                     archivos.append(parsepdf.pdf_to_base64(pdf_file))
             except TimeoutException:
                 if(persona=="fisica"):
