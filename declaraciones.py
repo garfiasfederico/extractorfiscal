@@ -106,7 +106,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                 "result" : "error",
                 "message" : "La ruta de la fiel es incorrecta",
             }
-        except TimeoutException as ext
+        except TimeoutException as ext:
             return {
                     "result" : "error",
                     "message" : "No fue posible logearse correctamente",
