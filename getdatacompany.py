@@ -1,13 +1,14 @@
 import pymssql 
 
-contribuyente = ""
-nombre = ""
-path_cert = ""
-path_key = ""
-password_fiel = ""
+
 
 def getDataCompany(rfc:str):
     global contribuyente, nombre, path_cert, path_key, password_fiel
+    contribuyente = ""
+    nombre = ""
+    path_cert = ""
+    path_key = ""
+    password_fiel = ""
     try:
         conn = pymssql.connect(server="198.71.50.76", user="develop", password="Contasix2021De5", database="contabilidad") or ("No fue posible la conexion")
         cursor = conn.cursor(as_dict=True)
