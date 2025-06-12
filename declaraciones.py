@@ -173,7 +173,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                     driver.switch_to.default_content()
 
                     time.sleep(2)
-                    if(body!="No se puede generar el archivo de la declaración. Inténtelo nuevamente"):
+                    if(body.strip()!="No se puede generar el archivo de la declaración. Inténtelo nuevamente"):
                         if(persona=="fisica"):
                             WebDriverWait(driver,10)\
                             .until(EC.element_to_be_clickable((By.XPATH,
