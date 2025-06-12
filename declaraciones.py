@@ -100,7 +100,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
 
             WebDriverWait(driver,30)\
             .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/div[1]/div/ul/li[2]/a/span')))\
+                                            '/html/body/div[1]/div/ul/li[2]/a')))\
                                             .click()
             log.write("info","Click en Declaraciones Anuales")
             time.sleep(1);
@@ -114,6 +114,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
             return {
                     "result" : "error",
                     "message" : "No fue posible logearse correctamente",
+                    "files": None
                 }
 
 
