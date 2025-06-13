@@ -2,6 +2,7 @@
 from typing import Union
 from fastapi import FastAPI
 import declaraciones
+import constancias
 
 app = FastAPI()
 
@@ -13,7 +14,17 @@ def read_root():
 
 @app.get("/extract/{rfc}/{req}/{anio_inicio}/{anio_fin}")
 def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = None):
-    resultado = declaraciones.getdeclaraanuales(rfc,anio_inicio,anio_fin)
+
+
+    if(req.lower()=="da"):
+        resultado = declaraciones.getdeclaraanuales(rfc,anio_inicio,anio_fin)
+    elif req.lower()=="csf" :
+        resultado = constancias.getcsf(rfc)
+    else:
+        return{
+            "message":f"El requerimiento {req} no existe en nuestro catálogo"
+        }
+
     return {
             "rfc": rfc, 
             "req": req, 
