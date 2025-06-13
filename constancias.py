@@ -12,6 +12,7 @@ from clases.logs import Log
 import getdatacompany
 from selenium.common.exceptions import InvalidArgumentException
 import parsepdf
+import pathlib
 
 log = Log("logs/log_constancia.log")
 
