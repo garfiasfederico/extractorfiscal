@@ -6,7 +6,6 @@ import time;
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import TimeoutException
-import init
 import requests
 from clases.logs import Log
 import getdatacompany
@@ -28,7 +27,7 @@ def getcsf(rfc_c:str):
     if(getdatacompany.contribuyente!=""):    
         options = webdriver.ChromeOptions() #Options()
         prefs = {
-                'download.default_directory' : init.path_descarga,
+                'download.default_directory' : descarga,
                 'download.prompt_for_download': False,
                 "download.directory_upgrade": True,
                 "plugins.always_open_pdf_externally": True
@@ -53,7 +52,7 @@ def getcsf(rfc_c:str):
         try:
 
             driver.get('https://wwwmat.sat.gob.mx/app/seg/faces/pages/lanzador.jsf?url=/operacion/43824/reimprime-tus-acuses-del-rfc&tipoLogeo=c&target=principal&hostServer=https://wwwmat.sat.gob.mx')
-            log.write("info",f"Acceso al sitio del SAT, intento: {init.rfc}")
+            log.write("info",f"Acceso al sitio del SAT, intento: {rfc}")
             time.sleep(1);
 
             WebDriverWait(driver, 10)\
@@ -67,7 +66,7 @@ def getcsf(rfc_c:str):
             WebDriverWait(driver, 15)\
                 .until(EC.element_to_be_clickable((By.XPATH,
                                                 '/html/body/main/div/div/div[1]/form/div[1]/div/input[2]')))\
-                .send_keys(init.path_cert)
+                .send_keys(getdatacompany.path_cert)
             log.write("info","Seteo path del cert")
             time.sleep(3);
             js = "document.getElementById('filePrivateKey').style.display = 'block';"
@@ -75,13 +74,13 @@ def getcsf(rfc_c:str):
             WebDriverWait(driver, 15)\
                 .until(EC.element_to_be_clickable((By.XPATH,
                                                 '/html/body/main/div/div/div[1]/form/div[2]/div/input[2]')))\
-                .send_keys(init.path_key)
+                .send_keys(getdatacompany.path_key)
             log.write("info","Seteo path del key")
             time.sleep(1);
             WebDriverWait(driver, 15)\
                 .until(EC.element_to_be_clickable((By.XPATH,
                                                 '/html/body/main/div/div/div[1]/form/div[3]/input')))\
-                .send_keys(init.password)
+                .send_keys(getdatacompany.password_fiel)
             log.write("info","Seteo password")
 
             time.sleep(1);
