@@ -13,6 +13,7 @@ import getdatacompany
 from selenium.common.exceptions import InvalidArgumentException
 import parsepdf
 import pathlib
+from pathlib import Path
 
 log = Log("logs/log_constancia.log")
 
