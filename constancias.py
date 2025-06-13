@@ -47,7 +47,7 @@ def getcsf(rfc_c:str):
         #options.add_argument("--enable-do-not-track")
         #options.add_argument("--disable-popup-blocking")
         #service = Service('/usr/bin/chromedriver')
-        #options.add_argument('--headless')
+        options.add_argument('--headless')
         driver = webdriver.Chrome(options=options);
 
         try:
