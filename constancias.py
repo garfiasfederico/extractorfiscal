@@ -127,14 +127,14 @@ def getcsf(rfc_c:str):
             }
         except:
             driver.close()
-            log_constancia.write(f"error","No se pudo realizar la descarga de la Constancia de Situación Fiscal")
+            log.write(f"error","No se pudo realizar la descarga de la Constancia de Situación Fiscal")
             return {
                 "result" : "error",
                 "message" : "No se pudo realizar la descarga de la Constancia de Situación Fiscal",
                 "files" : None
             }
     else:
-        log_constancia.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")                               
+        log.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")                               
         return {
             "result" : "not_found",
             "message" : f"Contribuyente: {rfc} no localizado en la base",
