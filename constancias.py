@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import TimeoutException
 import requests
-from clases.logconstancias import Log
+from clases.logs import Log
 import getdatacompany
 from selenium.common.exceptions import InvalidArgumentException
 import parsepdf
