@@ -7,14 +7,14 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import TimeoutException
 import requests
-from clases.logs import Log
+from clases.logconstancias import Log
 import getdatacompany
 from selenium.common.exceptions import InvalidArgumentException
 import parsepdf
 import pathlib
 from pathlib import Path
 
-log = Log("logs/log_constancia.log")
+log = Log("logs/extractor.log")
 
 def getcsf(rfc_c:str):
     archivos = []
@@ -52,14 +52,14 @@ def getcsf(rfc_c:str):
         try:
 
             driver.get('https://wwwmat.sat.gob.mx/app/seg/faces/pages/lanzador.jsf?url=/operacion/43824/reimprime-tus-acuses-del-rfc&tipoLogeo=c&target=principal&hostServer=https://wwwmat.sat.gob.mx')
-            log.write("info",f"Acceso al sitio del SAT, intento: {rfc}")
+            log.write("info",f"Acceso al sitio del SAT, intento-constancia de situaciòn fiscal: {rfc}")
             time.sleep(1);
 
             WebDriverWait(driver, 10)\
                 .until(EC.element_to_be_clickable((By.CSS_SELECTOR,
                                                 'button#buttonFiel')))\
                 .click()
-            log.write("info","Click en acceso por fiel")
+            log.write("info",f"{rfc} - Click en acceso por fiel")
             time.sleep(2);
             js = "document.getElementById('fileCertificate').style.display = 'block';"
             driver.execute_script(js)
@@ -67,7 +67,7 @@ def getcsf(rfc_c:str):
                 .until(EC.element_to_be_clickable((By.XPATH,
                                                 '/html/body/main/div/div/div[1]/form/div[1]/div/input[2]')))\
                 .send_keys(getdatacompany.path_cert)
-            log.write("info","Seteo path del cert")
+            log.write("info",f"{rfc} - Seteo path del cert")
             time.sleep(3);
             js = "document.getElementById('filePrivateKey').style.display = 'block';"
             driver.execute_script(js)
@@ -75,13 +75,13 @@ def getcsf(rfc_c:str):
                 .until(EC.element_to_be_clickable((By.XPATH,
                                                 '/html/body/main/div/div/div[1]/form/div[2]/div/input[2]')))\
                 .send_keys(getdatacompany.path_key)
-            log.write("info","Seteo path del key")
+            log.write("info",f"{rfc} - Seteo path del key")
             time.sleep(1);
             WebDriverWait(driver, 15)\
                 .until(EC.element_to_be_clickable((By.XPATH,
                                                 '/html/body/main/div/div/div[1]/form/div[3]/input')))\
                 .send_keys(getdatacompany.password_fiel)
-            log.write("info","Seteo password")
+            log.write("info",f"{rfc} - Seteo password")
 
             time.sleep(1);
 
@@ -89,7 +89,7 @@ def getcsf(rfc_c:str):
             .until(EC.element_to_be_clickable((By.XPATH,
                                             '/html/body/main/div/div/div[1]/form/div[5]/div/input[2]')))\
                                             .click()
-            log.write("info","Click Acceso")
+            log.write("info",f"{rfc} - Click Acceso")
             time.sleep(5);
         
         except InvalidArgumentException as ex:
@@ -113,7 +113,7 @@ def getcsf(rfc_c:str):
             WebDriverWait(driver,50)\
             .until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div[2]/form/table/tbody/tr[6]/td[5]/button[3]')))\
                 .click()
-            log.write("info","Click descarga de Constancia")
+            log.write("info",f"{rfc} - Click descarga de Constancia")
             time.sleep(10);
             driver.switch_to.default_content()
             driver.close()

@@ -15,7 +15,7 @@ import parsepdf
 import pathlib
 
 
-log = Log("logs/log_declaraciones.log")
+log = Log("logs/extractor.log")
 
 def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
     archivos = []
@@ -52,14 +52,14 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
         #driver.get('https://www.sat.gob.mx/personas/declaraciones')
         try:
             driver.get('https://anualpf.clouda.sat.gob.mx/')
-            log.write("info",f"Acceso al sitio del SAT, intento: {getdatacompany.contribuyente}")
+            log.write("info",f"Acceso al sitio del SAT, intento-declaraciones {inicial}-{final}: {getdatacompany.contribuyente}")
             time.sleep(1);
 
             WebDriverWait(driver, 10)\
                 .until(EC.element_to_be_clickable((By.CSS_SELECTOR,
                                                 'button#buttonFiel')))\
                 .click()
-            log.write("info","Click en acceso por fiel")
+            log.write("info",f"{rfc} - Click en acceso por fiel")
             time.sleep(2);
             time.sleep(1);
             #pyautogui.write(u"E:\\Dropbox\\FIEL_SAGF8705279C8_20190131113307\\NUEVA_FIEL_SAGF870527\\C00001000000517898266.cer",interval=.08)
@@ -73,7 +73,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                 .until(EC.element_to_be_clickable((By.XPATH,
                                                 '/html/body/main/div/div/div[1]/form/div[1]/div/input[2]')))\
                 .send_keys(getdatacompany.path_cert)
-            log.write("info","Seteo path del cert")
+            log.write("info",f"{rfc} - Seteo path del cert")
             time.sleep(3);
             js = "document.getElementById('filePrivateKey').style.display = 'block';"
             driver.execute_script(js)
@@ -81,13 +81,13 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                 .until(EC.element_to_be_clickable((By.XPATH,
                                                 '/html/body/main/div/div/div[1]/form/div[2]/div/input[2]')))\
                 .send_keys(getdatacompany.path_key)
-            log.write("info","Seteo path del key")
+            log.write("info",f"{rfc} - Seteo path del key")
             time.sleep(1);
             WebDriverWait(driver, 5)\
                 .until(EC.element_to_be_clickable((By.XPATH,
                                                 '/html/body/main/div/div/div[1]/form/div[3]/input')))\
                 .send_keys(getdatacompany.password_fiel)
-            log.write("info","Seteo password")
+            log.write("info",f"{rfc} - Seteo password")
 
             time.sleep(1);
 
@@ -95,14 +95,14 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
             .until(EC.element_to_be_clickable((By.XPATH,
                                             '/html/body/main/div/div/div[1]/form/div[5]/div/input[2]')))\
                                             .click()
-            log.write("info","Click Acceso")
+            log.write("info",f"{rfc} - Click Acceso")
             time.sleep(1);
 
             WebDriverWait(driver,30)\
             .until(EC.element_to_be_clickable((By.XPATH,
                                             '/html/body/div[1]/div/ul/li[2]/a')))\
                                             .click()
-            log.write("info","Click en Declaraciones Anuales")
+            log.write("info",f"{rfc} - Click en Declaraciones Anuales")
             time.sleep(1);
         except InvalidArgumentException as ex:
             return {
@@ -129,7 +129,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
             .until(EC.element_to_be_clickable((By.ID,'IdEjercicio'))))
 
             select_.select_by_value(str(i))
-            log.write("info",f"Se selecciona anio:{i}")
+            log.write("info",f"{rfc} - Se selecciona anio:{i}")
             time.sleep(1)
 
             if persona == "fisica":
@@ -144,7 +144,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                                                 '/html/body/div[2]/div/form/div/div[2]/div/div[6]/div[2]/button[1]')))\
                                                 .click()
 
-            log.write("info","Click en Buscar")
+            log.write("info",f"{rfc} - Click en Buscar")
             time.sleep(3)
 
             try:
@@ -154,7 +154,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                     tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[2]/div/form/div/div[3]/div[2]')))
                 
                 declaraciones_ = driver.find_elements(By.XPATH,"//*[@id='accordion']/div")        
-                log.write("info","declaraciones localizadas: "+ str(len(declaraciones_)))
+                log.write("info",f"{rfc} - declaraciones localizadas: "+ str(len(declaraciones_)))
                 time.sleep(2)
 
                 for declara in declaraciones_:
@@ -212,7 +212,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                                                 '/html/body/div[4]/div/div/div[2]/button')))\
                                                 .click()                    
                 print(f"No Existen Declaraciones que Descargar para: {i}")
-                log.write("info",f"No Existen Declaraciones que Descargar para: {i}")                                                                                        
+                log.write("info",f"{rfc} - No Existen Declaraciones que Descargar para: {i}")                                                                                        
         time.sleep(2); 
         driver.close()          
         return {
