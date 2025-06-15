@@ -19,6 +19,7 @@ log = Log("logs/extractor.log")
 
 def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
     archivos = []
+    resultados = {}
     rfc = rfc_c
     descarga = "/root/"+rfc
     folder_path = Path(descarga)
@@ -200,6 +201,8 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                 print(f"Existen Declaraciones que descargar para: {i}")
                 for pdf_file in pathlib.Path(descarga).glob(f'*{str(i)}*.pdf'):    
                     archivos.append(parsepdf.pdf_to_base64(pdf_file))
+                resultados[str(i)] = archivos
+                archivos = []
             except TimeoutException:
                 if(persona=="fisica"):
                     WebDriverWait(driver,10)\
@@ -218,7 +221,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
         return {
             "result" : "success",
             "message" : "Proceso concluido satisfactoriamente",
-            "files": archivos
+            "files": resultados
         }
     else:
         log.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")                               
