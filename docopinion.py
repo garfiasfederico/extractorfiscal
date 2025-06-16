@@ -116,6 +116,8 @@ def getdocopi(rfc_c:str):
             time.sleep(5);
             for pdf_file in pathlib.Path(descarga).glob('descarga.pdf'):    
                     archivos.append(parsepdf.pdf_to_base64(pdf_file))
+            for pdf_file in pathlib.Path(descarga).glob('download.pdf'):    
+                    archivos.append(parsepdf.pdf_to_base64(pdf_file))
             return {
                 "result" : "success",
                 "message" : "Documento de Opinión descaragado Satisfactoriamente!",
