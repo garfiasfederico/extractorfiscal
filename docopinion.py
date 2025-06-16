@@ -112,6 +112,7 @@ def getdocopi(rfc_c:str):
             .until(EC.element_to_be_clickable((By.TAG_NAME,
                                             'iframe')))\
                                             .get_attribute("src")
+            driver.get(iframe)  
             time.sleep(5);
             for pdf_file in pathlib.Path(descarga).glob('descarga.pdf'):    
                     archivos.append(parsepdf.pdf_to_base64(pdf_file))
