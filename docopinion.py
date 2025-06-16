@@ -55,10 +55,10 @@ def getdocopi(rfc_c:str):
             log.write("info",f"Acceso al sitio del SAT, intento-documento de opinion: {rfc}")
             time.sleep(1);
 
-            WebDriverWait(driver, 10)\
-                .until(EC.element_to_be_clickable((By.CSS_SELECTOR,
-                                                'button#buttonFiel')))\
-                .click()
+            #WebDriverWait(driver, 10)\
+            #    .until(EC.element_to_be_clickable((By.CSS_SELECTOR,
+            #                                    'button#buttonFiel')))\
+            #    .click()
             log.write("info",f"{rfc} - Click en acceso por fiel")
             time.sleep(2);
             js = "document.getElementById('fileCertificate').style.display = 'block';"

@@ -21,7 +21,7 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
         resultado = declaraciones.getdeclaraanuales(rfc,anio_inicio,anio_fin)
     elif req.lower()=="csf" :
         resultado = constancias.getcsf(rfc)
-    elif req.lower()=="do"
+    elif req.lower()=="do":
         resultado = docopinion.getdocopi(rfc)
     else:
         return{
