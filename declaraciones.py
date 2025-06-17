@@ -13,7 +13,7 @@ from pathlib import Path
 from selenium.common.exceptions import InvalidArgumentException
 import parsepdf
 import pathlib
-
+from selenium.webdriver.chrome.service import Service
 
 log = Log("logs/extractor.log")
 
@@ -37,7 +37,8 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--headless')
-        driver = webdriver.Chrome(options=options);
+        service = Service('/usr/bin/chromedriver')
+        driver = webdriver.Chrome(service=service,options=options);
 
 
         #Inicializar en la pantalla 2 

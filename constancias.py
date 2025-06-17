@@ -13,6 +13,7 @@ from selenium.common.exceptions import InvalidArgumentException
 import parsepdf
 import pathlib
 from pathlib import Path
+from selenium.webdriver.chrome.service import Service
 
 log = Log("logs/extractor.log")
 
@@ -47,7 +48,8 @@ def getcsf(rfc_c:str):
         #options.add_argument("--disable-popup-blocking")
         #service = Service('/usr/bin/chromedriver')
         options.add_argument('--headless')
-        driver = webdriver.Chrome(options=options);
+        service = Service('/usr/bin/chromedriver')
+        driver = webdriver.Chrome(service=service,options=options);
 
         try:
 
