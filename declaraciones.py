@@ -179,7 +179,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                         time.sleep(3)
                     
                 time.sleep(2)
-                for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
+                for pdf_file in pathlib.Path(descarga).glob(f'*{str(i)}*.pdf'):    
                         archivos.append(parsepdf.pdf_to_base64(pdf_file))
                 resultados[str(i)] = archivos
                 archivos = []                            
