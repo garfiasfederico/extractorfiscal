@@ -23,6 +23,11 @@ def getcsf(rfc_c:str):
     descarga = "/root/"+rfc+"/CSF"
     folder_path = Path(descarga)
     folder_path.mkdir(parents=True, exist_ok=True)
+    for file in pathlib.Path(descarga).glob('*.*'):
+        try:
+            file.unlink()
+        except:
+            pass
 
     getdatacompany.getDataCompany(rfc)
     if(getdatacompany.contribuyente!=""):    
