@@ -131,16 +131,19 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                 if moral2019==0:           
                     #accedemos al nuevo sitio de declaraciones que tiene la repo de los anios 2019 en adelante
                     driver.get('https://anualpm.clouda.sat.gob.mx/MoralesV2')
-                    log.write("info","Accedemos al sitio nuevo de descarga de declaraciones")
+                    #WebDriverWait(driver, 10).until(EC.url_to_be("https://anualpm.clouda.sat.gob.mx/MoralesV2"))
                     #Accedemos al apartado de las declaraciones
-                    WebDriverWait(driver,10)\
-                            .until(EC.element_to_be_clickable((By.ID,
-                                                        'navbarDropdownMenuLink')))\
-                                                        .click()                                                    
-                    WebDriverWait(driver,10)\
-                            .until(EC.element_to_be_clickable((By.XPATH,
-                                                        '/html/body/nav/div/div/ul[1]/li[2]/div/a[1]')))\
-                                                        .click()
+                    #WebDriverWait(driver,10)\
+                    #     .until(EC.element_to_be_clickable((By.ID,
+                    #                                 'navbarDropdownMenuLink')))\
+                    #                                 .click()                                                    
+                    #WebDriverWait(driver,10)\
+                    #     .until(EC.element_to_be_clickable((By.XPATH,
+                    #                                 '/html/body/nav/div/div/ul[1]/li[2]/div/a[1]')))\
+                    #                                 .click()
+                    time.sleep(3)
+                    driver.get('https://anualpm.clouda.sat.gob.mx/MoralesV2/Consulta/Consulta?tipoDocumento=1')
+                    time.sleep(3)
                     moral2019=1
                 
                                                             

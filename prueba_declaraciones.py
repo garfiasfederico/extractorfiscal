@@ -76,7 +76,7 @@ WebDriverWait(driver,10)\
 time.sleep(1);
 
 anios = []
-for x in range(2019,2020+1):
+for x in range(2019,2019+1):
     anios.append(x)
 print(anios)
 moral2019 = 0;
@@ -87,15 +87,19 @@ for i in anios:
         if moral2019==0:           
            #accedemos al nuevo sitio de declaraciones que tiene la repo de los anios 2019 en adelante
            driver.get('https://anualpm.clouda.sat.gob.mx/MoralesV2')
+           #WebDriverWait(driver, 10).until(EC.url_to_be("https://anualpm.clouda.sat.gob.mx/MoralesV2"))
            #Accedemos al apartado de las declaraciones
-           WebDriverWait(driver,10)\
-                .until(EC.element_to_be_clickable((By.ID,
-                                            'navbarDropdownMenuLink')))\
-                                            .click()                                                    
-           WebDriverWait(driver,10)\
-                .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/nav/div/div/ul[1]/li[2]/div/a[1]')))\
-                                            .click()
+           #WebDriverWait(driver,10)\
+           #     .until(EC.element_to_be_clickable((By.ID,
+           #                                 'navbarDropdownMenuLink')))\
+           #                                 .click()                                                    
+           #WebDriverWait(driver,10)\
+           #     .until(EC.element_to_be_clickable((By.XPATH,
+           #                                 '/html/body/nav/div/div/ul[1]/li[2]/div/a[1]')))\
+           #                                 .click()
+           time.sleep(3)
+           driver.get('https://anualpm.clouda.sat.gob.mx/MoralesV2/Consulta/Consulta?tipoDocumento=1')
+           time.sleep(3)
            moral2019=1
         
                                                     
