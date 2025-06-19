@@ -21,7 +21,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
     archivos = []
     resultados = {}
     rfc = rfc_c
-    descarga = "/root/"+rfc
+    descarga = "/root/"+rfc+"/DA"
     folder_path = Path(descarga)
     folder_path.mkdir(parents=True, exist_ok=True)
 
