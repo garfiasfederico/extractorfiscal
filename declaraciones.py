@@ -125,98 +125,151 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
         for x in range(inicial,final+1):
             anios.append(x)
 
-
+        moral2019 = 0;
         for i in anios:
-            select_ = Select(WebDriverWait(driver,10)\
-            .until(EC.element_to_be_clickable((By.ID,'IdEjercicio'))))
-
-            select_.select_by_value(str(i))
-            log.write("info",f"{rfc} - Se selecciona anio:{i}")
-            time.sleep(1)
-
-            if persona == "fisica":
-                WebDriverWait(driver,10)\
-                .until(EC.element_to_be_clickable((By.XPATH,
-                                                '/html/body/div[1]/div/form/div/div[2]/div/div[6]/div[2]/button[1]')))\
-                                                .click()
+            if i > 2018 and persona=="moral":
+                if moral2019==0:           
+                    #accedemos al nuevo sitio de declaraciones que tiene la repo de los anios 2019 en adelante
+                    driver.get('https://anualpm.clouda.sat.gob.mx/MoralesV2')
+                    #Accedemos al apartado de las declaraciones
+                    WebDriverWait(driver,10)\
+                            .until(EC.element_to_be_clickable((By.ID,
+                                                        'navbarDropdownMenuLink')))\
+                                                        .click()                                                    
+                    WebDriverWait(driver,10)\
+                            .until(EC.element_to_be_clickable((By.XPATH,
+                                                        '/html/body/nav/div/div/ul[1]/li[2]/div/a[1]')))\
+                                                        .click()
+                    moral2019=1
                 
-            else:
+                                                            
+                #comenzamos a iterar en las declaracion a partir del 2019
+                select_2 = Select(WebDriverWait(driver,10)\
+                .until(EC.element_to_be_clickable((By.ID,'Ejercicio'))))
+
+                time.sleep(1)
+                select_2.select_by_value(str(i))
+                #click en el boton buscar de las declaraciones
                 WebDriverWait(driver,10)\
-                .until(EC.element_to_be_clickable((By.XPATH,
-                                                '/html/body/div[2]/div/form/div/div[2]/div/div[6]/div[2]/button[1]')))\
-                                                .click()
+                    .until(EC.element_to_be_clickable((By.ID,
+                                                    'btnBuscar')))\
+                                                    .click()  
 
-            log.write("info",f"{rfc} - Click en Buscar")
-            time.sleep(3)
+                time.sleep(3)
 
-            try:
-                if persona=="fisica":
-                    tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/form/div/div[3]/div[2]')))
+                #Obtenemos las declaraciones del periodo    
+                declaraciones_news = driver.find_elements(By.XPATH,"//*[@id='accordionResult']/div")
+                
+                print(f"Para {i}:existen {len(declaraciones_news)} para descargar")
+                #sino existen declaraciones clickeamos el boton de cerrar en la ventana de resultado que informa que no existen declaraciones
+                if len(declaraciones_news)==0:
+                    WebDriverWait(driver,5)\
+                        .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[12]/div/div/div[3]/button")))\
+                                                    .click()
                 else:
-                    tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[2]/div/form/div/div[3]/div[2]')))
-                
-                declaraciones_ = driver.find_elements(By.XPATH,"//*[@id='accordion']/div")        
-                log.write("info",f"{rfc} - declaraciones localizadas: "+ str(len(declaraciones_)))
+                    #si existen declaraciones que descargar entonces comenzamos a iterar en la tabla correspodiente para la descarga de todas las declaraciones 
+                    for declara in declaraciones_news:
+                        WebDriverWait(declara,5)\
+                            .until(EC.element_to_be_clickable((By.ID,"linkDescargaPDF")))\
+                                                        .click()
+                        time.sleep(3)
+                    
                 time.sleep(2)
+                for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
+                        archivos.append(parsepdf.pdf_to_base64(pdf_file))
+                resultados[str(i)] = archivos
+                archivos = []                            
+            else:
+                select_ = Select(WebDriverWait(driver,10)\
+                .until(EC.element_to_be_clickable((By.ID,'IdEjercicio'))))
 
-                for declara in declaraciones_:
+                select_.select_by_value(str(i))
+                log.write("info",f"{rfc} - Se selecciona anio:{i}")
+                time.sleep(1)
 
-                    WebDriverWait(declara,5)\
-                    .until(EC.element_to_be_clickable((By.CSS_SELECTOR,"img[alt='Generar pdf']")))\
-                                                .click()
+                if persona == "fisica":
+                    WebDriverWait(driver,10)\
+                    .until(EC.element_to_be_clickable((By.XPATH,
+                                                    '/html/body/div[1]/div/form/div/div[2]/div/div[6]/div[2]/button[1]')))\
+                                                    .click()
                     
-                    iframe = driver.find_element(By.ID, "iframePdf")
-                    driver.switch_to.frame(iframe)
+                else:
+                    WebDriverWait(driver,10)\
+                    .until(EC.element_to_be_clickable((By.XPATH,
+                                                    '/html/body/div[2]/div/form/div/div[2]/div/div[6]/div[2]/button[1]')))\
+                                                    .click()
 
-                    body = WebDriverWait(driver,5)\
-                    .until(EC.element_to_be_clickable((By.XPATH,"/html/body")))\
-                                                .text                    
+                log.write("info",f"{rfc} - Click en Buscar")
+                time.sleep(3)
+
+                try:
+                    if persona=="fisica":
+                        tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/form/div/div[3]/div[2]')))
+                    else:
+                        tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[2]/div/form/div/div[3]/div[2]')))
                     
-                    driver.switch_to.default_content()
-
+                    declaraciones_ = driver.find_elements(By.XPATH,"//*[@id='accordion']/div")        
+                    log.write("info",f"{rfc} - declaraciones localizadas: "+ str(len(declaraciones_)))
                     time.sleep(2)
-                    if(body.strip()!="No se puede generar el archivo de la declaración. Inténtelo nuevamente"):
+
+                    for declara in declaraciones_:
+
+                        WebDriverWait(declara,5)\
+                        .until(EC.element_to_be_clickable((By.CSS_SELECTOR,"img[alt='Generar pdf']")))\
+                                                    .click()
+                        
+                        iframe = driver.find_element(By.ID, "iframePdf")
+                        driver.switch_to.frame(iframe)
+
+                        body = WebDriverWait(driver,5)\
+                        .until(EC.element_to_be_clickable((By.XPATH,"/html/body")))\
+                                                    .text                    
+                        
+                        driver.switch_to.default_content()
+
+                        time.sleep(2)
+                        if(body.strip()!="No se puede generar el archivo de la declaración. Inténtelo nuevamente"):
+                            if(persona=="fisica"):
+                                WebDriverWait(driver,10)\
+                                .until(EC.element_to_be_clickable((By.XPATH,
+                                                            '/html/body/div[6]/div/div/div[2]/button[2]')))\
+                                                            .click()
+                            else:
+                                WebDriverWait(driver,10)\
+                                .until(EC.element_to_be_clickable((By.XPATH,
+                                                            '/html/body/div[7]/div/div/div[2]/button[2]')))\
+                                                            .click()                                          
+                        time.sleep(2)
+
                         if(persona=="fisica"):
                             WebDriverWait(driver,10)\
                             .until(EC.element_to_be_clickable((By.XPATH,
-                                                        '/html/body/div[6]/div/div/div[2]/button[2]')))\
+                                                        '/html/body/div[6]/div/div/div[2]/button[1]')))\
                                                         .click()
                         else:
                             WebDriverWait(driver,10)\
                             .until(EC.element_to_be_clickable((By.XPATH,
-                                                        '/html/body/div[7]/div/div/div[2]/button[2]')))\
-                                                        .click()                                          
-                    time.sleep(2)
-
+                                                        '/html/body/div[7]/div/div/div[2]/button[1]')))\
+                                                        .click()
+                    
+                    print(f"Existen Declaraciones que descargar para: {i}")
+                    for pdf_file in pathlib.Path(descarga).glob(f'*{str(i)}*.pdf'):    
+                        archivos.append(parsepdf.pdf_to_base64(pdf_file))
+                    resultados[str(i)] = archivos
+                    archivos = []
+                except TimeoutException:
                     if(persona=="fisica"):
                         WebDriverWait(driver,10)\
                         .until(EC.element_to_be_clickable((By.XPATH,
-                                                    '/html/body/div[6]/div/div/div[2]/button[1]')))\
-                                                    .click()
+                                                    '/html/body/div[3]/div/div/div[2]/button')))\
+                                                    .click()        
                     else:
                         WebDriverWait(driver,10)\
                         .until(EC.element_to_be_clickable((By.XPATH,
-                                                    '/html/body/div[7]/div/div/div[2]/button[1]')))\
-                                                    .click()
-                
-                print(f"Existen Declaraciones que descargar para: {i}")
-                for pdf_file in pathlib.Path(descarga).glob(f'*{str(i)}*.pdf'):    
-                    archivos.append(parsepdf.pdf_to_base64(pdf_file))
-                resultados[str(i)] = archivos
-                archivos = []
-            except TimeoutException:
-                if(persona=="fisica"):
-                    WebDriverWait(driver,10)\
-                    .until(EC.element_to_be_clickable((By.XPATH,
-                                                '/html/body/div[3]/div/div/div[2]/button')))\
-                                                .click()        
-                else:
-                    WebDriverWait(driver,10)\
-                    .until(EC.element_to_be_clickable((By.XPATH,
-                                                '/html/body/div[4]/div/div/div[2]/button')))\
-                                                .click()                    
-                print(f"No Existen Declaraciones que Descargar para: {i}")
-                log.write("info",f"{rfc} - No Existen Declaraciones que Descargar para: {i}")                                                                                        
+                                                    '/html/body/div[4]/div/div/div[2]/button')))\
+                                                    .click()                    
+                    print(f"No Existen Declaraciones que Descargar para: {i}")
+                    log.write("info",f"{rfc} - No Existen Declaraciones que Descargar para: {i}")                                                                                        
         time.sleep(2); 
         driver.close()          
         return {
