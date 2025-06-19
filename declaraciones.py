@@ -131,6 +131,7 @@ def getdeclaraanuales(rfc_c:str,inicial:int,final:int):
                 if moral2019==0:           
                     #accedemos al nuevo sitio de declaraciones que tiene la repo de los anios 2019 en adelante
                     driver.get('https://anualpm.clouda.sat.gob.mx/MoralesV2')
+                    log.write("info","Accedemos al sitio nuevo de descarga de declaraciones")
                     #Accedemos al apartado de las declaraciones
                     WebDriverWait(driver,10)\
                             .until(EC.element_to_be_clickable((By.ID,
