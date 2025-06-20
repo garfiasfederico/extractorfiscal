@@ -4,6 +4,7 @@ from fastapi import FastAPI
 import declaraciones
 import constancias
 import docopinion
+import declaraciones_acuses
 
 app = FastAPI()
 
@@ -23,6 +24,8 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
         resultado = constancias.getcsf(rfc)
     elif req.lower()=="do":
         resultado = docopinion.getdocopi(rfc)
+    elif req.lower()=="daa":
+        resultado = declaraciones_acuses.getdeclaraanualesacuses(rfc,anio_inicio,anio_fin)   
     else:
         return{
             "message":f"El requerimiento {req} no existe en nuestro catálogo"
