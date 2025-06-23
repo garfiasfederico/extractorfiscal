@@ -5,13 +5,14 @@ import declaraciones
 import constancias
 import docopinion
 import declaraciones_acuses
+import declaraciones_pagadas
 
 app = FastAPI()
 
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"App": "Extractor Fiscal V 1.0"}
 
 
 @app.get("/extract/{rfc}/{req}/{anio_inicio}/{anio_fin}")
@@ -26,6 +27,8 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
         resultado = docopinion.getdocopi(rfc)
     elif req.lower()=="daa":
         resultado = declaraciones_acuses.getdeclaraanualesacuses(rfc,anio_inicio,anio_fin)   
+    elif req.lower()=="dap":
+        resultado = declaraciones_pagadas.getdeclaraanualpagada(rfc,anio_inicio,anio_fin)   
     else:
         return{
             "message":f"El requerimiento {req} no existe en nuestro catálogo"
