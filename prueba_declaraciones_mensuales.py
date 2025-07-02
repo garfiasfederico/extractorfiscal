@@ -23,7 +23,9 @@ for file in pathlib.Path(init.path_descarga).glob('*.*'):
 options = webdriver.ChromeOptions() #Options()
 prefs = {'download.default_directory' : init.path_descarga}
 options.add_experimental_option('prefs', prefs)
-#options.add_argument('headless')
+options.add_argument('headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(options=options);
 
 time.sleep(1);
@@ -150,7 +152,7 @@ for i in anios:
         #exit()
     else:    
         select_ = Select(WebDriverWait(driver,10)\
-        .until(EC.element_to_be_clickable((By.ID,'IdEjercicio'))))
+        .until(EC.element_to_be_clickable((By.ID,'MainContent_wucConsultasDeclaracion_wucDdlEjercicioFiscal_ddlCatalogo'))))
 
         select_.select_by_value(str(i))
         time.sleep(1)
@@ -164,64 +166,60 @@ for i in anios:
         else:
             WebDriverWait(driver,10)\
             .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/div[2]/div/form/div/div[2]/div/div[6]/div[2]/button[1]')))\
+                                            '/html/body/form/div[3]/div/div[3]/div/div/div/div[2]/div/div/div/div[3]/div/input[1]')))\
                                             .click()
 
         
-        time.sleep(3)
+        time.sleep(10)
+        
 
         try:
             if persona=="fisica":
                 tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/form/div/div[3]/div[2]')))
             else:
-                tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[2]/div/form/div/div[3]/div[2]')))
+                tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.ID,'MainContent_wucConsultasDeclaracion_gvDeclaraciones')))
             
-            declaraciones_ = driver.find_elements(By.XPATH,"//*[@id='accordion']/div")
-            print("declaraciones: "+ str(len(declaraciones_)))
+            declaraciones_ = tabla.find_elements(By.TAG_NAME,"tr")
+            print("declaraciones provisionales: "+ str(len(declaraciones_)))
+            cuenta = -1;
             time.sleep(2)
+            
 
             for declara in declaraciones_:
 
-                WebDriverWait(declara,5)\
-                .until(EC.element_to_be_clickable((By.CSS_SELECTOR,"img[alt='Generar pdf']")))\
-                                            .click()
-                
-                iframe = driver.find_element(By.ID, "iframePdf")
-                driver.switch_to.frame(iframe)
-
-                body = WebDriverWait(driver,5)\
-                .until(EC.element_to_be_clickable((By.XPATH,"/html/body")))\
-                                            .text                    
-                
-                driver.switch_to.default_content()
-
-
-                time.sleep(2)
-
-                if(body!="No se puede generar el archivo de la declaración. Inténtelo nuevamente"):
-                    if(persona=="fisica"):
-                        WebDriverWait(driver,10)\
-                        .until(EC.element_to_be_clickable((By.XPATH,
-                                                    '/html/body/div[6]/div/div/div[2]/button[2]')))\
-                                                    .click()
-                    else:
-                        WebDriverWait(driver,10)\
-                        .until(EC.element_to_be_clickable((By.XPATH,
-                                                    '/html/body/div[7]/div/div/div[2]/button[2]')))\
-                                                    .click()
-                                            
-                time.sleep(2)
-
-                if(persona=="fisica"):
-                    WebDriverWait(driver,10)\
-                    .until(EC.element_to_be_clickable((By.XPATH,
-                                                '/html/body/div[6]/div/div/div[2]/button[1]')))\
+                if(cuenta!=-1):
+                    WebDriverWait(driver,5)\
+                    .until(EC.element_to_be_clickable((By.ID,"MainContent_wucConsultasDeclaracion_gvDeclaraciones_lbtnNumOp_"+str(cuenta))))\
                                                 .click()
-                else:
+                
+                    time.sleep(2)   
+
                     WebDriverWait(driver,10)\
-                    .until(EC.element_to_be_clickable((By.XPATH,
-                                                '/html/body/div[7]/div/div/div[2]/button[1]')))\
-                                                .click()        
+                    .until(EC.element_to_be_clickable((By.ID,"btnDescargaPdf")))\
+                                                .click()                 
+                    
+                    time.sleep(2)   
+        
+                    WebDriverWait(driver,10)\
+                    .until(EC.element_to_be_clickable((By.ID,"btnBack")))\
+                                                .click()                 
+                                                
+                    time.sleep(2)
+
+                    
+
+                    #if(persona=="fisica"):
+                    #    WebDriverWait(driver,10)\
+                    #    .until(EC.element_to_be_clickable((By.XPATH,
+                    #                                '/html/body/div[6]/div/div/div[2]/button[1]')))\
+                    #                                .click()
+                    #else:
+                    #    WebDriverWait(driver,10)\
+                    #    .until(EC.element_to_be_clickable((By.XPATH,
+                    #                                '/html/body/div[7]/div/div/div[2]/button[1]')))\
+                    #                                .click()  
+                cuenta = cuenta+1
+                      
             print(f"Existen Declaraciones que descargar para: {i}")        
             for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
                 archivos.append(parsepdf.pdf_to_base64(pdf_file))
