@@ -23,7 +23,7 @@ for file in pathlib.Path(init.path_descarga).glob('*.*'):
 options = webdriver.ChromeOptions() #Options()
 prefs = {'download.default_directory' : init.path_descarga}
 options.add_experimental_option('prefs', prefs)
-options.add_argument('headless')
+#options.add_argument('headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(options=options);
@@ -194,17 +194,21 @@ for i in anios:
                 
                     time.sleep(2)   
 
-                    WebDriverWait(driver,10)\
-                    .until(EC.element_to_be_clickable((By.ID,"btnDescargaPdf")))\
-                                                .click()                 
+                
+
+                    element = WebDriverWait(driver,10)\
+                    .until(EC.element_to_be_clickable((By.ID,"btnDescargaPdf")))                                          
+
+                    driver.execute_script("arguments[0].scrollIntoView();", element)
+                    element.click()
                     
-                    time.sleep(2)   
+                    time.sleep(2)                       
         
                     WebDriverWait(driver,10)\
-                    .until(EC.element_to_be_clickable((By.ID,"btnBack")))\
+                    .until(EC.element_to_be_clickable((By.XPATH,"/html/body/form/div[3]/div/div[3]/div/div/div/div[3]/div/div[2]/div/input[2]")))\
                                                 .click()                 
                                                 
-                    time.sleep(2)
+                    time.sleep(3)
 
                     
 
