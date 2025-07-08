@@ -23,7 +23,7 @@ for file in pathlib.Path(init.path_descarga).glob('*.*'):
 options = webdriver.ChromeOptions() #Options()
 prefs = {'download.default_directory' : init.path_descarga}
 options.add_experimental_option('prefs', prefs)
-options.add_argument('headless')
+#options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(options=options);
@@ -87,7 +87,7 @@ time.sleep(3);
 
 
 anios = []
-for x in range(2018,2024+1):
+for x in range(2022,2024+1):
     anios.append(x)
 print(anios)
 moral2019 = 0;
@@ -109,7 +109,7 @@ for i in anios:
            #                                 '/html/body/nav/div/div/ul[1]/li[2]/div/a[1]')))\
            #                                 .click()
            time.sleep(3)
-           driver.get('https://pstcdypisr.clouda.sat.gob.mx/Consulta/Consulta?tipoDocumento=1')
+           driver.get('https://pstcdypisr.clouda.sat.gob.mx/Consulta/Consulta?tipoDocumento=1')           
            time.sleep(3)
            moral2019=1
         
@@ -129,22 +129,22 @@ for i in anios:
         time.sleep(3)
 
         #Obtenemos las declaraciones del periodo    
-        declaraciones_news = driver.find_elements(By.XPATH,"//*[@id='accordionResult']/div")
+        declaraciones_news = driver.find_elements(By.XPATH,"//*[@id='tableBody']/tr")        
         
         print(f"Para {i}:existen {len(declaraciones_news)} para descargar")
         #sino existen declaraciones clickeamos el boton de cerrar en la ventana de resultado que informa que no existen declaraciones
         if len(declaraciones_news)==0:
-            WebDriverWait(driver,5)\
-                .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[12]/div/div/div[3]/button")))\
-                                            .click()
+            #WebDriverWait(driver,5)\
+            #    .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[12]/div/div/div[3]/button")))\
+            #                                .click()
+            pass
         else:
             #si existen declaraciones que descargar entonces comenzamos a iterar en la tabla correspodiente para la descarga de todas las declaraciones 
             for declara in declaraciones_news:
                 WebDriverWait(declara,5)\
                     .until(EC.element_to_be_clickable((By.ID,"linkDescargaPDF")))\
                                                 .click()
-                time.sleep(3)
-               
+                time.sleep(3)               
         time.sleep(2)
         for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
                 archivos.append(parsepdf.pdf_to_base64(pdf_file))
@@ -184,33 +184,33 @@ for i in anios:
             cuenta = -1;
             time.sleep(2)
             
+            
+            #for declara in declaraciones_:
 
-            for declara in declaraciones_:
-
-                if(cuenta!=-1):
-                    WebDriverWait(driver,5)\
-                    .until(EC.element_to_be_clickable((By.ID,"MainContent_wucConsultasDeclaracion_gvDeclaraciones_lbtnNumOp_"+str(cuenta))))\
-                                                .click()
+            #    if(cuenta!=-1):
+            #        WebDriverWait(driver,5)\
+            #        .until(EC.element_to_be_clickable((By.ID,"MainContent_wucConsultasDeclaracion_gvDeclaraciones_lbtnNumOp_"+str(cuenta))))\
+            #                                    .click()
                 
-                    time.sleep(2)   
+            #        time.sleep(2)   
 
                 
 
-                    element = WebDriverWait(driver,10)\
-                    .until(EC.element_to_be_clickable((By.ID,"btnDescargaPdf")))                                          
+            #        element = WebDriverWait(driver,10)\
+            #        .until(EC.element_to_be_clickable((By.ID,"btnDescargaPdf")))                                          
 
                     #driver.execute_script("arguments[0].scrollIntoView();", element)
-                    driver.execute_script("window.scrollTo(0, 0);")
+            #        driver.execute_script("window.scrollTo(0, 0);")
                     
-                    element.click()
+            #        element.click()
                     
-                    time.sleep(2)                       
+            #        time.sleep(2)                       
         
-                    WebDriverWait(driver,10)\
-                    .until(EC.element_to_be_clickable((By.XPATH,"/html/body/form/div[3]/div/div[3]/div/div/div/div[3]/div/div[2]/div/input[2]")))\
-                                                .click()                 
+            #        WebDriverWait(driver,10)\
+            #        .until(EC.element_to_be_clickable((By.XPATH,"/html/body/form/div[3]/div/div[3]/div/div/div/div[3]/div/div[2]/div/input[2]")))\
+            #                                    .click()                 
                                                 
-                    time.sleep(3)
+            #        time.sleep(3)
 
                     
 
@@ -224,9 +224,12 @@ for i in anios:
                     #    .until(EC.element_to_be_clickable((By.XPATH,
                     #                                '/html/body/div[7]/div/div/div[2]/button[1]')))\
                     #                                .click()  
-                cuenta = cuenta+1
-                      
-            print(f"Existen Declaraciones que descargar para: {i}")        
+            #    cuenta = cuenta+1
+            print(f"Existen Declaraciones que descargar para: {i}")
+            WebDriverWait(driver,10)\
+                        .until(EC.element_to_be_clickable((By.XPATH,
+                                                    '/html/body/form/div[3]/div/div[3]/div/div/div/div[2]/div/div/div/div[3]/div/input')))\
+                                                    .click()                                
             for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
                 archivos.append(parsepdf.pdf_to_base64(pdf_file))
         except TimeoutException:
