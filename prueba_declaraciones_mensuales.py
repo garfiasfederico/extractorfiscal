@@ -10,9 +10,25 @@ from selenium.common.exceptions import TimeoutException
 import init
 import pathlib
 import parsepdf
+import time
+import os,glob
 
+
+def renombra_ultima_descarga(repo, nuevo_nombre):
+    files = glob.glob(repo + '/*')
+    print( len(files))
+    max_file = max(files, key=os.path.getctime)
+    nombre_archivo = max_file.split("/")[-1].split(".")[0]
+    nueva_ruta = max_file.replace(nombre_archivo, nuevo_nombre)
+    os.rename(max_file, nueva_ruta)
+    return nueva_ruta
+
+
+meses = {"Enero":"ene","Febrero":"feb","Marzo":"mar","Abril":"abr","Mayo":"may","Junio":"jun","Julio":"jul","Agosto":"ago","Septiembre":"sep","Octubre":"oct","Noviembre":"nov","Diciembre":"dic"}
+tipo_declaracion = {"Normal":"nor","Complementaria":"com"}
 archivos = []
 persona = "moral" if len(init.rfc)==12 else "fisica"
+resultados = {}
 #Opciones de navegacion
 for file in pathlib.Path(init.path_descarga).glob('*.*'):
         try:
@@ -87,7 +103,7 @@ time.sleep(3);
 
 
 anios = []
-for x in range(2022,2024+1):
+for x in range(2018,2019+1):
     anios.append(x)
 print(anios)
 moral2019 = 0;
@@ -185,32 +201,62 @@ for i in anios:
             time.sleep(2)
             
             
-            #for declara in declaraciones_:
+            for declara in declaraciones_:
+                if(cuenta!=-1):
+                    nombre_archivo=""
+                    xpatho = ""
+                    xpatht = ""
+                    xpathp = ""
 
-            #    if(cuenta!=-1):
-            #        WebDriverWait(driver,5)\
-            #        .until(EC.element_to_be_clickable((By.ID,"MainContent_wucConsultasDeclaracion_gvDeclaraciones_lbtnNumOp_"+str(cuenta))))\
-            #                                    .click()
+
+
+                    xpatho = "/html/body/form/div[3]/div/div[3]/div/div/div/div[2]/div/div/div/div[1]/div[10]/div/div/table/tbody/tr["+str(cuenta+2)+"]/td[1]"
+                    operacion = WebDriverWait(driver,5)\
+                        .until(EC.element_to_be_clickable((By.XPATH,xpatho)))\
+                                                    .text
+                        
+                    xpatht = "/html/body/form/div[3]/div/div[3]/div/div/div/div[2]/div/div/div/div[1]/div[10]/div/div/table/tbody/tr["+str(cuenta+2)+"]/td[2]"
+                    tipo = WebDriverWait(driver,5)\
+                        .until(EC.element_to_be_clickable((By.XPATH,xpatht)))\
+                                                    .text
                 
-            #        time.sleep(2)   
+                    xpathp = "/html/body/form/div[3]/div/div[3]/div/div/div/div[2]/div/div/div/div[1]/div[10]/div/div/table/tbody/tr["+str(cuenta+2)+"]/td[6]"
+                    periodo = WebDriverWait(driver,5)\
+                        .until(EC.element_to_be_clickable((By.XPATH,xpathp)))\
+                                                    .text 
+                    #print("Tipo: "+tipo_declaracion[tipo]+" Periodo:"+meses[periodo])
+                    nombre_archivo = tipo_declaracion[tipo] + "_" +meses[periodo]+"_"+operacion+"_"+str(i)
+                    #print(nombre_archivo)
+                     
+
+
+                    WebDriverWait(driver,5)\
+                    .until(EC.element_to_be_clickable((By.ID,"MainContent_wucConsultasDeclaracion_gvDeclaraciones_lbtnNumOp_"+str(cuenta))))\
+                                                .click()
+                
+                    time.sleep(2)   
 
                 
 
-            #        element = WebDriverWait(driver,10)\
-            #        .until(EC.element_to_be_clickable((By.ID,"btnDescargaPdf")))                                          
+                    element = WebDriverWait(driver,10)\
+                    .until(EC.element_to_be_clickable((By.ID,"btnDescargaPdf")))                                          
 
                     #driver.execute_script("arguments[0].scrollIntoView();", element)
-            #        driver.execute_script("window.scrollTo(0, 0);")
+                    driver.execute_script("window.scrollTo(0, 0);")
                     
-            #        element.click()
+                    element.click()
                     
-            #        time.sleep(2)                       
+                    time.sleep(2)                       
+
+                    renombra_ultima_descarga(init.path_descarga,nombre_archivo)
+
+                    time.sleep(2)
         
-            #        WebDriverWait(driver,10)\
-            #        .until(EC.element_to_be_clickable((By.XPATH,"/html/body/form/div[3]/div/div[3]/div/div/div/div[3]/div/div[2]/div/input[2]")))\
-            #                                    .click()                 
+                    WebDriverWait(driver,10)\
+                    .until(EC.element_to_be_clickable((By.XPATH,"/html/body/form/div[3]/div/div[3]/div/div/div/div[3]/div/div[2]/div/input[2]")))\
+                                                .click()                 
                                                 
-            #        time.sleep(3)
+                    time.sleep(3)
 
                     
 
@@ -224,14 +270,16 @@ for i in anios:
                     #    .until(EC.element_to_be_clickable((By.XPATH,
                     #                                '/html/body/div[7]/div/div/div[2]/button[1]')))\
                     #                                .click()  
-            #    cuenta = cuenta+1
+                cuenta = cuenta+1
             print(f"Existen Declaraciones que descargar para: {i}")
             WebDriverWait(driver,10)\
                         .until(EC.element_to_be_clickable((By.XPATH,
                                                     '/html/body/form/div[3]/div/div[3]/div/div/div/div[2]/div/div/div/div[3]/div/input')))\
-                                                    .click()                                
+                                                    .click()          
+            archivos = ""
             for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
-                archivos.append(parsepdf.pdf_to_base64(pdf_file))
+                archivos = archivos + str(pdf_file) + "|"                      
+            resultados[str(i)] = archivos
         except TimeoutException:
             if(persona=="fisica"):
                 WebDriverWait(driver,10)\
@@ -245,5 +293,7 @@ for i in anios:
                                             .click()                    
             print(f"No Existen Declaraciones que Descargar para: {i}")        
 
-#print(archivos)                                  
+print(resultados)                                  
 time.sleep(2); 
+
+
