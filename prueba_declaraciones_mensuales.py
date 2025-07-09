@@ -18,8 +18,8 @@ def renombra_ultima_descarga(repo, nuevo_nombre):
     files = glob.glob(repo + '/*')
     print( len(files))
     max_file = max(files, key=os.path.getctime)
-    nombre_archivo = max_file.split("/")[-1].split(".")[0]
-    nueva_ruta = max_file.replace(nombre_archivo, nuevo_nombre)
+    nombre_archivo = max_file.split("/")[-1]#.split(".")[0]
+    nueva_ruta = max_file.replace(nombre_archivo, nuevo_nombre+".pdf")
     os.rename(max_file, nueva_ruta)
     return nueva_ruta
 
@@ -103,7 +103,7 @@ time.sleep(3);
 
 
 anios = []
-for x in range(2018,2019+1):
+for x in range(2022,2022+1):
     anios.append(x)
 print(anios)
 moral2019 = 0;
@@ -155,12 +155,34 @@ for i in anios:
             #                                .click()
             pass
         else:
-            #si existen declaraciones que descargar entonces comenzamos a iterar en la tabla correspodiente para la descarga de todas las declaraciones 
+            #si existen declaraciones que descargar entonces comenzamos a iterar en la tabla correspodiente para la descarga de todas las declaraciones             
+            cuenta_n = 1;
             for declara in declaraciones_news:
+                #obtenemos los campos para la construcción del nombre del archivo provisional
+                xoperacion = "/html/body/div[3]/div[10]/table/tbody/tr["+str(cuenta_n)+"]/td[2]"
+                xtipo = "/html/body/div[3]/div[10]/table/tbody/tr["+str(cuenta_n)+"]/td[3]"
+                xperiodo = "/html/body/div[3]/div[10]/table/tbody/tr["+str(cuenta_n)+"]/td[8]"
+                
+                op = WebDriverWait(driver,5)\
+                    .until(EC.element_to_be_clickable((By.XPATH,xoperacion)))\
+                                                .text                
+                tip = WebDriverWait(driver,5)\
+                    .until(EC.element_to_be_clickable((By.XPATH,xtipo)))\
+                                                .text
+                per = WebDriverWait(driver,5)\
+                    .until(EC.element_to_be_clickable((By.XPATH,xperiodo)))\
+                                                .text
+                nombre_archivo = tipo_declaracion[tip] + "_" +meses[per]+"_"+op+"_"+str(i)
+
+                time.sleep(2)                    
                 WebDriverWait(declara,5)\
                     .until(EC.element_to_be_clickable((By.ID,"linkDescargaPDF")))\
                                                 .click()
-                time.sleep(3)               
+                time.sleep(2)                    
+                renombra_ultima_descarga(init.path_descarga,init.path_descarga+"\\"+nombre_archivo)
+                time.sleep(2)
+                cuenta_n = cuenta_n+1
+
         time.sleep(2)
         for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
                 archivos.append(parsepdf.pdf_to_base64(pdf_file))
@@ -246,9 +268,9 @@ for i in anios:
                     
                     element.click()
                     
-                    time.sleep(2)                       
+                    time.sleep(5)                       
 
-                    renombra_ultima_descarga(init.path_descarga,nombre_archivo)
+                    renombra_ultima_descarga(init.path_descarga,init.path_descarga+"\\"+nombre_archivo)
 
                     time.sleep(2)
         
