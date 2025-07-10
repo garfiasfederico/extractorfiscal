@@ -24,7 +24,7 @@ def getfilesdm(rfc,inicio,final):
             "rfc" : rfc,
             "result" : "success",
             "message" : "Proceso de descarga satisfactorio",
-            "files" : archivos
+            "files" : resultados
         }
     else:
          log.write("info",f" {rfc} - El repositorio indicado no existe!")
