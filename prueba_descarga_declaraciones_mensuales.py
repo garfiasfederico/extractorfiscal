@@ -18,7 +18,8 @@ def getfilesdm(rfc,inicio,final):
         for i in anios:
             for pdf_file in pathlib.Path(path_descarga).glob(f'*{str(i)}*.pdf'):    
                         archivos.append(parsepdf.pdf_to_base64(pdf_file))
-            resultados[str(i)] = archivos        
+            resultados[str(i)] = archivos   
+            archivos=[]     
         log.write("info",f" {rfc} - Procesamiento concluido satisfactoriamente")
         return {
             "rfc" : rfc,
