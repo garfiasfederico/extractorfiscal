@@ -16,7 +16,7 @@ def getfilesdm(rfc,inicio,final):
             anios.append(x)
         print(anios)
         for i in anios:
-            for pdf_file in pathlib.Path(path_descarga).glob(f'*{str(i)}*.pdf'):    
+            for pdf_file in pathlib.Path(path_descarga).glob(f'*{str(i)}.pdf'):    
                         archivos.append(parsepdf.pdf_to_base64(pdf_file))
             resultados[str(i)] = archivos 
             archivos = []       
