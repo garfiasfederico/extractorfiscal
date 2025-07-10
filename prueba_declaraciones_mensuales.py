@@ -91,11 +91,14 @@ WebDriverWait(driver,10)\
 time.sleep(3);
 
 
-#WebDriverWait(driver,10)\
-#.until(EC.element_to_be_clickable((By.XPATH,
-#                                '/html/body/form/div[3]/div/div[1]/nav/div/div[3]/div/div/ul/li[3]/ul/li[1]/a/span')))\
-#                                .click()
-
+try:
+    if WebDriverWait(driver,3).until(EC.alert_is_present()) != None:
+        print ("Alert is present")
+        print ("Alert closed")
+        alert = driver.switch_to.alert
+        alert.dismiss()
+except:
+    pass
 
 driver.get('https://ptscdecprov.clouda.sat.gob.mx/Paginas/ConsultaDeclaracion.aspx')
 
@@ -103,7 +106,7 @@ time.sleep(3);
 
 
 anios = []
-for x in range(2022,2022+1):
+for x in range(2024,2025+1):
     anios.append(x)
 print(anios)
 moral2019 = 0;
@@ -111,19 +114,10 @@ moral2019 = 0;
 for i in anios:
 
     if i > 2021: #and persona=="moral":
+        #ACTUAL SITIO DE DESCARGA DE PROVISIONALES
         if moral2019==0:           
            #accedemos al nuevo sitio de declaraciones que tiene la repo de los anios 2019 en adelante
            driver.get('https://pstcdypisr.clouda.sat.gob.mx/')
-           #WebDriverWait(driver, 10).until(EC.url_to_be("https://anualpm.clouda.sat.gob.mx/MoralesV2"))
-           #Accedemos al apartado de las declaraciones
-           #WebDriverWait(driver,10)\
-           #     .until(EC.element_to_be_clickable((By.ID,
-           #                                 'navbarDropdownMenuLink')))\
-           #                                 .click()                                                    
-           #WebDriverWait(driver,10)\
-           #     .until(EC.element_to_be_clickable((By.XPATH,
-           #                                 '/html/body/nav/div/div/ul[1]/li[2]/div/a[1]')))\
-           #                                 .click()
            time.sleep(3)
            driver.get('https://pstcdypisr.clouda.sat.gob.mx/Consulta/Consulta?tipoDocumento=1')           
            time.sleep(3)
@@ -150,10 +144,8 @@ for i in anios:
         print(f"Para {i}:existen {len(declaraciones_news)} para descargar")
         #sino existen declaraciones clickeamos el boton de cerrar en la ventana de resultado que informa que no existen declaraciones
         if len(declaraciones_news)==0:
-            #WebDriverWait(driver,5)\
-            #    .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[12]/div/div/div[3]/button")))\
-            #                                .click()
-            pass
+            WebDriverWait(driver,5)\
+                .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[10]/div/div/div[3]/button"))).click()
         else:
             #si existen declaraciones que descargar entonces comenzamos a iterar en la tabla correspodiente para la descarga de todas las declaraciones             
             cuenta_n = 1;
@@ -179,43 +171,40 @@ for i in anios:
                     .until(EC.element_to_be_clickable((By.ID,"linkDescargaPDF")))\
                                                 .click()
                 time.sleep(2)                    
-                renombra_ultima_descarga(init.path_descarga,init.path_descarga+"\\"+nombre_archivo)
+                renombra_ultima_descarga(init.path_descarga,nombre_archivo)
                 time.sleep(2)
                 cuenta_n = cuenta_n+1
 
         time.sleep(2)
+        archivos = ""
         for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
-                archivos.append(parsepdf.pdf_to_base64(pdf_file))
+            archivos = archivos + str(pdf_file) + "|"                      
+        resultados[str(i)] = archivos
         #driver.close()
         #exit()
     else:    
+        #ANTERIOR SITIO DE DESCARGA DE PROVISIONALES
         select_ = Select(WebDriverWait(driver,10)\
         .until(EC.element_to_be_clickable((By.ID,'MainContent_wucConsultasDeclaracion_wucDdlEjercicioFiscal_ddlCatalogo'))))
 
         select_.select_by_value(str(i))
         time.sleep(1)
 
-        if persona == "fisica":
-            WebDriverWait(driver,10)\
-            .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/div[1]/div/form/div/div[2]/div/div[6]/div[2]/button[1]')))\
-                                            .click()
-           
-        else:
-            WebDriverWait(driver,10)\
-            .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/form/div[3]/div/div[3]/div/div/div/div[2]/div/div/div/div[3]/div/input[1]')))\
-                                            .click()
+
+        #Click en el botón buscar que es el mismo para persona moral y para persona fisica   
+        WebDriverWait(driver,10)\
+        .until(EC.element_to_be_clickable((By.XPATH,
+                                        '/html/body/form/div[3]/div/div[3]/div/div/div/div[2]/div/div/div/div[3]/div/input[1]')))\
+                                        .click()
 
         
         time.sleep(10)
         
 
         try:
-            if persona=="fisica":
-                tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/form/div/div[3]/div[2]')))
-            else:
-                tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.ID,'MainContent_wucConsultasDeclaracion_gvDeclaraciones')))
+            
+            #La tabla es la misma tanto para pesonas fisicas como morales
+            tabla = WebDriverWait(driver,1).until(EC.element_to_be_clickable((By.ID,'MainContent_wucConsultasDeclaracion_gvDeclaraciones')))            
             
             declaraciones_ = tabla.find_elements(By.TAG_NAME,"tr")
             print("declaraciones provisionales: "+ str(len(declaraciones_)))
@@ -270,7 +259,7 @@ for i in anios:
                     
                     time.sleep(5)                       
 
-                    renombra_ultima_descarga(init.path_descarga,init.path_descarga+"\\"+nombre_archivo)
+                    renombra_ultima_descarga(init.path_descarga,nombre_archivo)
 
                     time.sleep(2)
         
@@ -280,39 +269,22 @@ for i in anios:
                                                 
                     time.sleep(3)
 
-                    
-
-                    #if(persona=="fisica"):
-                    #    WebDriverWait(driver,10)\
-                    #    .until(EC.element_to_be_clickable((By.XPATH,
-                    #                                '/html/body/div[6]/div/div/div[2]/button[1]')))\
-                    #                                .click()
-                    #else:
-                    #    WebDriverWait(driver,10)\
-                    #    .until(EC.element_to_be_clickable((By.XPATH,
-                    #                                '/html/body/div[7]/div/div/div[2]/button[1]')))\
-                    #                                .click()  
                 cuenta = cuenta+1
             print(f"Existen Declaraciones que descargar para: {i}")
             WebDriverWait(driver,10)\
                         .until(EC.element_to_be_clickable((By.XPATH,
                                                     '/html/body/form/div[3]/div/div[3]/div/div/div/div[2]/div/div/div/div[3]/div/input')))\
-                                                    .click()          
+                                                    .click()                                                              
             archivos = ""
             for pdf_file in pathlib.Path(init.path_descarga).glob(f'*{str(i)}*.pdf'):    
                 archivos = archivos + str(pdf_file) + "|"                      
             resultados[str(i)] = archivos
         except TimeoutException:
-            if(persona=="fisica"):
-                WebDriverWait(driver,10)\
-                .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/div[3]/div/div/div[2]/button')))\
-                                            .click()        
-            else:
-                WebDriverWait(driver,10)\
-                .until(EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/div[4]/div/div/div[2]/button')))\
-                                            .click()                    
+            #Si no existe la tabla de declaraciones entonces clic en el boton cancelar
+            WebDriverWait(driver,10)\
+                        .until(EC.element_to_be_clickable((By.XPATH,
+                                                    '/html/body/form/div[3]/div/div[3]/div/div/div/div[2]/div/div/div/div[3]/div/input')))\
+                                                    .click()                                                              
             print(f"No Existen Declaraciones que Descargar para: {i}")        
 
 print(resultados)                                  
