@@ -7,6 +7,7 @@ import docopinion
 import declaraciones_acuses
 import declaraciones_pagadas
 import declaraciones_mensuales
+import descarga_declaraciones_mensuales
 
 app = FastAPI()
 
@@ -32,6 +33,8 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
         resultado = declaraciones_pagadas.getdeclaraanualpagada(rfc,anio_inicio,anio_fin)   
     elif req.lower()=="dm":
         resultado = declaraciones_mensuales.getdeclaramensuales(rfc,anio_inicio,anio_fin)   
+    elif req.lower()=="ddm":
+        resultado = descarga_declaraciones_mensuales.getfilesdm(rfc,anio_inicio,anio_fin)   
     else:
         return{
             "message":f"El requerimiento {req} no existe en nuestro catálogo"
