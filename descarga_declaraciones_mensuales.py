@@ -5,9 +5,9 @@ from clases.logs import Log
 
 log = Log("logs/extractor.log")
 
-def getfilesdm(rfc,inicio,final):    
-    path_descarga = "/root/"+rfc+"/DM"
-    log.write("info",f" {rfc} - Descarga de archivos Declaraciones Provisionales")
+def getfilesdm(rfc,inicio,final,repo):    
+    path_descarga = "/root/"+rfc+"/"+repo
+    log.write("info",f" {rfc} - Descarga de archivos Declaraciones Provisionales "+repo)
     if(os.path.exists(path_descarga)):
         resultados = {}
         archivos = []
@@ -20,7 +20,7 @@ def getfilesdm(rfc,inicio,final):
                         archivos.append(parsepdf.pdf_to_base64(pdf_file))
             resultados[str(i)] = archivos 
             archivos = []       
-        log.write("info",f" {rfc} - Procesamiento concluido satisfactoriamente")
+        log.write("info",f" {rfc} - Procesamiento concluido satisfactoriamente "+repo)
         return {
             "rfc" : rfc,
             "result" : "success",
