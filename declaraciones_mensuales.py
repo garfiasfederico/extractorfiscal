@@ -27,7 +27,7 @@ def renombra_ultima_descarga(repo, nuevo_nombre):
     os.rename(max_file, nueva_ruta)
     return nueva_ruta
 
-def getdeclaramensuales(rfc_c:str,inicial:int,final:int):
+async def getdeclaramensuales(rfc_c:str,inicial:int,final:int):
     meses = {"Enero":"ene","Febrero":"feb","Marzo":"mar","Abril":"abr","Mayo":"may","Junio":"jun","Julio":"jul","Agosto":"ago","Septiembre":"sep","Octubre":"oct","Noviembre":"nov","Diciembre":"dic"}
     tipo_declaracion = {"Normal":"nor","Complementaria":"com"}
     archivos = []

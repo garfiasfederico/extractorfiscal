@@ -2,11 +2,13 @@ import parsepdf
 import pathlib
 import os
 from clases.logs import Log
+import init
 
 log = Log("logs/extractor.log")
 
 def getfilesdm(rfc,inicio,final):    
-    path_descarga = "E:\\SAT\\"+rfc+"\\DP"
+    path_descarga = init.path_descarga
+
     log.write("info",f" {rfc} - Descarga de archivos Declaraciones Provisionales")
     if(os.path.exists(path_descarga)):
         resultados = {}
@@ -35,4 +37,4 @@ def getfilesdm(rfc,inicio,final):
             "message" : f"El espositorio no existe {path_descarga}",            
         } 
 
-print(getfilesdm("RIN0502285BA",2020,2025))
+print(getfilesdm("ACR140408T34",2024,2025))
