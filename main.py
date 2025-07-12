@@ -30,7 +30,7 @@ async def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int
     elif req.lower()=="dap":
         resultado =  declaraciones_pagadas.getdeclaraanualpagada(rfc,anio_inicio,anio_fin)   
     elif req.lower()=="dm":
-        resultado =  await declaraciones_mensuales.getdeclaramensuales(rfc,anio_inicio,anio_fin)   
+        resultado =   declaraciones_mensuales.getdeclaramensuales(rfc,anio_inicio,anio_fin)   
     elif req.lower()=="dma":
         resultado =  declaraciones_mensuales_a.getdeclaramensualesa(rfc,anio_inicio,anio_fin)       
     elif req.lower()=="ddm":
