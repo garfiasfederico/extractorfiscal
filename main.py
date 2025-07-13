@@ -18,7 +18,7 @@ def read_root():
 
 
 @app.get("/extract/{rfc}/{req}/{anio_inicio}/{anio_fin}")
-async def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = None):
+def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = None):
     if(req.lower()=="da"):
         resultado =  declaraciones.getdeclaraanuales(rfc,anio_inicio,anio_fin)
     elif req.lower()=="csf" :
@@ -34,7 +34,7 @@ async def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int
     elif req.lower()=="dma":
         resultado =  declaraciones_mensuales_a.getdeclaramensualesa(rfc,anio_inicio,anio_fin)       
     elif req.lower()=="ddm":
-        resultado =  await descarga_declaraciones_mensuales.getfilesdm(rfc,anio_inicio,anio_fin,"DM")   
+        resultado =  descarga_declaraciones_mensuales.getfilesdm(rfc,anio_inicio,anio_fin,"DM")   
     elif req.lower()=="ddma":
         resultado =  descarga_declaraciones_mensuales.getfilesdm(rfc,anio_inicio,anio_fin,"DMA")   
     else:

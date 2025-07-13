@@ -5,7 +5,7 @@ from clases.logs import Log
 
 log = Log("logs/extractor.log")
 
-async def getfilesdm(rfc,inicio,final,repo):    
+def getfilesdm(rfc,inicio,final,repo):    
     path_descarga = "/root/"+rfc+"/"+repo
     log.write("info",f" {rfc} - Descarga de archivos Declaraciones Provisionales "+repo)
     if(os.path.exists(path_descarga)):
