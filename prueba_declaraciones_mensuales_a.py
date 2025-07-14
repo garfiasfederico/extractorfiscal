@@ -30,11 +30,11 @@ archivos = []
 persona = "moral" if len(init.rfc)==12 else "fisica"
 resultados = {}
 #Opciones de navegacion
-for file in pathlib.Path(init.path_descarga).glob('*.*'):
-        try:
-            file.unlink()
-        except:
-            pass
+#for file in pathlib.Path(init.path_descarga).glob('*.*'):
+#        try:
+#            file.unlink()
+#        except:
+#            pass
 
 options = webdriver.ChromeOptions() #Options()
 prefs = {'download.default_directory' : init.path_descarga}
@@ -165,14 +165,14 @@ for i in anios:
                     .until(EC.element_to_be_clickable((By.XPATH,xperiodo)))\
                                                 .text
                 nombre_archivo = tipo_declaracion[tip] + "_" +meses[per]+"_"+op+"_"+str(i)
-
-                time.sleep(2)                    
-                WebDriverWait(declara,5)\
-                    .until(EC.element_to_be_clickable((By.ID,"linkDescargaPDF")))\
-                                                .click()
-                time.sleep(2)                    
-                renombra_ultima_descarga(init.path_descarga,nombre_archivo)
-                time.sleep(2)
+                if not (os.path.exists(init.path_descarga+"/"+nombre_archivo+".pdf")):
+                    time.sleep(2)                    
+                    WebDriverWait(declara,5)\
+                        .until(EC.element_to_be_clickable((By.ID,"linkDescargaPDF")))\
+                                                    .click()
+                    time.sleep(2)                    
+                    renombra_ultima_descarga(init.path_descarga,nombre_archivo)
+                    time.sleep(2)
                 cuenta_n = cuenta_n+1
 
         time.sleep(2)
@@ -238,35 +238,35 @@ for i in anios:
                     nombre_archivo = tipo_declaracion[tipo] + "_" +meses[periodo]+"_"+operacion+"_"+str(i)
                     #print(nombre_archivo)
                      
+                    if not (os.path.exists(init.path_descarga+"/"+nombre_archivo+".pdf")):
 
-
-                    WebDriverWait(driver,5)\
-                    .until(EC.element_to_be_clickable((By.ID,"MainContent_wucConsultasDeclaracion_gvDeclaraciones_lbtnNumOp_"+str(cuenta))))\
-                                                .click()
-                
-                    time.sleep(2)   
-
-                
-
-                    element = WebDriverWait(driver,10)\
-                    .until(EC.element_to_be_clickable((By.ID,"btnDescargaPdf")))                                          
-
-                    #driver.execute_script("arguments[0].scrollIntoView();", element)
-                    driver.execute_script("window.scrollTo(0, 0);")
+                        WebDriverWait(driver,5)\
+                        .until(EC.element_to_be_clickable((By.ID,"MainContent_wucConsultasDeclaracion_gvDeclaraciones_lbtnNumOp_"+str(cuenta))))\
+                                                    .click()
                     
-                    element.click()
+                        time.sleep(2)   
+
                     
-                    time.sleep(5)                       
 
-                    renombra_ultima_descarga(init.path_descarga,nombre_archivo)
+                        element = WebDriverWait(driver,10)\
+                        .until(EC.element_to_be_clickable((By.ID,"btnDescargaPdf")))                                          
 
-                    time.sleep(2)
-        
-                    WebDriverWait(driver,10)\
-                    .until(EC.element_to_be_clickable((By.XPATH,"/html/body/form/div[3]/div/div[3]/div/div/div/div[3]/div/div[2]/div/input[2]")))\
-                                                .click()                 
-                                                
-                    time.sleep(3)
+                        #driver.execute_script("arguments[0].scrollIntoView();", element)
+                        driver.execute_script("window.scrollTo(0, 0);")
+                        
+                        element.click()
+                        
+                        time.sleep(5)                       
+
+                        renombra_ultima_descarga(init.path_descarga,nombre_archivo)
+
+                        time.sleep(2)
+            
+                        WebDriverWait(driver,10)\
+                        .until(EC.element_to_be_clickable((By.XPATH,"/html/body/form/div[3]/div/div[3]/div/div/div/div[3]/div/div[2]/div/input[2]")))\
+                                                    .click()                 
+                                                    
+                        time.sleep(3)
 
                 cuenta = cuenta+1
             print(f"Existen Declaraciones que descargar para: {i}")
