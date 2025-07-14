@@ -150,8 +150,7 @@ def getdeclaramensuales(rfc_c:str,inicial:int,final:int):
                 
                                                             
                 #comenzamos a iterar en las declaracion a partir del 2019
-                select_2 = Select(WebDriverWait(driver,10)\
-                .until(EC.element_to_be_clickable((By.ID,'Ejercicio'))))
+                select_2 = Select(WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.ID,'Ejercicio'))))
 
                 time.sleep(1)
                 select_2.select_by_value(str(i))
@@ -309,7 +308,6 @@ def getdeclaramensuales(rfc_c:str,inicial:int,final:int):
                     print(f"No Existen Declaraciones que Descargar para: {i}")
                     log.write("info",f"{rfc} - No Existen Declaraciones que Descargar para: {i}")                                                                                        
         time.sleep(2); 
-        driver.close()          
         return {
             "result" : "success",
             "message" : "Proceso concluido satisfactoriamente",

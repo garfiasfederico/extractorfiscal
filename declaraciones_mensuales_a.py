@@ -308,8 +308,7 @@ def getdeclaramensualesa(rfc_c:str,inicial:int,final:int):
                                                             .click()                   
                     print(f"No Existen Declaraciones que Descargar para: {i}")
                     log.write("info",f"{rfc} - No Existen Declaraciones que Descargar para: {i}")                                                                                        
-        time.sleep(2); 
-        driver.close()          
+        time.sleep(2);         
         return {
             "result" : "success",
             "message" : "Proceso concluido satisfactoriamente",

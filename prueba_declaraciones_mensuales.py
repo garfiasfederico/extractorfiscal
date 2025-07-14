@@ -106,7 +106,7 @@ time.sleep(3);
 
 
 anios = []
-for x in range(2024,2025+1):
+for x in range(2021,2023+1):
     anios.append(x)
 print(anios)
 moral2019 = 0;
@@ -240,7 +240,7 @@ for i in anios:
                     nombre_archivo = tipo_declaracion[tipo] + "_" +meses[periodo]+"_"+operacion+"_"+str(i)
                     #print(nombre_archivo)
                     
-                    if not (os.path.exists(init.path_descarga+"/"+nombre_archivoo+".pdf")):
+                    if not (os.path.exists(init.path_descarga+"/"+nombre_archivo+".pdf")):
                         WebDriverWait(driver,5)\
                         .until(EC.element_to_be_clickable((By.ID,"MainContent_wucConsultasDeclaracion_gvDeclaraciones_lbtnNumOp_"+str(cuenta))))\
                                                     .click()                    
