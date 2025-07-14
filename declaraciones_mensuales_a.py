@@ -141,7 +141,8 @@ def getdeclaramensualesa(rfc_c:str,inicial:int,final:int):
             if i > 2021:
                 #ACTUAL SITIO DE DESCARGA DE PROVISIONALES
                 if moral2019==0:           
-                    #accedemos al nuevo sitio de declaraciones que tiene la repo de los anios 2019 en adelante           
+                    #accedemos al nuevo sitio de declaraciones que tiene la repo de los anios 2019 en adelante
+                    time.sleep(3)          
                     driver.get('https://pstcdypisr.clouda.sat.gob.mx/')
                     time.sleep(3)
                     driver.get('https://pstcdypisr.clouda.sat.gob.mx/Consulta/Consulta?tipoDocumento=3')           
@@ -309,6 +310,7 @@ def getdeclaramensualesa(rfc_c:str,inicial:int,final:int):
                     print(f"No Existen Declaraciones que Descargar para: {i}")
                     log.write("info",f"{rfc} - No Existen Declaraciones que Descargar para: {i}")                                                                                        
         time.sleep(2);         
+        driver.close()
         return {
             "result" : "success",
             "message" : "Proceso concluido satisfactoriamente",

@@ -117,6 +117,7 @@ for i in anios:
         #ACTUAL SITIO DE DESCARGA DE PROVISIONALES
         if moral2019==0:           
            #accedemos al nuevo sitio de declaraciones que tiene la repo de los anios 2019 en adelante
+           time.sleep(3)
            driver.get('https://pstcdypisr.clouda.sat.gob.mx/')
            time.sleep(3)
            driver.get('https://pstcdypisr.clouda.sat.gob.mx/Consulta/Consulta?tipoDocumento=1')           

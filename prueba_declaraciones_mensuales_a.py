@@ -106,7 +106,7 @@ time.sleep(3);
 
 
 anios = []
-for x in range(2018,2018+1):
+for x in range(2021,2022+1):
     anios.append(x)
 print(anios)
 moral2019 = 0;
@@ -117,6 +117,7 @@ for i in anios:
         #ACTUAL SITIO DE DESCARGA DE PROVISIONALES
         if moral2019==0:           
            #accedemos al nuevo sitio de declaraciones que tiene la repo de los anios 2019 en adelante
+           time.sleep(3)
            driver.get('https://pstcdypisr.clouda.sat.gob.mx/')
            time.sleep(3)
            driver.get('https://pstcdypisr.clouda.sat.gob.mx/Consulta/Consulta?tipoDocumento=3')           
@@ -171,7 +172,7 @@ for i in anios:
                         .until(EC.element_to_be_clickable((By.ID,"linkDescargaPDF")))\
                                                     .click()
                     time.sleep(2)                    
-                    renombra_ultima_descarga(init.path_descarga,nombre_archivo)
+                    renombra_ultima_descarga(init.path_descarga,init.path_descarga+"\\"+nombre_archivo)
                     time.sleep(2)
                 cuenta_n = cuenta_n+1
 
@@ -258,7 +259,7 @@ for i in anios:
                         
                         time.sleep(5)                       
 
-                        renombra_ultima_descarga(init.path_descarga,nombre_archivo)
+                        renombra_ultima_descarga(init.path_descarga,init.path_descarga+"\\"+nombre_archivo)
 
                         time.sleep(2)
             
