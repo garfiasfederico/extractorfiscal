@@ -107,7 +107,7 @@ time.sleep(3);
 
 
 anios = []
-for x in range(2019,2019+1):
+for x in range(2022,2025+1):
     anios.append(x)
 print(anios)
 moral2019 = 0;
