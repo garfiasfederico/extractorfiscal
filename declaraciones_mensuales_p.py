@@ -280,7 +280,7 @@ def getdeclaramensualesp(rfc_c:str,inicial:int,final:int):
                                 
                                 element.click()
                                 
-                                time.sleep(18)                       
+                                time.sleep(20)                       
 
                                 renombra_ultima_descarga(descarga,nombre_archivo)
 
