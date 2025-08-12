@@ -9,6 +9,7 @@ from selenium.common.exceptions import TimeoutException
 import init
 import requests
 from clases.logs import Log
+import traceback
 
 log = Log("logs/log_constancia.log")
 
@@ -85,12 +86,15 @@ except Exception as ex:
     log.write("error","No fue posible logearse, intentar mas tarde!")
 
 try:
-    print(driver)
+    driver.get('https://wwwmat.sat.gob.mx/consultas/login/16203/consulta-tus-acuses-generados-en-la-aplicacion-contabilidad-electronica')
+    iframe = driver.find_element(By.ID, "iframetoload")
+    driver.switch_to.frame(iframe)
     
-    WebDriverWait(driver,15)\
-    .until(EC.element_to_be_clickable((By.ID,
-                                    'rdoCriterios')))\
-                                    .click()
+    time.sleep(5)
+    
+    criterios = driver.find_element(By.ID,"rdoCriterios")
+    criterios.click()
+    
     
     time.sleep(10)
     #comenzamos a iterar en las declaracion a partir del 2019
@@ -107,16 +111,58 @@ try:
     select2.select_by_value("1")
 
     select3 = Select(WebDriverWait(driver,10)\
-    .until(EC.element_to_be_clickable((By.ID,'ddlMesFin'))))
+    .until(EC.element_to_be_clickable((By.ID,'ddlMesFin'))))    
 
     time.sleep(1)
     select3.select_by_value("13")
-    time.sleep(10)
+
+    select4 = Select(WebDriverWait(driver,10)\
+    .until(EC.element_to_be_clickable((By.ID,'ddlMotivo'))))    
+
+    time.sleep(1)
+    select4.select_by_value("0")
+
+    select5 = Select(WebDriverWait(driver,10)\
+    .until(EC.element_to_be_clickable((By.ID,'ddlTipoArchivo'))))    
+
+    time.sleep(1)
+    select5.select_by_value("0")
+
+    select6 = Select(WebDriverWait(driver,10)\
+    .until(EC.element_to_be_clickable((By.ID,'ddlEstatus'))))    
+
+    time.sleep(1)
+    select6.select_by_value("0")
+
+    #select7 = Select(WebDriverWait(driver,10)\
+    #.until(EC.element_to_be_clickable((By.ID,'ddlTipoEnvio'))))    
+
+    #time.sleep(1)
+    #select7.select_by_value("0")
+
+    WebDriverWait(driver,15)\
+    .until(EC.element_to_be_clickable((By.ID,
+                                    'btnBuscar')))\
+                                    .click()
+
+    time.sleep(5)
+
+
+    
+
+    registros = driver.find_element(By.XPATH,"/html/body/div[1]/div[1]/div/div/form/div/div[1]/label")
+    print(registros.text)
+
+    time.sleep(5)
+    
+
+  
 
 
     
 
 
-except:
-    print("ocurrio un error!")
+except Exception as ex:
+    traceback.print_exc()
+    print("Error")
     pass
