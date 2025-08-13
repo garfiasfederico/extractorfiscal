@@ -164,7 +164,7 @@ try:
             #Procedemos a desacargas los archivos de contabilidad                        
             tabla_acuses = driver.find_elements(By.XPATH,"/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr")  
             print(len(tabla_acuses))
-
+            original_window = driver.current_window_handle
             if(len(tabla_acuses)>1):
                 for acu in tabla_acuses:
                     recepcion = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[10]/img"  
@@ -173,10 +173,16 @@ try:
                                                     .click()
                     time.sleep(3)
                     #driver.switch_to.default_content()
-                    print(driver.current_url)
+                    all_windows = driver.window_handles
+                    # Switch to the new window
+                    for window_handle in all_windows:
+                        if window_handle != original_window:
+                            driver.switch_to.window(window_handle)
+                            break
                     WebDriverWait(driver,5)\
                         .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/div/input")))\
                                                     .click()
+                    driver.switch_to.window(original_window)
                     
                 
                                             
