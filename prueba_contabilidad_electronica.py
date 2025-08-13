@@ -96,72 +96,97 @@ try:
     criterios.click()
     
     
-    time.sleep(10)
+    #time.sleep(10)
     #comenzamos a iterar en las declaracion a partir del 2019
-    select1 = Select(WebDriverWait(driver,10)\
-    .until(EC.element_to_be_clickable((By.ID,'ddlAnio'))))
+    anios = []
+    for x in range(2015,2020+1):
+        anios.append(x)
 
-    time.sleep(1)
-    select1.select_by_value("2015")
+    for i in anios:
+        select1 = Select(WebDriverWait(driver,10)\
+        .until(EC.element_to_be_clickable((By.ID,'ddlAnio'))))
 
-    select2 = Select(WebDriverWait(driver,10)\
-    .until(EC.element_to_be_clickable((By.ID,'ddlMesInicio'))))
+        time.sleep(1)
+        select1.select_by_value(str(i))
 
-    time.sleep(1)
-    select2.select_by_value("1")
+        select2 = Select(WebDriverWait(driver,10)\
+        .until(EC.element_to_be_clickable((By.ID,'ddlMesInicio'))))
 
-    select3 = Select(WebDriverWait(driver,10)\
-    .until(EC.element_to_be_clickable((By.ID,'ddlMesFin'))))    
+        time.sleep(1)
+        select2.select_by_value("1")
 
-    time.sleep(1)
-    select3.select_by_value("13")
+        select3 = Select(WebDriverWait(driver,10)\
+        .until(EC.element_to_be_clickable((By.ID,'ddlMesFin'))))    
 
-    select4 = Select(WebDriverWait(driver,10)\
-    .until(EC.element_to_be_clickable((By.ID,'ddlMotivo'))))    
+        time.sleep(1)
+        select3.select_by_value("13")
 
-    time.sleep(1)
-    select4.select_by_value("0")
+        select4 = Select(WebDriverWait(driver,10)\
+        .until(EC.element_to_be_clickable((By.ID,'ddlMotivo'))))    
 
-    select5 = Select(WebDriverWait(driver,10)\
-    .until(EC.element_to_be_clickable((By.ID,'ddlTipoArchivo'))))    
+        time.sleep(1)
+        select4.select_by_value("0")
 
-    time.sleep(1)
-    select5.select_by_value("0")
+        select5 = Select(WebDriverWait(driver,10)\
+        .until(EC.element_to_be_clickable((By.ID,'ddlTipoArchivo'))))    
 
-    select6 = Select(WebDriverWait(driver,10)\
-    .until(EC.element_to_be_clickable((By.ID,'ddlEstatus'))))    
+        time.sleep(1)
+        select5.select_by_value("0")
 
-    time.sleep(1)
-    select6.select_by_value("0")
+        select6 = Select(WebDriverWait(driver,10)\
+        .until(EC.element_to_be_clickable((By.ID,'ddlEstatus'))))    
 
-    #select7 = Select(WebDriverWait(driver,10)\
-    #.until(EC.element_to_be_clickable((By.ID,'ddlTipoEnvio'))))    
+        time.sleep(1)
+        select6.select_by_value("0")
 
-    #time.sleep(1)
-    #select7.select_by_value("0")
+        #select7 = Select(WebDriverWait(driver,10)\
+        #.until(EC.element_to_be_clickable((By.ID,'ddlTipoEnvio'))))    
 
-    WebDriverWait(driver,15)\
-    .until(EC.element_to_be_clickable((By.ID,
-                                    'btnBuscar')))\
-                                    .click()
+        #time.sleep(1)
+        #select7.select_by_value("0")
+
+        WebDriverWait(driver,15)\
+        .until(EC.element_to_be_clickable((By.ID,
+                                        'btnBuscar')))\
+                                        .click()
+
+        time.sleep(5)
+
+
+        
+
+        registros = driver.find_element(By.XPATH,"/html/body/div[1]/div[1]/div/div/form/div/div[1]/label")
+        dat = registros.text.split(":")
+
+        if(dat[1].strip()!="0"):
+            cuenta_n =2
+            print(f"Hay acuses que descargar para este periodo: {i}, acuses totales:{dat[1]}")
+            #Procedemos a desacargas los archivos de contabilidad                        
+            tabla_acuses = driver.find_elements(By.XPATH,"/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr")  
+            print(len(tabla_acuses))
+
+            if(len(tabla_acuses)>1):
+                for acu in tabla_acuses:
+                    recepcion = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[10]/img"  
+                    WebDriverWait(driver,5)\
+                        .until(EC.element_to_be_clickable((By.XPATH,recepcion)))\
+                                                    .click()
+                    time.sleep(3)
+                    #driver.switch_to.default_content()
+                    print(driver.current_url)
+                    WebDriverWait(driver,5)\
+                        .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/div/input")))\
+                                                    .click()
+                    
+                
+                                            
+
+        else:
+            print(f"No se presento informacion para este periodo: {i}")
+            pass
+            
 
     time.sleep(5)
-
-
-    
-
-    registros = driver.find_element(By.XPATH,"/html/body/div[1]/div[1]/div/div/form/div/div[1]/label")
-    print(registros.text)
-
-    time.sleep(5)
-    
-
-  
-
-
-    
-
-
 except Exception as ex:
     traceback.print_exc()
     print("Error")
