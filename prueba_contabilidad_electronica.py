@@ -18,7 +18,8 @@ prefs = {
         'download.default_directory' : init.path_descarga,
         'download.prompt_for_download': False,
         "download.directory_upgrade": True,
-        "plugins.always_open_pdf_externally": True
+        "plugins.always_open_pdf_externally": True,
+        "safebrowsing.enabled": True
          }
 options.add_experimental_option('prefs', prefs)
 #options.add_argument("--user-data-dir=/tmp/selenium-user-data/")
@@ -100,7 +101,7 @@ try:
     #time.sleep(10)
     #comenzamos a iterar en las declaracion a partir del 2019
     anios = []
-    for x in range(2020,2020+1):
+    for x in range(2018,2020+1):
         anios.append(x)
 
     for i in anios:
@@ -170,6 +171,27 @@ try:
                 for acu in tabla_acuses:
                     print(cuenta_n)
                     if(cuenta_n<=len(tabla_acuses)):
+                        periodo = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[2]"
+                        nombre_archivo = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[6]"
+                        folio = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[7]"
+                        
+
+
+                        xml = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[12]/img"  
+                        sello_digital = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[13]/img"  
+
+                        WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,xml)))\
+                                                        .click()
+                    
+                        time.sleep(2)
+
+                        WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,sello_digital)))\
+                                                        .click()
+
+                        time.sleep(2)
+
                         recepcion = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[10]/img"  
                         WebDriverWait(driver,5)\
                             .until(EC.element_to_be_clickable((By.XPATH,recepcion)))\
@@ -187,7 +209,7 @@ try:
                             .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/iframe")))\
                                                         .get_attribute("src")
                           
-                        print(src)
+                        #print(src)
                         driver.get(src)
                         time.sleep(3)                          
                         WebDriverWait(driver,5)\
@@ -195,6 +217,35 @@ try:
                                                         .click()
                         driver.switch_to.window(original_window)
                         driver.switch_to.frame(iframe)
+
+                        time.sleep(2)
+
+                        resultados = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[11]/img"  
+                        WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,resultados)))\
+                                                        .click()
+                        time.sleep(3)
+                        #driver.switch_to.default_content()
+                        all_windows = driver.window_handles
+                        # Switch to the new window
+                        for window_handle in all_windows:
+                            if window_handle != original_window:
+                                driver.switch_to.window(window_handle)
+                                break
+                        
+                        src = WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/iframe")))\
+                                                        .get_attribute("src")
+                          
+                        #print(src)
+                        driver.get(src)
+                        time.sleep(3)                          
+                        WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/div/input")))\
+                                                        .click()
+                        driver.switch_to.window(original_window)
+                        driver.switch_to.frame(iframe)
+
                         cuenta_n = cuenta_n + 1
                     
                 
