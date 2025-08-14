@@ -80,12 +80,13 @@ try:
                                     '/html/body/main/div/div/div[1]/form/div[5]/div/input[2]')))\
                                     .click()
     log.write("info","Click Acceso")
-    time.sleep(5)
+    time.sleep(3)
 
 except Exception as ex:
     log.write("error","No fue posible logearse, intentar mas tarde!")
 
 try:
+    time.sleep(8)
     driver.get('https://wwwmat.sat.gob.mx/consultas/login/16203/consulta-tus-acuses-generados-en-la-aplicacion-contabilidad-electronica')
     iframe = driver.find_element(By.ID, "iframetoload")
     driver.switch_to.frame(iframe)
@@ -99,7 +100,7 @@ try:
     #time.sleep(10)
     #comenzamos a iterar en las declaracion a partir del 2019
     anios = []
-    for x in range(2015,2020+1):
+    for x in range(2020,2020+1):
         anios.append(x)
 
     for i in anios:
@@ -159,7 +160,7 @@ try:
         dat = registros.text.split(":")
 
         if(dat[1].strip()!="0"):
-            cuenta_n =2
+            cuenta_n = 2
             print(f"Hay acuses que descargar para este periodo: {i}, acuses totales:{dat[1]}")
             #Procedemos a desacargas los archivos de contabilidad                        
             tabla_acuses = driver.find_elements(By.XPATH,"/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr")  
@@ -167,22 +168,34 @@ try:
             original_window = driver.current_window_handle
             if(len(tabla_acuses)>1):
                 for acu in tabla_acuses:
-                    recepcion = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[10]/img"  
-                    WebDriverWait(driver,5)\
-                        .until(EC.element_to_be_clickable((By.XPATH,recepcion)))\
-                                                    .click()
-                    time.sleep(3)
-                    #driver.switch_to.default_content()
-                    all_windows = driver.window_handles
-                    # Switch to the new window
-                    for window_handle in all_windows:
-                        if window_handle != original_window:
-                            driver.switch_to.window(window_handle)
-                            break
-                    WebDriverWait(driver,5)\
-                        .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/div/input")))\
-                                                    .click()
-                    driver.switch_to.window(original_window)
+                    print(cuenta_n)
+                    if(cuenta_n<=len(tabla_acuses)):
+                        recepcion = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[10]/img"  
+                        WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,recepcion)))\
+                                                        .click()
+                        time.sleep(3)
+                        #driver.switch_to.default_content()
+                        all_windows = driver.window_handles
+                        # Switch to the new window
+                        for window_handle in all_windows:
+                            if window_handle != original_window:
+                                driver.switch_to.window(window_handle)
+                                break
+                        
+                        src = WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/iframe")))\
+                                                        .get_attribute("src")
+                          
+                        print(src)
+                        driver.get(src)
+                        time.sleep(3)                          
+                        WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/div/input")))\
+                                                        .click()
+                        driver.switch_to.window(original_window)
+                        driver.switch_to.frame(iframe)
+                        cuenta_n = cuenta_n + 1
                     
                 
                                             
