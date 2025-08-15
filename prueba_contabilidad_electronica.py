@@ -10,6 +10,7 @@ import init
 import requests
 from clases.logs import Log
 import traceback
+import os,glob
 
 log = Log("logs/log_constancia.log")
 
@@ -174,77 +175,107 @@ try:
                         periodo = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[2]"
                         nombre_archivo = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[6]"
                         folio = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[7]"
+                        estatus = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[9]"
                         
+                        #procedemos a obtener los datos generales de cada registro
+
+                        periodo_v = WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,periodo)))\
+                                                        .text
+                        
+                        nombre_archivo_v = WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,nombre_archivo)))\
+                                                        .text
+                        
+                        folio_v = WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,folio)))\
+                                                        .text
+                        
+                        estatus_v = WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,estatus)))\
+                                                        .text
 
 
+
+                        #comenzamos a realizar la descarga de cada uno de los archivos contenidos por cada registro
                         xml = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[12]/img"  
                         sello_digital = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[13]/img"  
 
-                        WebDriverWait(driver,5)\
-                            .until(EC.element_to_be_clickable((By.XPATH,xml)))\
-                                                        .click()
+
+                        #Si el archivo Zip de la columna XML no ha sido descargado, entonces procedemos a descargarlo
+                        if not (os.path.exists(init.path_descarga+"/"+nombre_archivo_v)):
+                            WebDriverWait(driver,5)\
+                                .until(EC.element_to_be_clickable((By.XPATH,xml)))\
+                                                            .click()
                     
-                        time.sleep(2)
+                            time.sleep(2)
+                        #Si el archivo xml que contiene el sello digital no ha sido descargado entonces lo descargamos    
+                        if not (os.path.exists(init.path_descarga+"/SelloDigital_"+folio_v+".xml")):
+                            WebDriverWait(driver,5)\
+                                .until(EC.element_to_be_clickable((By.XPATH,sello_digital)))\
+                                                            .click()
 
-                        WebDriverWait(driver,5)\
-                            .until(EC.element_to_be_clickable((By.XPATH,sello_digital)))\
-                                                        .click()
+                            time.sleep(2)
 
-                        time.sleep(2)
+                        if not (os.path.exists(init.path_descarga+"/AR_"+folio_v+".pdf")):
+                            recepcion = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[10]/img"  
+                            WebDriverWait(driver,5)\
+                                .until(EC.element_to_be_clickable((By.XPATH,recepcion)))\
+                                                            .click()
+                            time.sleep(3)
+                            #driver.switch_to.default_content()
+                            all_windows = driver.window_handles
+                            # Switch to the new window
+                            for window_handle in all_windows:
+                                if window_handle != original_window:
+                                    driver.switch_to.window(window_handle)
+                                    break
+                            
+                            src = WebDriverWait(driver,5)\
+                                .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/iframe")))\
+                                                            .get_attribute("src")
+                            
+                            #print(src)
+                            driver.get(src)
+                            time.sleep(3)                          
+                            WebDriverWait(driver,5)\
+                                .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/div/input")))\
+                                                            .click()
+                            driver.switch_to.window(original_window)
+                            driver.switch_to.frame(iframe)
 
-                        recepcion = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[10]/img"  
-                        WebDriverWait(driver,5)\
-                            .until(EC.element_to_be_clickable((By.XPATH,recepcion)))\
-                                                        .click()
-                        time.sleep(3)
-                        #driver.switch_to.default_content()
-                        all_windows = driver.window_handles
-                        # Switch to the new window
-                        for window_handle in all_windows:
-                            if window_handle != original_window:
-                                driver.switch_to.window(window_handle)
-                                break
+                            time.sleep(2)
+
+                        #Si el archivo del resultado de la recepción no ha sido descargado entonces lo descargamos
+                        nombre_resultado = "APA_" if(estatus_v=="Aceptado") else "APR_"
+                        nombre_resultado = nombre_resultado + folio_v + ".pdf"    
+                        if not (os.path.exists(init.path_descarga+"/"+nombre_resultado)):
+                            resultados = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[11]/img"  
+                            WebDriverWait(driver,5)\
+                                .until(EC.element_to_be_clickable((By.XPATH,resultados)))\
+                                                            .click()
+                            time.sleep(3)
+                            #driver.switch_to.default_content()
+                            all_windows = driver.window_handles
+                            # Switch to the new window
+                            for window_handle in all_windows:
+                                if window_handle != original_window:
+                                    driver.switch_to.window(window_handle)
+                                    break
+                            
+                            src = WebDriverWait(driver,5)\
+                                .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/iframe")))\
+                                                            .get_attribute("src")
+                            
+                            #print(src)
+                            driver.get(src)
+                            time.sleep(3)                          
+                            WebDriverWait(driver,5)\
+                                .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/div/input")))\
+                                                            .click()
+                            driver.switch_to.window(original_window)
+                            driver.switch_to.frame(iframe)
                         
-                        src = WebDriverWait(driver,5)\
-                            .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/iframe")))\
-                                                        .get_attribute("src")
-                          
-                        #print(src)
-                        driver.get(src)
-                        time.sleep(3)                          
-                        WebDriverWait(driver,5)\
-                            .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/div/input")))\
-                                                        .click()
-                        driver.switch_to.window(original_window)
-                        driver.switch_to.frame(iframe)
-
-                        time.sleep(2)
-
-                        resultados = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[11]/img"  
-                        WebDriverWait(driver,5)\
-                            .until(EC.element_to_be_clickable((By.XPATH,resultados)))\
-                                                        .click()
-                        time.sleep(3)
-                        #driver.switch_to.default_content()
-                        all_windows = driver.window_handles
-                        # Switch to the new window
-                        for window_handle in all_windows:
-                            if window_handle != original_window:
-                                driver.switch_to.window(window_handle)
-                                break
-                        
-                        src = WebDriverWait(driver,5)\
-                            .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/iframe")))\
-                                                        .get_attribute("src")
-                          
-                        #print(src)
-                        driver.get(src)
-                        time.sleep(3)                          
-                        WebDriverWait(driver,5)\
-                            .until(EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div/div/input")))\
-                                                        .click()
-                        driver.switch_to.window(original_window)
-                        driver.switch_to.frame(iframe)
 
                         cuenta_n = cuenta_n + 1
                     
