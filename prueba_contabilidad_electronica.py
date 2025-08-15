@@ -11,6 +11,8 @@ import requests
 from clases.logs import Log
 import traceback
 import os,glob
+import pathlib
+from clases.metas import writeMeta
 
 log = Log("logs/log_constancia.log")
 
@@ -162,6 +164,11 @@ try:
         dat = registros.text.split(":")
 
         if(dat[1].strip()!="0"):
+            for file in pathlib.Path(init.path_descarga).glob(f'{init.rfc}{i}*.zip'):
+                try:
+                    file.unlink()
+                except:
+                    pass
             cuenta_n = 2
             print(f"Hay acuses que descargar para este periodo: {i}, acuses totales:{dat[1]}")
             #Procedemos a desacargas los archivos de contabilidad                        
@@ -203,18 +210,17 @@ try:
 
 
                         #Si el archivo Zip de la columna XML no ha sido descargado, entonces procedemos a descargarlo
-                        if not (os.path.exists(init.path_descarga+"/"+nombre_archivo_v)):
-                            WebDriverWait(driver,5)\
-                                .until(EC.element_to_be_clickable((By.XPATH,xml)))\
+                        #if not (os.path.exists(init.path_descarga+"/"+nombre_archivo_v)):
+                        WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,xml)))\
                                                             .click()
                     
-                            time.sleep(2)
+                        time.sleep(2)
                         #Si el archivo xml que contiene el sello digital no ha sido descargado entonces lo descargamos    
                         if not (os.path.exists(init.path_descarga+"/SelloDigital_"+folio_v+".xml")):
                             WebDriverWait(driver,5)\
                                 .until(EC.element_to_be_clickable((By.XPATH,sello_digital)))\
                                                             .click()
-
                             time.sleep(2)
 
                         if not (os.path.exists(init.path_descarga+"/AR_"+folio_v+".pdf")):
@@ -275,8 +281,8 @@ try:
                                                             .click()
                             driver.switch_to.window(original_window)
                             driver.switch_to.frame(iframe)
-                        
-
+                        registro = folio_v +"|"+estatus_v+"&"
+                        writeMeta(init.path_descarga+"/meta"+str(i)+".txt",registro)
                         cuenta_n = cuenta_n + 1
                     
                 
