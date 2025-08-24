@@ -2,6 +2,7 @@ from selenium import webdriver;
 from selenium.webdriver.support.ui import WebDriverWait;
 from selenium.webdriver.support import expected_conditions as EC;
 from selenium.webdriver.common.by import By;
+from selenium.webdriver.common.action_chains import ActionChains
 import time;
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
@@ -87,13 +88,18 @@ try:
     time.sleep(3)
 
 except Exception as ex:
+    print("Ocurrio un error mientras se intentaba logear")
     log.write("error","No fue posible logearse, intentar mas tarde!")
+    driver.close()
+    exit()
 
 try:
-    time.sleep(8)
-    driver.get('https://wwwmat.sat.gob.mx/consultas/login/16203/consulta-tus-acuses-generados-en-la-aplicacion-contabilidad-electronica')
-    iframe = driver.find_element(By.ID, "iframetoload")
-    driver.switch_to.frame(iframe)
+    print("Procedemos a realizar la consulta de los acuses correspondientes ")
+    time.sleep(15)
+    driver.get('https://wwwmat.sat.gob.mx/operacion/16203/consulta-tus-acuses-generados-en-la-aplicacion-contabilidad-electronica') 
+    iframe = driver.find_element(By.ID, "iframetoload")    
+    WebDriverWait(driver, 30).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "iframetoload")))           
+    #driver.switch_to.frame(iframe)
     
     time.sleep(5)
     
@@ -103,11 +109,20 @@ try:
     
     #time.sleep(10)
     #comenzamos a iterar en las declaracion a partir del 2019
+    resultados_p = {}
     anios = []
-    for x in range(2018,2020+1):
+    for x in range(2015,2020+1):
         anios.append(x)
 
     for i in anios:
+        #Si el archivo de meta de este anio esta creado entonces procedemos a eliminarlo
+
+        try:
+            if(os.path.exists(init.path_descarga+"/meta"+str(i)+".txt")):
+                os.remove(init.path_descarga+"/meta"+str(i)+".txt")
+        except:
+            pass
+
         select1 = Select(WebDriverWait(driver,10)\
         .until(EC.element_to_be_clickable((By.ID,'ddlAnio'))))
 
@@ -176,6 +191,7 @@ try:
             print(len(tabla_acuses))
             original_window = driver.current_window_handle
             if(len(tabla_acuses)>1):
+                resultados_p[str(i)] = init.path_descarga+"/meta"+str(i)+".txt"
                 for acu in tabla_acuses:
                     print(cuenta_n)
                     if(cuenta_n<=len(tabla_acuses)):
@@ -185,6 +201,9 @@ try:
                         estatus = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[9]"
                         
                         #procedemos a obtener los datos generales de cada registro
+                        periodo_v_s = WebDriverWait(driver,5)\
+                            .until(EC.element_to_be_clickable((By.XPATH,periodo)))
+                                                        
 
                         periodo_v = WebDriverWait(driver,5)\
                             .until(EC.element_to_be_clickable((By.XPATH,periodo)))\
@@ -203,6 +222,8 @@ try:
                                                         .text
 
 
+                        #colocamos el scroll en el elemento que corresponde para que pueda ser descargado
+                        ActionChains(driver).move_to_element(periodo_v_s).perform()
 
                         #comenzamos a realizar la descarga de cada uno de los archivos contenidos por cada registro
                         xml = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[12]/img"  
@@ -215,7 +236,7 @@ try:
                             .until(EC.element_to_be_clickable((By.XPATH,xml)))\
                                                             .click()
                     
-                        time.sleep(2)
+                        time.sleep(3)
                         #Si el archivo xml que contiene el sello digital no ha sido descargado entonces lo descargamos    
                         if not (os.path.exists(init.path_descarga+"/SelloDigital_"+folio_v+".xml")):
                             WebDriverWait(driver,5)\
@@ -283,18 +304,18 @@ try:
                             driver.switch_to.frame(iframe)
                         registro = folio_v +"|"+estatus_v+"&"
                         writeMeta(init.path_descarga+"/meta"+str(i)+".txt",registro)
-                        cuenta_n = cuenta_n + 1
-                    
-                
-                                            
-
+                        cuenta_n = cuenta_n + 1                                                                                                            
         else:
-            print(f"No se presento informacion para este periodo: {i}")
-            pass
-            
-
+            resultados_p[str(i)] = "Sin acuses de contabililidad"
+            print(f"No se presento informacion para este periodo: {i}")                               
+        
     time.sleep(5)
+    print (resultados_p)    
 except Exception as ex:
     traceback.print_exc()
     print("Error")
-    pass
+    driver.close()
+    exit()
+
+driver.close()
+exit()

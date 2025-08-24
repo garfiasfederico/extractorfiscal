@@ -10,6 +10,8 @@ import declaraciones_mensuales
 import descarga_declaraciones_mensuales
 import declaraciones_mensuales_a
 import declaraciones_mensuales_p
+import descarga_contabilidad_electronica
+import contabildad_electronica
 app = FastAPI()
 
 
@@ -36,12 +38,16 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
         resultado =  declaraciones_mensuales_a.getdeclaramensualesa(rfc,anio_inicio,anio_fin)       
     elif req.lower()=="dmp":
         resultado =  declaraciones_mensuales_p.getdeclaramensualesp(rfc,anio_inicio,anio_fin)       
+    elif req.lower()=="dce":
+        resultado =  contabildad_electronica.getcontabilidadelectronica(rfc,anio_inicio,anio_fin)       
     elif req.lower()=="ddm":
         resultado =  descarga_declaraciones_mensuales.getfilesdm(rfc,anio_inicio,anio_fin,"DM")   
     elif req.lower()=="ddma":
         resultado =  descarga_declaraciones_mensuales.getfilesdm(rfc,anio_inicio,anio_fin,"DMA")   
     elif req.lower()=="ddmp":
         resultado =  descarga_declaraciones_mensuales.getfilesdm(rfc,anio_inicio,anio_fin,"DMP")   
+    elif req.lower()=="ddce":
+        resultado =  descarga_contabilidad_electronica.getfilescontabilidadelectronica(rfc,anio_inicio,anio_fin,"CE")       
     else:
         return{
             "message":f"El requerimiento {req} no existe en nuestro catálogo"
