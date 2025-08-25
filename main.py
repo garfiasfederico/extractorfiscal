@@ -63,7 +63,7 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
                 "result":resultado["result"],
                 "message":resultado["message"],
                 "files":resultado["files"],
-                "error":resultado["error"]
+                "error":resultado["error"] if(resultado.has_key("error")) else ""
                 }
     else:
         return {
