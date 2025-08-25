@@ -331,7 +331,8 @@ def getcontabilidadelectronica(rfc_c:str,inicial:int,final:int):
             return {
                 "result" : "error",
                 "message" : f"Ocurriò un error durante la descarga de los acuses de contabilidad, favor de volver a intentar!",
-                "files" : None
+                "files" : None,
+                "error" : ex
             }
             exit()
     else:
