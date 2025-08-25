@@ -332,7 +332,7 @@ def getcontabilidadelectronica(rfc_c:str,inicial:int,final:int):
                 "files" : resultados_p
             }  
         except Exception as ex:
-            #traceback.print_exc()
+            traceback.print_exc()
             #print("Error")            
             driver.close()
             return {
