@@ -52,26 +52,13 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
         return{
             "message":f"El requerimiento {req} no existe en nuestro catálogo"
         }
-
-
-    if(resultado["result"]=="error"):
-        return {
-                "rfc": rfc, 
-                "req": req, 
-                "anio_inicio":anio_inicio,
-                "anio_final":anio_fin,
-                "result":resultado["result"],
-                "message":resultado["message"],
-                "files":resultado["files"],
-                "error":resultado["error"] if(resultado.has_key("error")) else ""
-                }
-    else:
-        return {
-                "rfc": rfc, 
-                "req": req, 
-                "anio_inicio":anio_inicio,
-                "anio_final":anio_fin,
-                "result":resultado["result"],
-                "message":resultado["message"],
-                "files":resultado["files"]
-                }
+    
+    return {
+            "rfc": rfc, 
+            "req": req, 
+            "anio_inicio":anio_inicio,
+            "anio_final":anio_fin,
+            "result":resultado["result"],
+            "message":resultado["message"],
+            "files":resultado["files"]
+            }
