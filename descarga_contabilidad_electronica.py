@@ -95,5 +95,6 @@ def getfilescontabilidadelectronica(rfc,inicio,final,repo):
          return {
             "rfc" : rfc,
             "result" : "error",
-            "message" : f"El espositorio no existe {path_descarga}",            
+            "message" : f"El espositorio no existe {path_descarga}",  
+            "files":None          
         } 
