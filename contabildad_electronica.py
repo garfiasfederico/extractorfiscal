@@ -330,7 +330,7 @@ def getcontabilidadelectronica(rfc_c:str,inicial:int,final:int):
             driver.close()
             return {
                 "result" : "error",
-                "message" : f"Ocurriò un error durante la descarga de los acuses de contabilidad, favor de volver a intentar!",
+                "message" : f"Ocurriò un error durante la descarga de los acuses de contabilidad, favor de volver a intentar! "+traceback.print_exc(),
                 "files" : None,
                 "error" : ex
             }
