@@ -38,7 +38,12 @@ def getcontabilidadelectronica(rfc_c:str,inicial:int,final:int):
         #Opciones de navegacion
 
         options = webdriver.ChromeOptions() #Options()
-        prefs = {'download.default_directory' : descarga}
+        prefs = {'download.default_directory' : descarga,
+                 'download.prompt_for_download': False,
+                 "download.directory_upgrade": True,
+                 "plugins.always_open_pdf_externally": True,
+                 "safebrowsing.enabled": True
+                 }
         options.add_experimental_option('prefs', prefs)
         #options.add_argument("--user-data-dir=/tmp/selenium-user-data/")
         options.add_argument('--no-sandbox')
@@ -107,12 +112,7 @@ def getcontabilidadelectronica(rfc_c:str,inicial:int,final:int):
             print("Procedemos a realizar la consulta de los acuses correspondientes ")            
             driver.get('https://wwwmat.sat.gob.mx/operacion/16203/consulta-tus-acuses-generados-en-la-aplicacion-contabilidad-electronica') 
             time.sleep(15)
-            #iframe = driver.find_element(By.ID, "iframetoload")  
-
-            iframe = WebDriverWait(driver, 15)\
-                            .until(EC.element_to_be_clickable((By.ID,
-                                                            'iframetoload')))
-
+            iframe = driver.find_element(By.ID, "iframetoload")              
 
             WebDriverWait(driver, 30).until(EC.frame_to_be_available_and_switch_to_it((By.ID, "iframetoload")))           
             #driver.switch_to.frame(iframe)
