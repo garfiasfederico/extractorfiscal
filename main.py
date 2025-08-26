@@ -12,6 +12,7 @@ import declaraciones_mensuales_a
 import declaraciones_mensuales_p
 import descarga_contabilidad_electronica
 import contabildad_electronica
+import opinion_imss
 app = FastAPI()
 
 
@@ -61,4 +62,21 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
             "result":resultado["result"],
             "message":resultado["message"],
             "files":resultado["files"]
+            }
+
+@app.get("/imss/extract/docopinion/{rfc}")
+def get_docs(rfc: str,req: str):
+    if(req.lower()=="do"):
+        resultado = opinion_imss.getopinionimss(rfc)
+    else:
+        return{
+            "message":f"El requerimiento {req} no existe en nuestro catálogo"
+        }
+    
+    return {
+            "rfc": rfc, 
+            "req": req,             
+            "result":resultado["result"],
+            "message":resultado["message"],
+            "doc":resultado["doc"]
             }
