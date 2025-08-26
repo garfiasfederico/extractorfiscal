@@ -23,9 +23,7 @@ options = webdriver.ChromeOptions() #Options()
 prefs = {
         'download.default_directory' : init.path_descarga,
         'download.prompt_for_download': False,
-        "download.directory_upgrade": True,
-        "plugins.always_open_pdf_externally": True,
-        "safebrowsing.enabled": True
+        
          }
 options.add_experimental_option('prefs', prefs)
 #options.add_argument("--user-data-dir=/tmp/selenium-user-data/")
