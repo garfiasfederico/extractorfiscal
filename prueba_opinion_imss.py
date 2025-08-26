@@ -14,6 +14,7 @@ import traceback
 import os,glob
 import pathlib
 from clases.metas import writeMeta
+import parsepdf
 
 log = Log("logs/log_constancia.log")
 
@@ -103,7 +104,19 @@ try:
     WebDriverWait(driver,5)\
                 .until(EC.element_to_be_clickable((By.XPATH,"/html/body/main/div[3]/div/form/div/div/div[2]/div/a")))\
                                                    .click()
-    time.sleep(15)
+    time.sleep(30)
+    doc=""
+    path_doc_opinion = init.path_descarga + "/MiOpinion_"+ init.rfc + ".pdf"
+
+    for i in range(0,5):
+        if(os.path.exists(path_doc_opinion)):
+            doc = parsepdf.pdf_to_base64(path_doc_opinion)
+            break;
+        else:
+            time.sleep(10)
+
+
+    print(doc)
 except TimeoutException as ex:
     #traceback.print_exc()
     print("Este contribuyente no cuenta con la descarga del documento de opinión")

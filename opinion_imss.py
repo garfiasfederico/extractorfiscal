@@ -92,7 +92,7 @@ def getopinionimss(rfc_c:str):
             return {
                     "result" : "error",
                     "message" : "No fue posible logearse en buzon IMSS, intente más tarde!",
-                    "files": None
+                    "doc": None
                 }              
         
         try:              
@@ -119,7 +119,7 @@ def getopinionimss(rfc_c:str):
             return {
                     "result" : "error",
                     "message" : "No fue posible logearse en buzon IMSS, intente más tarde!",
-                    "files": None
+                    "doc": None
                 } 
     else:
         log.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")    
@@ -127,5 +127,5 @@ def getopinionimss(rfc_c:str):
         return {
             "result" : "not_found",
             "message" : f"Contribuyente: {rfc} no localizado en la base",
-            "files" : None
+            "doc" : None
         }
