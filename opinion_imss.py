@@ -122,8 +122,7 @@ def getopinionimss(rfc_c:str):
                     "doc": None
                 } 
     else:
-        log.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")    
-        driver.close()                           
+        log.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")                                     
         return {
             "result" : "not_found",
             "message" : f"Contribuyente: {rfc} no localizado en la base",
