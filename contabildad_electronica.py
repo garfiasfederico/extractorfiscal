@@ -239,7 +239,7 @@ def getcontabilidadelectronica(rfc_c:str,inicial:int,final:int):
 
 
                                 #colocamos el scroll en el elemento que corresponde para que pueda ser descargado
-                                ActionChains(driver).move_to_element(periodo_v_s).perform()
+                                #ActionChains(driver).move_to_element(periodo_v_s).perform()
 
                                 #comenzamos a realizar la descarga de cada uno de los archivos contenidos por cada registro
                                 xml = "/html/body/div[1]/div[1]/div/div/form/div/div[2]/div/table/tbody/tr["+str(cuenta_n)+"]/td[12]/img"  
