@@ -100,13 +100,13 @@ def getcontabilidadelectronica(rfc_c:str,inicial:int,final:int):
         except Exception as ex:        
             
             log.write("error","No fue posible logearse, intentar mas tarde!")
-            driver.close()
+            #driver.close()
             return {
                 "result" : "error",
                 "message" : f"Ocurrió un error en el logeo, intente mas tarde!",
                 "files" : None
             }
-            exit()
+            
         
         try:
             print("Procedemos a realizar la consulta de los acuses correspondientes ")            
