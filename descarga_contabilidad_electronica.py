@@ -7,6 +7,8 @@ log = Log("logs/extractor.log")
 
 def getfilescontabilidadelectronica(rfc,inicio,final,repo):    
     path_descarga = "/root/"+rfc+"/"+repo
+    #path_descarga = "E:\\SAT\\"+rfc+"\\"+repo
+
     log.write("info",f" {rfc} - Descarga de archivos Declaraciones Provisionales "+repo)
     if(os.path.exists(path_descarga)):
         resultados = {}
@@ -40,7 +42,7 @@ def getfilescontabilidadelectronica(rfc,inicio,final,repo):
                         path_acuse_recepcion = path_descarga+"/"+f"AR_{f_m[0]}.pdf"
                         if(os.path.exists(path_acuse_recepcion)):
                             #print(f"El acuse de recepcion del folio: {f_m[0]}")                            
-                            acuses_recepcion_archivos.append(parsepdf.pdf_to_base64(path_acuse_recepcion))
+                            acuses_recepcion_archivos.append(f"{f_m[0]}|"+parsepdf.pdf_to_base64(path_acuse_recepcion))
                         
                         #obtenemos los pdf de acuses de procesamiento
                         if(f_m[1]=="Aceptado"):
@@ -49,16 +51,17 @@ def getfilescontabilidadelectronica(rfc,inicio,final,repo):
                             path_acuse_procesamiento = path_descarga+"/"+f"APR_{f_m[0]}.pdf"
                         
                         if(os.path.exists(path_acuse_procesamiento)):
-                            acuses_procesamiento.append(parsepdf.pdf_to_base64(path_acuse_procesamiento))
+                            acuses_procesamiento.append(f"{f_m[0]}"+parsepdf.pdf_to_base64(path_acuse_procesamiento))
 
                         #obtenemos los archivos de sello
                         path_acuse_sello = path_descarga+"/"+f"SelloDigital_{f_m[0]}.xml"
                         if(os.path.exists(path_acuse_sello)):
-                            acuses_sellos.append(parsepdf.pdf_to_base64(path_acuse_sello))
+                            acuses_sellos.append(f"{f_m[0]}|"+parsepdf.pdf_to_base64(path_acuse_sello))
 
                         #obtenemos los archivos zip
                         for zip_file in pathlib.Path(path_descarga).glob(f'{rfc}{str(i)}*.zip'):    
-                            acuses_zip.append(parsepdf.pdf_to_base64(zip_file))
+                            nombre = str(zip_file).split(os.sep)                            
+                            acuses_zip.append(nombre[len(nombre)-1].replace(".zip","")+"|"+parsepdf.pdf_to_base64(zip_file))
                         
 
                         #obtenemos     
@@ -66,8 +69,8 @@ def getfilescontabilidadelectronica(rfc,inicio,final,repo):
                 resultados[str(i)] ={
                     "acuses_recepcion":acuses_recepcion_archivos,
                     "acuses_procesamiento":acuses_procesamiento,
-                    "acuses_zip":acuses_sellos,
-                    "acuses_sellos":acuses_zip,
+                    "acuses_zip":acuses_zip,
+                    "acuses_sellos":acuses_sellos,
                 } 
 
                     
