@@ -51,7 +51,7 @@ def getfilescontabilidadelectronica(rfc,inicio,final,repo):
                             path_acuse_procesamiento = path_descarga+"/"+f"APR_{f_m[0]}.pdf"
                         
                         if(os.path.exists(path_acuse_procesamiento)):
-                            acuses_procesamiento.append(f"{f_m[0]}"+parsepdf.pdf_to_base64(path_acuse_procesamiento))
+                            acuses_procesamiento.append(f"{f_m[0]}|"+parsepdf.pdf_to_base64(path_acuse_procesamiento))
 
                         #obtenemos los archivos de sello
                         path_acuse_sello = path_descarga+"/"+f"SelloDigital_{f_m[0]}.xml"
