@@ -120,7 +120,7 @@ def getopinionimss(rfc_c:str):
             traceback.print_exc()
             return {
                     "result" : "error",
-                    "message" : "No fue posible logearse en buzon IMSS, intente más tarde!"+str(ex),
+                    "message" : "Actualmente este Usuario no tiene activado el buzon IMSS !",
                     "doc": None
                 } 
     else:
