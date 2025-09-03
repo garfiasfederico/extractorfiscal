@@ -118,7 +118,7 @@ def getopinionimss(rfc_c:str):
             driver.close()
             return {
                     "result" : "error",
-                    "message" : "No fue posible logearse en buzon IMSS, intente más tarde!",
+                    "message" : "No fue posible logearse en buzon IMSS, intente más tarde!"+str(ex),
                     "doc": None
                 } 
     else:
