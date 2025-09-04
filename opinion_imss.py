@@ -14,6 +14,7 @@ from selenium.common.exceptions import InvalidArgumentException
 import parsepdf
 import pathlib, os
 from selenium.webdriver.chrome.service import Service
+import traceback
 
 log = Log("logs/extractor.log")
 
@@ -91,7 +92,7 @@ def getopinionimss(rfc_c:str):
             driver.close()
             return {
                     "result" : "error",
-                    "message" : "No fue posible logearse en buzon IMSS, intente más tarde!",
+                    "message" : "No fue posible logearse en buzon IMSS, intente más tarde!"+str(ex),
                     "doc": None
                 }              
         
@@ -120,9 +121,10 @@ def getopinionimss(rfc_c:str):
 
         except TimeoutException as ex:
             driver.close()
+            traceback.print_exc()
             return {
                     "result" : "error",
-                    "message" : "No fue posible logearse en buzon IMSS, intente más tarde!",
+                    "message" : "Actualmente este Usuario no tiene activado el buzon IMSS !",
                     "doc": None
                 } 
     else:
