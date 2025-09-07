@@ -80,7 +80,7 @@ def get_docs(rfc: str,req: str):
     return {
             "rfc": rfc, 
             "req": req,             
-            "result":resultado["result"],
-            "message":resultado["message"],
-            "doc":resultado["doc"]
+            "result":resultado.result,
+            "message":resultado.message,
+            "doc":resultado.doc
             }
