@@ -68,7 +68,8 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
 @app.get("/imss/extract/docopinion/{rfc}")
 def get_docs(rfc: str,req: str):
     if(req.lower()=="do"):
-        resultado = opinion_imss.getopinionimss(rfc)
+        data = {}
+        resultado = opinion_imss.getopinionimss(data,rfc)
         #resultado_ = {}
         #resultado = Thread(target=opinion_imss.getopinionimss,args=(resultado_,rfc,))
         #resultado.start() 
