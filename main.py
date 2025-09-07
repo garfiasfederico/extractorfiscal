@@ -68,15 +68,15 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
 @app.get("/imss/extract/docopinion/{rfc}")
 def get_docs(rfc: str,req: str):
     if(req.lower()=="do"):
-        #data = {}
-        #resultado = opinion_imss.getopinionimss(data,rfc)
-        max_multitareas = 10
-        barri = Barrier(max_multitareas)
-        resultado_ = {}
+        data = {}
+        resultado = opinion_imss.getopinionimss(data,rfc)
+        #max_multitareas = 10
+        #barri = Barrier(max_multitareas)
+        #resultado_ = {}
 
-        resultado = Thread(target=opinion_imss.getopinionimss,args=(barri,resultado_,rfc,))
-        resultado.start() 
-        resultado_ = resultado.join()
+        #resultado = Thread(target=opinion_imss.getopinionimss,args=(barri,resultado_,rfc,))
+        #resultado.start() 
+        #resultado_ = resultado.join()
     
     else:
         return{
@@ -84,7 +84,7 @@ def get_docs(rfc: str,req: str):
         }
     
     
-    return resultado_
+    #return resultado_
     return {
             "rfc": rfc, 
             "req": req,             
