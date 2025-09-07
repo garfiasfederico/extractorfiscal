@@ -68,22 +68,22 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
 @app.get("/imss/extract/docopinion/{rfc}")
 def get_docs(rfc: str,req: str):
     if(req.lower()=="do"):
-        #resultado = opinion_imss.getopinionimss(rfc)
-        resultado_ = {}
-        resultado = Thread(target=opinion_imss.getopinionimss,args=(resultado_,rfc,))
-        resultado.start() 
-        return resultado.join()       
+        resultado = opinion_imss.getopinionimss(rfc)
+        #resultado_ = {}
+        #resultado = Thread(target=opinion_imss.getopinionimss,args=(resultado_,rfc,))
+        #resultado.start() 
+    
     else:
         return{
             "message":f"El requerimiento {req} no existe en nuestro catálogo"
         }
     
     
-    return resultado_
+    
     return {
             "rfc": rfc, 
             "req": req,             
-            "result":resultado_["result"],
-            "message":resultado_["message"],
-            "doc":resultado_["doc"]
+            "result":resultado["result"],
+            "message":resultado["message"],
+            "doc":resultado["doc"]
             }
