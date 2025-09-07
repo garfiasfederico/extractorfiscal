@@ -84,7 +84,7 @@ def get_docs(rfc: str,req: str):
         }
     
     
-    
+    return resultado_
     return {
             "rfc": rfc, 
             "req": req,             
