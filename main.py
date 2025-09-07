@@ -70,14 +70,15 @@ def get_docs(rfc: str,req: str):
     if(req.lower()=="do"):
         #resultado = opinion_imss.getopinionimss(rfc)
         resultado = Thread(target=opinion_imss.getopinionimss,args=(rfc))
-        resultado.start()        
+        resultado.start() 
+        resultado.join()       
     else:
         return{
             "message":f"El requerimiento {req} no existe en nuestro catálogo"
         }
     
-    resultado.join()
-    return resultado
+    
+    return "Culminado"
     return {
             "rfc": rfc, 
             "req": req,             
