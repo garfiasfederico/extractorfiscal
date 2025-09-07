@@ -106,8 +106,12 @@ def getopinionimss(rfc_c:str):
             time.sleep(15)
             doc=""
             path_doc_opinion = descarga + "/MiOpinion_"+ getdatacompany.contribuyente + ".pdf"
-            if(os.path.exists(path_doc_opinion)):
-                            doc = parsepdf.pdf_to_base64(path_doc_opinion)
+            for i in range(0,5):
+                if(os.path.exists(path_doc_opinion)):
+                    doc = parsepdf.pdf_to_base64(path_doc_opinion)
+                    break;
+                else:
+                    time.sleep(10)            
 
             return {
                     "result" : "success",
