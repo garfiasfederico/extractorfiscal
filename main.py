@@ -69,7 +69,8 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
 def get_docs(rfc: str,req: str):
     if(req.lower()=="do"):
         #resultado = opinion_imss.getopinionimss(rfc)
-        resultado = Thread(target=opinion_imss.getopinionimss,args=(rfc,))
+        resultado_ = {}
+        resultado = Thread(target=opinion_imss.getopinionimss,args=(resultado_,rfc,))
         resultado.start() 
         resultado.join()       
     else:
@@ -78,11 +79,11 @@ def get_docs(rfc: str,req: str):
         }
     
     
-    return resultado
+    
     return {
             "rfc": rfc, 
             "req": req,             
-            "result":resultado_.result,
-            "message":resultado_.message,
-            "doc":resultado_.doc
+            "result":resultado_["result"],
+            "message":resultado_["message"],
+            "doc":resultado_["doc"]
             }

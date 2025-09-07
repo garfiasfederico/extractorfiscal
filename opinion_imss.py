@@ -18,7 +18,7 @@ import traceback
 
 log = Log("logs/extractor.log")
 
-def getopinionimss(rfc_c:str):
+def getopinionimss(contenedor,rfc_c:str):
     resultados = {}
     rfc = rfc_c
     descarga = "/root/"+rfc+"/IMSS"
@@ -90,11 +90,12 @@ def getopinionimss(rfc_c:str):
             print("Ocurrio un error mientras se intentaba logear en el sitio del buzon del IMSS")
             log.write("error","No fue posible logearse, intentar mas tarde!")
             driver.close()
-            return {
+            contenedor = {
                     "result" : "error",
                     "message" : "No fue posible logearse en buzon IMSS, intente más tarde!"+str(ex),
                     "doc": None
                 }              
+            return contenedor
         
         try:              
             log.write("info",f"Procedemos a la descarga del documento de opinion: {getdatacompany.contribuyente}")
@@ -113,24 +114,28 @@ def getopinionimss(rfc_c:str):
                 else:
                     time.sleep(10)            
 
-            return {
+            contenedor = {
                     "result" : "success",
                     "message" : "El documento de opinión ha sido descargado satisfactoriamente!",
                     "doc":  doc
                 }
+            return contenedor
 
         except TimeoutException as ex:
             driver.close()
             traceback.print_exc()
-            return {
+
+            contenedor = {
                     "result" : "error",
                     "message" : "Actualmente este Usuario no tiene activado el buzon IMSS !",
                     "doc": None
                 } 
+            return contenedor
     else:
         log.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")                                     
-        return {
+        contenedor = {
             "result" : "not_found",
             "message" : f"Contribuyente: {rfc} no localizado en la base",
             "doc" : None
         }
+        return contenedor
