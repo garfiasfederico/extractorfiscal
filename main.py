@@ -76,7 +76,8 @@ def get_docs(rfc: str,req: str):
             "message":f"El requerimiento {req} no existe en nuestro catálogo"
         }
     
-    return resultado.join()
+    resultado.join()
+    return resultado
     return {
             "rfc": rfc, 
             "req": req,             
