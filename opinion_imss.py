@@ -18,7 +18,7 @@ import traceback
 
 log = Log("logs/extractor.log")
 
-def getopinionimss(contenedor,rfc_c:str):
+def getopinionimss(threads,contenedor,rfc_c:str):
     resultados = {}
     rfc = rfc_c
     descarga = "/root/"+rfc+"/IMSS"
