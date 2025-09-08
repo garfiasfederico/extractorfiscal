@@ -84,11 +84,11 @@ async def get_docs(rfc: str,req: str):
     
     
     return_value = resultado.return_value
-    return return_value
+    
     return {
             "rfc": rfc, 
             "req": req,             
-            "result":resultado["result"],
-            "message":resultado["message"],
-            "doc":resultado["doc"]
+            "result":return_value["result"],
+            "message":return_value["message"],
+            "doc":return_value["doc"]
             }
