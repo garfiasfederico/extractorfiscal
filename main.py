@@ -69,7 +69,7 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
 async def get_docs(rfc: str,req: str):
     if(req.lower()=="do"):
         data = {}
-        resultado = await opinion_imss.getopinionimss(data,rfc)
+        resultado =  opinion_imss.getopinionimss(data,rfc)
         #max_multitareas = 10
         #barri = Barrier(max_multitareas)
         #resultado_ = {}
