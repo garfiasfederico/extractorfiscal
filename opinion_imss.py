@@ -15,6 +15,7 @@ import parsepdf
 import pathlib, os
 from selenium.webdriver.chrome.service import Service
 import traceback
+import threading
 
 log = Log("logs/extractor.log")
 
@@ -94,7 +95,8 @@ def getopinionimss(contenedor,rfc_c:str):
                     "result" : "error",
                     "message" : "No fue posible logearse en buzon IMSS, intente más tarde!"+str(ex),
                     "doc": None
-                }              
+                }         
+            threading.current_thread().return_value = contenedor     
             return contenedor
         
         try:              
@@ -119,6 +121,7 @@ def getopinionimss(contenedor,rfc_c:str):
                     "message" : "El documento de opinión ha sido descargado satisfactoriamente!",
                     "doc":  doc
                 }
+            threading.current_thread().return_value = contenedor
             return contenedor
 
         except TimeoutException as ex:
@@ -130,6 +133,7 @@ def getopinionimss(contenedor,rfc_c:str):
                     "message" : "Actualmente este Usuario no tiene activado el buzon IMSS !",
                     "doc": None
                 } 
+            threading.current_thread().return_value = contenedor
             return contenedor
     else:
         log.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")                                     
@@ -138,4 +142,5 @@ def getopinionimss(contenedor,rfc_c:str):
             "message" : f"Contribuyente: {rfc} no localizado en la base",
             "doc" : None
         }
+        threading.current_thread().return_value = contenedor
         return contenedor

@@ -83,7 +83,8 @@ async def get_docs(rfc: str,req: str):
         }
     
     
-    return str(resultado)
+    return_value = resultado.return_value
+    return return_value
     return {
             "rfc": rfc, 
             "req": req,             
