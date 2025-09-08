@@ -66,10 +66,10 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
             }
 
 @app.get("/imss/extract/docopinion/{rfc}")
-def get_docs(rfc: str,req: str):
+async def get_docs(rfc: str,req: str):
     if(req.lower()=="do"):
         data = {}
-        resultado = opinion_imss.getopinionimss(data,rfc)
+        await resultado = opinion_imss.getopinionimss(data,rfc)
         #max_multitareas = 10
         #barri = Barrier(max_multitareas)
         #resultado_ = {}
