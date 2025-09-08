@@ -76,14 +76,14 @@ async def get_docs(rfc: str,req: str):
 
         resultado = Thread(target=opinion_imss.getopinionimss,args=(data,rfc,))
         resultado.start() 
-        resultado_ = resultado.join()        
+        resultado.join()        
     else:
         return{
             "message":f"El requerimiento {req} no existe en nuestro catálogo"
         }
     
     
-    return data
+    return resultado
     return {
             "rfc": rfc, 
             "req": req,             
