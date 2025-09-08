@@ -74,17 +74,16 @@ async def get_docs(rfc: str,req: str):
         #barri = Barrier(max_multitareas)
         #resultado_ = {}
 
-        resultado = Thread(target=opinion_imss.getopinionimss,args=(resultado_,rfc,))
+        resultado = Thread(target=opinion_imss.getopinionimss,args=(data,rfc,))
         resultado.start() 
-        resultado_ = resultado.join()
-        return resultado_
+        resultado_ = resultado.join()        
     else:
         return{
             "message":f"El requerimiento {req} no existe en nuestro catálogo"
         }
     
     
-    #return resultado_
+    return resultado_
     return {
             "rfc": rfc, 
             "req": req,             
