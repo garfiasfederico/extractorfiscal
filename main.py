@@ -69,15 +69,15 @@ def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = Non
 async def get_docs(rfc: str,req: str):
     if(req.lower()=="do"):
         data = {}
-        resultado =  opinion_imss.getopinionimss(data,rfc)
+        #resultado =  opinion_imss.getopinionimss(data,rfc)
         #max_multitareas = 10
         #barri = Barrier(max_multitareas)
         #resultado_ = {}
 
-        #resultado = Thread(target=opinion_imss.getopinionimss,args=(barri,resultado_,rfc,))
-        #resultado.start() 
-        #resultado_ = resultado.join()
-    
+        resultado = Thread(target=opinion_imss.getopinionimss,args=(resultado_,rfc,))
+        resultado.start() 
+        resultado_ = resultado.join()
+        return resultado_
     else:
         return{
             "message":f"El requerimiento {req} no existe en nuestro catálogo"
