@@ -55,7 +55,7 @@ def getcsf(rfc_c:str):
         #service = Service('/usr/bin/chromedriver')
         options.add_argument('--headless')
         service = Service('/usr/bin/chromedriver')
-        driver = webdriver.Chrome(service=service,options=options);
+        driver = webdriver.Chrome(service=service,options=options)
 
         try:
 
