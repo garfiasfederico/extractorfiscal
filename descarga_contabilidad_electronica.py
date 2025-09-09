@@ -2,6 +2,7 @@ import parsepdf
 import pathlib
 import os
 from clases.logs import Log
+import threading
 
 log = Log("logs/extractor.log")
 
@@ -87,17 +88,21 @@ def getfilescontabilidadelectronica(rfc,inicio,final,repo):
         print(resultados)
         log.write("info",resultados)
         log.write("info",f" {rfc} - Procesamiento concluido satisfactoriamente "+repo)
-        return {
+        response = {
             "rfc" : rfc,
             "result" : "success",
             "message" : "Proceso de descarga satisfactorio",
             "files" : resultados
         }
+        threading.current_thread().return_value = response
+        return response
     else:
          log.write("info",f" {rfc} - El repositorio indicado no existe!")
-         return {
+         response = {
             "rfc" : rfc,
             "result" : "error",
             "message" : f"El espositorio no existe {path_descarga}",  
             "files":None          
-        } 
+         } 
+         threading.current_thread().return_value = response
+         return response

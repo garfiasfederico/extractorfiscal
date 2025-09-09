@@ -15,6 +15,7 @@ import parsepdf
 import pathlib
 from selenium.webdriver.chrome.service import Service
 import os,glob
+import threading
 
 log = Log("logs/extractor.log")
 
@@ -118,17 +119,21 @@ def getdeclaramensualesa(rfc_c:str,inicial:int,final:int):
             log.write("info",f"{rfc} - Acceso a de las declaraciones provisionales")
             time.sleep(1);
         except InvalidArgumentException as ex:
-            return {
+            response = {
                 "result" : "error",
                 "message" : "La ruta de la fiel es incorrecta",
                 "files" : None
             }
+            threading.current_thread().return_value = response
+            return response
         except TimeoutException as ext:
-            return {
+            response = {
                     "result" : "error",
                     "message" : "No fue posible logearse correctamente",
                     "files": None
                 }
+            threading.current_thread().return_value = response
+            return response
 
         time.sleep(3);
 
@@ -311,15 +316,19 @@ def getdeclaramensualesa(rfc_c:str,inicial:int,final:int):
                     log.write("info",f"{rfc} - No Existen Declaraciones que Descargar para: {i}")                                                                                        
         time.sleep(2);         
         driver.close()
-        return {
+        response = {
             "result" : "success",
             "message" : "Proceso concluido satisfactoriamente",
             "files": resultados
         }
+        threading.current_thread().return_value = response
+        return response
     else:
         log.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")                               
-        return {
+        response = {
             "result" : "not_found",
             "message" : f"Contribuyente: {rfc} no localizado en la base",
             "files" : None
         }
+        threading.current_thread().return_value = response
+        return response

@@ -16,6 +16,7 @@ import pathlib, os
 from selenium.webdriver.chrome.service import Service
 from clases.metas import writeMeta
 import traceback
+import threading
 
 log = Log("logs/extractor.log")
 
@@ -101,11 +102,13 @@ def getcontabilidadelectronica(rfc_c:str,inicial:int,final:int):
             
             log.write("error","No fue posible logearse, intentar mas tarde!")
             #driver.close()
-            return {
+            response = {
                 "result" : "error",
                 "message" : f"Ocurrió un error en el logeo, intente mas tarde!",
                 "files" : None
             }
+            threading.current_thread().return_value = response
+            return response
             
         
         try:
@@ -326,27 +329,33 @@ def getcontabilidadelectronica(rfc_c:str,inicial:int,final:int):
                     print(f"No se presento informacion para este periodo: {i}")                               
                 
             time.sleep(5)
-            return {
+            response = {
                 "result" : "success",
                 "message" : f"La descarga de acuses de contabilidad electronica se ha realizado con exito!",
                 "files" : resultados_p
             }  
+            threading.current_thread().return_value = response
+            return response
         except Exception as ex:
             traceback.print_exc()
             #print("Error")            
             driver.close()
-            return {
+            response = {
                 "result" : "error",
                 "message" : f"Ocurriò un error durante la descarga de los acuses de contabilidad, favor de volver a intentar! "+str(ex),
                 "files" : None,
                 "error" : ex
             }
+            threading.current_thread().return_value = response
+            return response
             exit()
     else:
         log.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")                               
-        return {
+        response = {
             "result" : "not_found",
             "message" : f"Contribuyente: {rfc} no localizado en la base",
             "files" : None
         }
+        threading.current_thread().return_value = response
+        return response
         

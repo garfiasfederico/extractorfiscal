@@ -14,6 +14,7 @@ import parsepdf
 import pathlib
 from pathlib import Path
 from selenium.webdriver.chrome.service import Service
+import threading
 
 log = Log("logs/extractor.log")
 
@@ -99,17 +100,21 @@ def getdocopi(rfc_c:str):
             time.sleep(5);
         
         except InvalidArgumentException as ex:
-            return {
+            response = {
                 "result" : "error",
                 "message" : "La ruta de la fiel es incorrecta",
                 "files" : None
             }
+            threading.current_thread().return_value = response
+            return response
         except TimeoutException as ext:
-            return {
+            response = {
                     "result" : "error",
                     "message" : "No fue posible logearse correctamente",
                     "files": None
                 }
+            threading.current_thread().return_value = response
+            return response
 
         try:
             #Procedemos a cambiar el foco del driver hacia el Iframe
@@ -124,26 +129,32 @@ def getdocopi(rfc_c:str):
                     archivos.append(parsepdf.pdf_to_base64(pdf_file))
             for pdf_file in pathlib.Path(descarga).glob('download.pdf'):    
                     archivos.append(parsepdf.pdf_to_base64(pdf_file))
-            return {
+            response = {
                 "result" : "success",
                 "message" : "Documento de Opinión descaragado Satisfactoriamente!",
                 "files" : archivos
             }
+            threading.current_thread().return_value = response
+            return response
         except:
             driver.close()
             log.write(f"error","No se pudo realizar la descarga del Documento de Opiniòn")
-            return {
+            response = {
                 "result" : "error",
                 "message" : "No se pudo realizar la descarga del Documento de Opiniòn",
                 "files" : None
             }
+            threading.current_thread().return_value = response
+            return response
     else:
         log.write("info",f"EL contribuyente: {rfc} no está registrado en la base!")                               
-        return {
+        response = {
             "result" : "not_found",
             "message" : f"Contribuyente: {rfc} no localizado en la base",
             "files" : None
         }
+        threading.current_thread().return_value = response
+        return response
     
 
 
