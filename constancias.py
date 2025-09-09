@@ -18,7 +18,7 @@ import threading
 
 log = Log("logs/extractor.log")
 
-def getcsf(rfc_c:str):
+def getcsf(response,rfc_c:str):
     archivos = []
     rfc = rfc_c
     descarga = "/root/"+rfc+"/CSF"

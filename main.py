@@ -24,14 +24,15 @@ def read_root():
 
 @app.get("/extract/{rfc}/{req}/{anio_inicio}/{anio_fin}")
 async def get_results(rfc: str, req: str, anio_inicio: int = None, anio_fin: int = None):
-    if(req.lower()=="da"):
+    response = {}
+    if(req.lower()=="da"):        
         #resultado =  declaraciones.getdeclaraanuales(rfc,anio_inicio,anio_fin)
         resultado = Thread(target=declaraciones.getdeclaraanuales,args=(rfc,anio_inicio,anio_fin,))
         resultado.start() 
         resultado.join() 
-    elif req.lower()=="csf" :
+    elif req.lower()=="csf" :        
         #resultado =  constancias.getcsf(rfc)
-        resultado = Thread(target=constancias.getcsf,args=(rfc,))
+        resultado = Thread(target=constancias.getcsf,args=(response,rfc,))
         resultado.start() 
         resultado.join() 
     elif req.lower()=="do":
