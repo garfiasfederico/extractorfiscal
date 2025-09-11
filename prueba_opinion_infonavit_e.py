@@ -37,8 +37,8 @@ options.add_argument('--disable-dev-shm-usage')
 #options.add_argument('--disable-extensions')
 #options.add_argument('--remote-debugging-port=9222')  # Specify a port
 #options.add_argument('--disable-setuid-sandbox')
-#options.add_argument("--incognito")
-#options.add_argument("--disable-application-cache")
+options.add_argument("--incognito")
+options.add_argument("--disable-application-cache")
 #options.add_argument("--enable-do-not-track")
 #options.add_argument("--disable-popup-blocking")
 #service = Service('/usr/bin/chromedriver')
@@ -59,18 +59,18 @@ try:
     WebDriverWait(driver, 15)\
         .until(EC.element_to_be_clickable((By.ID,
                                         'nrp')))\
-        .send_keys("ASCDS")
+        .send_keys("J2517061102")
     
     
     WebDriverWait(driver, 15)\
         .until(EC.element_to_be_clickable((By.ID,
                                         'correo')))\
-        .send_keys("garfias.federico@gmail.com")
+        .send_keys("grupo.constructorcica@gmail.com")
     
     WebDriverWait(driver, 15)\
         .until(EC.element_to_be_clickable((By.ID,
                                         'pwd')))\
-        .send_keys("contrasenia")
+        .send_keys("Cicofi204.")
 
     time.sleep(5)    
     #captcha = WebDriverWait(driver, 15)\
@@ -87,22 +87,16 @@ try:
         .until(EC.element_to_be_clickable((By.NAME,
                                         'captchaInput')))\
         .send_keys(text_content)
+    
+
+    WebDriverWait(driver, 15)\
+        .until(EC.element_to_be_clickable((By.XPATH,
+                                        '/html/body/div/div[1]/div[2]/div/div[6]/button[1]')))\
+        .click()
+    
 
     
     time.sleep(10)
-
-    
-
-    try:
-        resultado_login = WebDriverWait(driver,30)\
-        .until(EC.element_to_be_clickable((By.XPATH,
-                                        '/html/body/div[5]/div[3]/div/div[2]/div[2]/div/section[1]/form/div/div[1]/div/div/div/div/div[4]/div[2]/div')))\
-                                        .text
-    except:
-        pass
-    
-    print(resultado_login)
-    exit()
     
     
 except Exception as ex:
@@ -112,31 +106,3 @@ except Exception as ex:
     driver.close()
     exit()
 
-try:    
-    print("Procedemos a la descarga del documento de opinion")
-    time.sleep(15)
-    driver.get('https://buzon.imss.gob.mx/buzonimss/opinionCumplimiento/consultaMiOpinion') 
-    WebDriverWait(driver,5)\
-                .until(EC.element_to_be_clickable((By.XPATH,"/html/body/main/div[3]/div/form/div/div/div[2]/div/a")))\
-                                                   .click()
-    time.sleep(30)
-    doc=""
-    path_doc_opinion = init.path_descarga + "/MiOpinion_"+ init.rfc + ".pdf"
-
-    for i in range(0,5):
-        if(os.path.exists(path_doc_opinion)):
-            doc = parsepdf.pdf_to_base64(path_doc_opinion)
-            break;
-        else:
-            time.sleep(10)
-
-
-    print(doc)
-except TimeoutException as ex:
-    #traceback.print_exc()
-    print("Este contribuyente no cuenta con la descarga del documento de opinión")
-    driver.close()
-    exit()
-
-driver.close()
-exit()
