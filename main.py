@@ -153,7 +153,7 @@ async def upload_opinion(rfc:str,file:UploadFile = File(...)):
         with open(f"{descarga}/{file.filename}", "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         return {"filename" : file.filename, "message" : "Archivo cargado satisfactoriamente", "Tipo archivo":file.content_type}
-    else
+    else:
         return {"filename" : file.filename, "message" : "El archivo no corresponde a un documento PDF", "Tipo archivo":file.content_type}
 
     
