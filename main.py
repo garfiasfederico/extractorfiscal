@@ -1,6 +1,7 @@
 
 from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
+import shutil
 import declaraciones
 import constancias
 import docopinion
