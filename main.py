@@ -136,5 +136,5 @@ async def get_docs(rfc: str,req: str):
             }
 
 @app.post("/infonavit/uploadopinion")
-async def upload_opinion(rfc:str,file:UploadFile = File(...))
+async def upload_opinion(rfc:str,file:UploadFile = File(...)):
     return {"filename" : file.filename}
