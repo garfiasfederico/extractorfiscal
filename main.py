@@ -15,6 +15,8 @@ import descarga_contabilidad_electronica
 import contabildad_electronica
 import opinion_imss
 from threading import Thread, Barrier
+import pathlib
+from pathlib import Path
 app = FastAPI()
 
 
@@ -138,4 +140,16 @@ async def get_docs(rfc: str,req: str):
 
 @app.post("/infonavit/uploadopinion")
 async def upload_opinion(rfc:str,file:UploadFile = File(...)):
-    return {"filename" : file.filename}
+    descarga = "/root/"+rfc+"/IMSS"
+    #descarga = "E:\\SAT\\"+rfc+"\\INFONAVIT"    
+    folder_path = Path(descarga)
+    folder_path.mkdir(parents=True, exist_ok=True)
+    for file in pathlib.Path(descarga).glob('*.*'):
+        try:
+            file.unlink()
+        except:
+            pass
+    with open(f"{descarga}/{file.filename}", "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    return {"filename" : file.filename, "message" : "Archivo cargado satisfactoriamente"}
