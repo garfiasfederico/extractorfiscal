@@ -140,7 +140,7 @@ async def get_docs(rfc: str,req: str):
 
 @app.post("/infonavit/uploadopinion")
 async def upload_opinion(rfc:str,file:UploadFile = File(...)):
-    if file.content_type != "application/pdf":
+    if file.content_type == "application/pdf":
         descarga = "/root/"+rfc+"/INFONAVIT"
         #descarga = "E:\\SAT\\"+rfc+"\\INFONAVIT"    
         folder_path = Path(descarga)
