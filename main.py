@@ -181,7 +181,7 @@ async def download_opinion(rfc:str):
         if(contenido!=""):
             return {"result":"success","message" : "archivo de constancia localizado con éxito","constancia":contenido}        
         else:
-            return {"result":"warning","message" : "no hay constancia almacenada"}        
+            return {"result":"warning","message" : "No hay constancia cargada en el repositorio"}        
     else:
         return {"result":"error","message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
         
