@@ -144,7 +144,7 @@ async def get_docs(rfc: str,req: str):
 async def upload_opinion(rfc:str,file_:UploadFile = File(...)):
     getdatacompany.getDataCompany(rfc)
     if(getdatacompany.contribuyente!=""):
-        if file_.content_type == "application/pdf":
+        if file_.content_type == "application/pdf" and len(file_)<1000:
             descarga = "/root/"+rfc+"/INFONAVIT"
             #descarga = "E:\\SAT\\"+rfc+"\\INFONAVIT"    
             folder_path = Path(descarga)
@@ -162,7 +162,7 @@ async def upload_opinion(rfc:str,file_:UploadFile = File(...)):
                 return {"result":"error","descripción" : str(ex)}
             
         else:
-            return {"result":"error","filename" : file_.filename, "message" : "El archivo no corresponde a un documento PDF", "Tipo archivo":file_.content_type}
+            return {"result":"error","filename" : file_.filename, "message" : "El archivo no corresponde a un documento PDF o es demasiado pesado.", "Tipo archivo":file_.content_type,"size":len(file_)}
     else:
         return {"result":"error","message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
 
