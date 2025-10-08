@@ -159,9 +159,7 @@ async def upload_opinion(rfc:str,file:UploadFile = File(...)):
                 shutil.copyfileobj(file.file, buffer)
                 return {"result":"success","filename" : file.filename, "message" : "Archivo cargado satisfactoriamente", "Tipo archivo":file.content_type}
             except Exception as ex:
-                return {"result":"error","descripcion" : str(ex)}
-
-            
+                return {"result":"error","descripción" : str(ex)}
             
         else:
             return {"result":"error","filename" : file.filename, "message" : "El archivo no corresponde a un documento PDF", "Tipo archivo":file.content_type}
