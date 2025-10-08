@@ -141,7 +141,7 @@ async def get_docs(rfc: str,req: str):
             }
 
 @app.post("/infonavit/uploadopinion")
-async def upload_opinion(rfc:str,file:UploadFile = File(...)):
+async def upload_opinion(rfc:str,file_:UploadFile = File(...)):
     getdatacompany.getDataCompany(rfc)
     if(getdatacompany.contribuyente!=""):
         if file.content_type == "application/pdf":
@@ -155,14 +155,14 @@ async def upload_opinion(rfc:str,file:UploadFile = File(...)):
                 except:
                     pass
             try:
-                with open(f"{descarga}/{file.filename}", "wb") as buffer:
-                    shutil.copyfileobj(file.file, buffer)
-                return {"result":"success","filename" : file.filename, "message" : "Archivo cargado satisfactoriamente", "Tipo archivo":file.content_type}
+                with open(f"{descarga}/{file_.filename}", "wb") as buffer:
+                    shutil.copyfileobj(file_.file, buffer)
+                return {"result":"success","filename" : file_.filename, "message" : "Archivo cargado satisfactoriamente", "Tipo archivo":file_.content_type}
             except Exception as ex:
                 return {"result":"error","descripción" : str(ex)}
             
         else:
-            return {"result":"error","filename" : file.filename, "message" : "El archivo no corresponde a un documento PDF", "Tipo archivo":file.content_type}
+            return {"result":"error","filename" : file_.filename, "message" : "El archivo no corresponde a un documento PDF", "Tipo archivo":file_.content_type}
     else:
         return {"result":"error","message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
 
