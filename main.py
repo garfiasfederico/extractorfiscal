@@ -156,10 +156,10 @@ async def upload_opinion(rfc:str,file:UploadFile = File(...)):
                     pass
             with open(f"{descarga}/{file.filename}", "wb") as buffer:
                 shutil.copyfileobj(file.file, buffer)
-            return {"filename" : file.filename, "message" : "Archivo cargado satisfactoriamente", "Tipo archivo":file.content_type}
+            return {"result":"success","filename" : file.filename, "message" : "Archivo cargado satisfactoriamente", "Tipo archivo":file.content_type}
         else:
-            return {"filename" : file.filename, "message" : "El archivo no corresponde a un documento PDF", "Tipo archivo":file.content_type}
+            return {"result":"error","filename" : file.filename, "message" : "El archivo no corresponde a un documento PDF", "Tipo archivo":file.content_type}
     else:
-        return {"message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
+        return {"result":"error","message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
 
     
