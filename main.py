@@ -178,7 +178,10 @@ async def download_opinion(rfc:str):
         contenido = ""
         if(os.path.exists(path_opinion)):
             contenido = parsepdf.pdf_to_base64(path_opinion)
-        return {"result":"success","message" : "archivo de constancia localizado con éxito","constancia":contenido}
+        if(contenido!=""):
+            return {"result":"success","message" : "archivo de constancia localizado con éxito","constancia":contenido}        
+        else:
+            return {"result":"warning","message" : "no hay constancia almacenada"}        
     else:
         return {"result":"error","message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
         
