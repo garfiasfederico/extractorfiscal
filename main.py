@@ -162,7 +162,7 @@ async def upload_opinion(rfc:str,file_:UploadFile = File(...)):
                 return {"result":"error","descripción" : str(ex)}
             
         else:
-            return {"result":"error","filename" : file_.filename, "message" : "El archivo no corresponde a un documento PDF o es demasiado pesado.", "Tipo archivo":file_.content_type,"size":len(file_)}
+            return {"result":"error","filename" : file_.filename, "message" : "El archivo no corresponde a un documento PDF o es demasiado pesado.", "Tipo archivo":file_.content_type,"size":file_.size}
     else:
         return {"result":"error","message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
 
