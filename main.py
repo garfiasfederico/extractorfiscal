@@ -17,7 +17,9 @@ import opinion_imss
 from threading import Thread, Barrier
 import pathlib
 from pathlib import Path
+import getdatacompany
 app = FastAPI()
+
 
 
 @app.get("/")
@@ -140,20 +142,24 @@ async def get_docs(rfc: str,req: str):
 
 @app.post("/infonavit/uploadopinion")
 async def upload_opinion(rfc:str,file:UploadFile = File(...)):
-    if file.content_type == "application/pdf":
-        descarga = "/root/"+rfc+"/INFONAVIT"
-        #descarga = "E:\\SAT\\"+rfc+"\\INFONAVIT"    
-        folder_path = Path(descarga)
-        folder_path.mkdir(parents=True, exist_ok=True)
-        for file in pathlib.Path(descarga).glob('*.*'):
-            try:
-                file.unlink()
-            except:
-                pass
-        with open(f"{descarga}/{file.filename}", "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-        return {"filename" : file.filename, "message" : "Archivo cargado satisfactoriamente", "Tipo archivo":file.content_type}
+    getdatacompany.getDataCompany(rfc)
+    if(getdatacompany.contribuyente!=""):
+        if file.content_type == "application/pdf":
+            descarga = "/root/"+rfc+"/INFONAVIT"
+            #descarga = "E:\\SAT\\"+rfc+"\\INFONAVIT"    
+            folder_path = Path(descarga)
+            folder_path.mkdir(parents=True, exist_ok=True)
+            for file in pathlib.Path(descarga).glob('*.*'):
+                try:
+                    file.unlink()
+                except:
+                    pass
+            with open(f"{descarga}/{file.filename}", "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+            return {"filename" : file.filename, "message" : "Archivo cargado satisfactoriamente", "Tipo archivo":file.content_type}
+        else:
+            return {"filename" : file.filename, "message" : "El archivo no corresponde a un documento PDF", "Tipo archivo":file.content_type}
     else:
-        return {"filename" : file.filename, "message" : "El archivo no corresponde a un documento PDF", "Tipo archivo":file.content_type}
+        return {"message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
 
     
