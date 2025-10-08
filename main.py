@@ -18,6 +18,8 @@ from threading import Thread, Barrier
 import pathlib
 from pathlib import Path
 import getdatacompany
+import os
+import parsepdf
 app = FastAPI()
 
 
@@ -166,4 +168,18 @@ async def upload_opinion(rfc:str,file_:UploadFile = File(...)):
     else:
         return {"result":"error","message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
 
+
+@app.post("/infonavit/downloadopinion")
+async def download_opinion(rfc:str):
+    getdatacompany.getDataCompany(rfc)
+    if(getdatacompany.contribuyente!=""):    
+        descarga = "/root/"+rfc+"/INFONAVIT"
+        path_opinion = descarga+"/"+"constancia_infonavit.pdf"
+        contenido = ""
+        if(os.path.exists(path_opinion)):
+            contenido = parsepdf.pdf_to_base64(path_opinion)
+        return {"result":"success","message" : "archivo de constancia localizado con éxito","constancia":contenido}
+    else:
+        return {"result":"error","message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
+        
     
