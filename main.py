@@ -144,7 +144,7 @@ async def get_docs(rfc: str,req: str):
 async def upload_opinion(rfc:str,file_:UploadFile = File(...)):
     getdatacompany.getDataCompany(rfc)
     if(getdatacompany.contribuyente!=""):
-        if file.content_type == "application/pdf":
+        if file_.content_type == "application/pdf":
             descarga = "/root/"+rfc+"/INFONAVIT"
             #descarga = "E:\\SAT\\"+rfc+"\\INFONAVIT"    
             folder_path = Path(descarga)
