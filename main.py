@@ -154,9 +154,15 @@ async def upload_opinion(rfc:str,file:UploadFile = File(...)):
                     file.unlink()
                 except:
                     pass
-            with open(f"{descarga}/constancia_infonavit.pdf", "wb") as buffer:
+            try:
+                with open(f"{descarga}/constancia_infonavit.pdf", "wb") as buffer:
                 shutil.copyfileobj(file.file, buffer)
-            return {"result":"success","filename" : file.filename, "message" : "Archivo cargado satisfactoriamente", "Tipo archivo":file.content_type}
+                return {"result":"success","filename" : file.filename, "message" : "Archivo cargado satisfactoriamente", "Tipo archivo":file.content_type}
+            except Exception as ex:
+                return {"result":"error","descripcion" : str(ex)}
+
+            
+            
         else:
             return {"result":"error","filename" : file.filename, "message" : "El archivo no corresponde a un documento PDF", "Tipo archivo":file.content_type}
     else:
