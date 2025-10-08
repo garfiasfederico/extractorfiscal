@@ -155,7 +155,7 @@ async def upload_opinion(rfc:str,file:UploadFile = File(...)):
                 except:
                     pass
             try:
-                with open(f"{descarga}/constancia_infonavit.pdf", "wb") as buffer:
+                with open(f"{descarga}/{file.filename}", "wb") as buffer:
                     shutil.copyfileobj(file.file, buffer)
                 return {"result":"success","filename" : file.filename, "message" : "Archivo cargado satisfactoriamente", "Tipo archivo":file.content_type}
             except Exception as ex:
