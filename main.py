@@ -221,6 +221,10 @@ async def registra_contribuyente(rfc:str,cert:UploadFile = File(...),key:UploadF
         
             with open(f"{path_csd}/clave.key", "wb") as buffer:
                         shutil.copyfileobj(key.file, buffer)
+            
+            f = open(f"{path_csd}/pass.txt", 'x')
+            f.write(passwd)
+            f.close()
 
             return{"result":"success","Certificado":"almacenado satisfactoriamente!","clave":"Clave almacenada satisfactoriamente!","password":"almacenada satisfactoriamente!"}
         except Exception as ex:
