@@ -194,15 +194,15 @@ async def registra_contribuyente(rfc:str,cert:UploadFile = File(...),key:UploadF
         folder_path = Path(path_csd)
         folder_path.mkdir(parents=True, exist_ok=True)
         #si existen archivos cargados de CSD procedemos a eliminarlos para guardar las nuevas
-        for file in pathlib.Path(path_csd).glob('*.*'):
-                try:
-                    file.unlink()
-                except:
-                    pass
-        #procedemos a realizar la validación de los archivos de CSD
-        #validación de archivo CERT
-        if not (cert.content_type=="application/x-x509-ca-cert"):
-            errors.append("El formato del Certificado no es correcto!")
+    for file in pathlib.Path(path_csd).glob('*.*'):
+            try:
+                file.unlink()
+            except:
+                pass
+    #procedemos a realizar la validación de los archivos de CSD
+    #validación de archivo CERT
+    if not (cert.content_type=="application/x-x509-ca-cert"):
+        errors.append("El formato del Certificado no es correcto!")
 
                    
                 
