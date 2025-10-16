@@ -189,6 +189,7 @@ async def download_opinion(rfc:str):
 async def registra_contribuyente(rfc:str,cert:UploadFile = File(...),key:UploadFile = File(...),passwd:str=None):
     #seteamos carpeta de CSD del contribuyente
     path_csd = "/root/"+rfc+"/CSD"
+    errors = []
     if not(os.path.exists(path_csd)):
         folder_path = Path(path_csd)
         folder_path.mkdir(parents=True, exist_ok=True)
@@ -198,7 +199,16 @@ async def registra_contribuyente(rfc:str,cert:UploadFile = File(...),key:UploadF
                     file.unlink()
                 except:
                     pass
-        #procedemos a realizar la validación de los archivos de CSD        
+        #procedemos a realizar la validación de los archivos de CSD
+        #validación de archivo CERT
+        if not (cert.content_type=="application/x-x509-ca-cert"):
+            errors.append("El formato del Certificado no es correcto!")
+
+                   
                 
-                
-    return{"result":"success","cert":cert.content_type,"key":key.content_type,"password":passwd}
+    if(len(errors)>0):
+        return{"result":"error","mensajes":errors}
+        pass
+
+    else:                
+        return{"result":"success","cert":cert.content_type,"key":key.content_type,"password":passwd}
