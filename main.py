@@ -223,6 +223,6 @@ async def registra_contribuyente(rfc:str,cert:UploadFile = File(...),key:UploadF
                         shutil.copyfileobj(key.file, buffer)
 
             return{"result":"success","Certificado":"almacenado satisfactoriamente!","clave":"Clave almacenada satisfactoriamente!","password":"almacenada satisfactoriamente!"}
-        except Exception as ex
+        except Exception as ex:
             return{"result":"error","mensaje":str(ex)}
         
