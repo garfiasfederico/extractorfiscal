@@ -186,10 +186,19 @@ async def download_opinion(rfc:str):
         return {"result":"error","message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
         
 @app.post("/main/registracontribuyente")
-async def registra_contribuyente(rfc:str,cert:UploadFile = File(...),key:UploadFile = File(...),passw:str=None):
+async def registra_contribuyente(rfc:str,cert:UploadFile = File(...),key:UploadFile = File(...),passwd:str=None):
     #seteamos carpeta de CSD del contribuyente
     path_csd = "/root/"+rfc+"/CSD"
     if not(os.path.exists(path_csd)):
         folder_path = Path(path_csd)
         folder_path.mkdir(parents=True, exist_ok=True)
-    return{"result":"success"}
+        #si existen archivos cargados de CSD procedemos a eliminarlos para guardar las nuevas
+        for file in pathlib.Path(path_csd).glob('*.*'):
+                try:
+                    file.unlink()
+                except:
+                    pass
+        #procedemos a realizar la validación de los archivos de CSD        
+                
+                
+    return{"result":"success","cert":cert.content_type,"key":key.content_type,"password":passwd}
