@@ -202,10 +202,10 @@ async def registra_contribuyente(rfc:str,cert:UploadFile = File(...),key:UploadF
     #procedemos a realizar la validación de los archivos de CSD
     #validación de archivo CERT
     if not (cert.content_type=="application/x-x509-ca-cert"):
-        errors.append("El formato del Certificado no es correcto!")
+        errors.append("El formato del Certificado no es correcto! "+cert.content_type)
     
     if not (cert.content_type=="application/octet-stream"):
-        errors.append("El formato del key no es correcto!")
+        errors.append("El formato del key no es correcto! "+key.content_type)
 
                    
                 
