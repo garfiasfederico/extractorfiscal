@@ -213,5 +213,16 @@ async def registra_contribuyente(rfc:str,cert:UploadFile = File(...),key:UploadF
         return{"result":"error","mensajes":errors}
         pass
 
-    else:                
-        return{"result":"success","cert":cert.content_type,"key":key.content_type,"password":passwd}
+    else:
+        #procedemos a almacenar los archivos del CSD en la carpeta correspondiente.  
+        try:
+            with open(f"{path_csd}/certificado.cer", "wb") as buffer:
+                    shutil.copyfileobj(cert.file, buffer)
+        
+            with open(f"{path_csd}/clave.key", "wb") as buffer:
+                        shutil.copyfileobj(key.file, buffer)
+
+            return{"result":"success","Certificado":"almacenado satisfactoriamente!","clave":"Clave almacenada satisfactoriamente!","password":"almacenada satisfactoriamente!"}
+        except Exception as ex
+            return{"result":"error","mensaje":str(ex)}
+        
