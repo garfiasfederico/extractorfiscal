@@ -185,4 +185,11 @@ async def download_opinion(rfc:str):
     else:
         return {"result":"error","message" : "El rfc:" + rfc + " no se encuentra registrado en la base de datos"}
         
-    
+@app.post("/main/registracontribuyente")
+async def registra_contribuyente(rfc:str,cert:UploadFile = File(...),key:UploadFile = File(...),password:str):
+    #seteamos carpeta de CSD del contribuyente
+    path_csd = "/root/"+rfc+"/CSD"
+    if not(os.path.exists(path_csd)):
+        folder_path = Path(path_csd)
+        folder_path.mkdir(parents=True, exist_ok=True)
+    return{"result":"success"}
