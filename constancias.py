@@ -130,7 +130,7 @@ def getcsf(response,rfc_c:str):
             driver.switch_to.default_content()
             driver.close()
             time.sleep(5);
-            for pdf_file in pathlib.Path(descarga).glob('SAT.pdf'):    
+            for pdf_file in pathlib.Path(descarga).glob('*.pdf'):    
                     archivos.append(parsepdf.pdf_to_base64(pdf_file))
             response = {
                 "result" : "success",
