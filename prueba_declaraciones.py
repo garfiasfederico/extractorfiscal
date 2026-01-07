@@ -76,7 +76,7 @@ WebDriverWait(driver,10)\
 time.sleep(1);
 
 anios = []
-for x in range(2019,2019+1):
+for x in range(2018,2019+1):
     anios.append(x)
 print(anios)
 moral2019 = 0;
@@ -84,7 +84,16 @@ moral2019 = 0;
 for i in anios:
 
     if i > 2018 and persona=="moral":
-        if moral2019==0:           
+        if moral2019==0:    
+           #si la sesión está abierta para el consumo del portal anterior la cerramos
+           try:
+               WebDriverWait(driver,10)\
+                .until(EC.element_to_be_clickable((By.ID,
+                                            'LogOut')))\
+                                            .click()  
+           except:
+               pass
+
            #accedemos al nuevo sitio de declaraciones que tiene la repo de los anios 2019 en adelante
            driver.get('https://anualpm.clouda.sat.gob.mx/MoralesV2')
            #WebDriverWait(driver, 10).until(EC.url_to_be("https://anualpm.clouda.sat.gob.mx/MoralesV2"))
@@ -97,6 +106,49 @@ for i in anios:
            #     .until(EC.element_to_be_clickable((By.XPATH,
            #                                 '/html/body/nav/div/div/ul[1]/li[2]/div/a[1]')))\
            #                                 .click()
+           #procedemos a autenticarnos el portal de las declaraciones de 2019 en adelante
+
+           WebDriverWait(driver, 10)\
+                .until(EC.element_to_be_clickable((By.CSS_SELECTOR,
+                                                'button#buttonFiel')))\
+                .click()
+
+           time.sleep(3);
+
+           js = "document.getElementById('fileCertificate').style.display = 'block';"
+           driver.execute_script(js)
+           WebDriverWait(driver, 15)\
+                .until(EC.element_to_be_clickable((By.XPATH,
+                                                '/html/body/main/div/div/div[1]/form/div[1]/div/input[2]')))\
+                .send_keys(init.path_cert)
+
+           time.sleep(3);
+           js = "document.getElementById('filePrivateKey').style.display = 'block';"
+           driver.execute_script(js)
+           WebDriverWait(driver, 15)\
+                .until(EC.element_to_be_clickable((By.XPATH,
+                                                '/html/body/main/div/div/div[1]/form/div[2]/div/input[2]')))\
+                .send_keys(init.path_key)
+
+           time.sleep(1);
+           WebDriverWait(driver, 5)\
+                .until(EC.element_to_be_clickable((By.XPATH,
+                                                '/html/body/main/div/div/div[1]/form/div[3]/input')))\
+                .send_keys(init.password)
+
+
+           time.sleep(1);
+
+           WebDriverWait(driver,10)\
+            .until(EC.element_to_be_clickable((By.XPATH,
+                                            '/html/body/main/div/div/div[1]/form/div[5]/div/input[2]')))\
+                                            .click()
+          
+           time.sleep(1);
+
+
+
+
            time.sleep(3)
            driver.get('https://anualpm.clouda.sat.gob.mx/MoralesV2/Consulta/Consulta?tipoDocumento=1')
            time.sleep(3)
